@@ -3,6 +3,7 @@ import Chat from "./modules/Chat";
 import QuizListPage from "./modules/Tests/components/quiz-list";
 import QuizInfoPage from "./modules/Tests/components/quiz-info";
 import QuizPage from "./modules/Tests/components/quiz";
+import QuizletFlashcardsApp from "./modules/Cards";
 
 
 const AppRoutes = () => {
@@ -15,7 +16,7 @@ const AppRoutes = () => {
         <Route path="/quiz/:id" element={<QuizInfoPage />} />
         <Route path="/quiz/:id/start" element={<QuizPage/>} />
         <Route path="/game" element={<></>} />
-        <Route path="/tests" element={<></>} />
+        <Route path="/cards" element={<QuizletFlashcardsApp/>} />
       </Routes>
   );
 };
