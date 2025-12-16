@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { quizzes } from "../../data";
 import { ArrowLeft, PlayCircle } from "lucide-react";

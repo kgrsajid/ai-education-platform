@@ -9,7 +9,7 @@ const QuizPage = () => {
   const quiz = quizzes.find((q) => q.id === Number(id));
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [answers, setAnswers] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
 
@@ -24,7 +24,7 @@ const QuizPage = () => {
   const currentQuestion = questionsData[currentIndex];
   const isMultiple = currentQuestion.type === "multiple";
 
-  const handleSelect = (option) => {
+  const handleSelect = (option: string) => {
     if (isMultiple) {
       // multiple choice — toggle selection
       setSelectedOptions((prev) =>

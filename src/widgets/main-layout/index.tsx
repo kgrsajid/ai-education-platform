@@ -1,12 +1,9 @@
-import { useState, type FC, type ReactNode } from "react";
+import { useState, type FC } from "react";
 import Sidebar from "../sidebar";
 import Header from "../header";
+import { Outlet } from "react-router-dom";
 
-type Props = {
-  children: ReactNode;
-};
-
-export const MainLayout: FC<Props> = ({ children }) => {
+export const MainLayout: FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   
   return (
@@ -19,7 +16,7 @@ export const MainLayout: FC<Props> = ({ children }) => {
         <Header isOpen={isOpen}/>
         {/* Контент, который занимает всю оставшуюся высоту */}
         <main className="flex-1 flex flex-col mt-[72px] min-h-[calc(100vh-72px)] bg-[--primary-bg-color]">
-          {children}
+           <Outlet />
         </main>
       </div>
     </div>
