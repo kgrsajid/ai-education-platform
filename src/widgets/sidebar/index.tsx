@@ -1,9 +1,12 @@
-import { Gamepad, MessageCircle, SidebarCloseIcon, TestTube, WalletCards } from "lucide-react";
-import React, { useState, type Dispatch, type FC, type SetStateAction } from "react";
+import { SidebarCloseIcon } from "lucide-react";
+import { useMemo, type Dispatch, type FC, type SetStateAction } from "react";
 import { Tooltip } from "react-tooltip";
 import { useGetSessionsQuery } from "../../features/query/session";
-import { ChatList } from "../../features/sidebar/chat/list";
-import { ChatSection } from "../../features/sidebar/chat/section";
+import { sidebarItems } from "./config";
+import { useSidebar } from "./model/use-sidebar";
+import { NavLink } from "react-router-dom";
+import { ListSection } from "../../features/sidebar/list-type";
+import { ROUTES } from "../../app/router/config";
 
 type Props = {
   isOpen: boolean,
@@ -11,15 +14,25 @@ type Props = {
 };
 
 const Sidebar: FC<Props> = ({ isOpen, setIsOpen }) => {
-  const [chatOpen, setChatOpen] = useState(false); // для dropdown
   const { data: sessionData } = useGetSessionsQuery();
-  const [activeChat, setActiveChat] = useState<null | number>(null);
-  const menuItems = [
-    { title: "Chat", icon: <MessageCircle size={23} />, id: 1 },
-    { title: "Quiz", icon: <TestTube size={23} />, id: 2, to: "/quiz" },
-    { title: "Games", icon: <Gamepad size={23} />, id: 3, to: "/games" },
-    { title: "Cards", icon: <WalletCards size={23} />, id: 4, to: "/cards" },
-  ];
+  const {isItemActive, isListActive} = useSidebar();
+  const sidebarItemsMemo = useMemo(() => {
+    if (!sessionData) return sidebarItems;
+
+    return sidebarItems.map((item) => {
+      if (item.type === "list" && item.label === "Chat") {
+        return {
+          ...item,
+          list: sessionData.sessions.map((s) => ({
+            label: s.title,
+            id: s.id.toString(),
+          })),
+        };
+      }
+
+      return item;
+    });
+  }, [sessionData]);
 
   return (
     <aside
@@ -42,24 +55,47 @@ const Sidebar: FC<Props> = ({ isOpen, setIsOpen }) => {
       {/* Меню */}
       <nav className="flex-1 mt-8">
         <ul className="flex flex-col gap-1">
-          {menuItems.map((item) => (
-            <React.Fragment key={item.id}>
-             <ChatSection
-              isOpen={isOpen}
-              chatOpen={chatOpen}
-              sessionData={sessionData}
-              item={item}
-              setChatOpen={setChatOpen}
-             />
-              {item.title === "Chat" && chatOpen && isOpen && (
-                <ChatList
-                  activeChat={activeChat}
-                  setActiveChat={setActiveChat}
-                  sessionData={sessionData}
-                />
-              )}
-            </React.Fragment>
-          ))}
+          {sidebarItemsMemo.map((item) => {
+            if (item.type === "item") {
+              const active = isItemActive(item.path);
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={`cursor-pointer px-6 py-2 rounded-2xl hover:bg-[--primary-hover-color] flex justify-between items-center gap-3 ${
+                    active ? "bg-[--primary-hover-color] font-semibold" : ""
+                  }`}
+                >
+                  <div className="flex gap-3 items-center">
+                    {item.icon}
+                    <div className={isOpen ? "" : "opacity-0"}>{item.label}</div>
+                  </div>
+                </NavLink>
+              );
+            }
+            if (item.type === "list") {
+              const active = isListActive([...item.list, {id: "new"}], ROUTES.Chat);
+              return <ListSection isOpen={isOpen} active={active} item={item}/>
+            }
+
+          }
+            // <React.Fragment key={item.label}>
+            //  <ChatSection
+            //   isOpen={isOpen}
+            //   chatOpen={chatOpen}
+            //   sessionData={sessionData}
+            //   item={item}
+            //   setChatOpen={setChatOpen}
+            //  />
+            //   {item.title === "Chat" && chatOpen && isOpen && (
+            //     <ChatList
+            //       activeChat={activeChat}
+            //       setActiveChat={setActiveChat}
+            //       sessionData={sessionData}
+            //     />
+            //   )}
+            // </React.Fragment>
+          )}
         </ul>
       </nav>
     </aside>

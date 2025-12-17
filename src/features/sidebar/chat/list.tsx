@@ -1,33 +1,32 @@
 import { MessageCircle, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { SessionResponse } from "../../api/session/type";
 import type { FC } from "react";
 import { ROUTES } from "../../../app/router/config";
+import { useSidebar } from "../../../widgets/sidebar/model/use-sidebar";
 
 type Props = {
-  sessionData?: SessionResponse;
-  activeChat: number | null;
-  setActiveChat: (value: number) => void;
+  list?: {label: string; id: string}[];
 }
-export const ChatList:FC<Props> = ({sessionData, activeChat, setActiveChat}) => {
+export const ChatList:FC<Props> = ({list}) => {
   const navigate = useNavigate();
+  const {isListSubActive} = useSidebar();
   return (
     <div className="mt-2 mx-2 bg-[--primary-hover-color] py-2 rounded-2xl shadow-lg">
       <ul className="flex flex-col max-h-72 px-2 overflow-y-auto ">
         {/* Sessions */}
-        {sessionData?.sessions?.length ? (
-          sessionData.sessions.map((session) => (
-            <li
+        {list?.length ? (
+          list.map((session) => {
+            const active = isListSubActive(session.id, ROUTES.Chat);
+            return <li
               key={session.id}
               onClick={() => {
                 navigate(`${ROUTES.Chat}/${session.id}`);
-                setActiveChat(session.id);
               }}
               className={`
                 group flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer
                 transition-all
                 ${
-                  activeChat === session.id
+                  active
                     ? "bg-white/15 border-l-4 border-blue-400"
                     : "hover:bg-white/10"
                 }
@@ -35,9 +34,9 @@ export const ChatList:FC<Props> = ({sessionData, activeChat, setActiveChat}) => 
             >
               <MessageCircle size={16} className="text-blue-300 shrink-0" />
 
-              <span className="truncate text-sm">{session.title}</span>
+              <span className="truncate text-sm">{session.label}</span>
             </li>
-          ))
+          })
         ) : (
           <div className="px-3 py-2 text-sm text-gray-300">Пока нет чатов</div>
         )}
