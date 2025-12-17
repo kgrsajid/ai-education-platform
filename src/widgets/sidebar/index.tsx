@@ -1,27 +1,25 @@
 import { Gamepad, MessageCircle, SidebarCloseIcon, TestTube, WalletCards } from "lucide-react";
 import React, { useState, type Dispatch, type FC, type SetStateAction } from "react";
-import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
+import { useGetSessionsQuery } from "../../features/query/session";
+import { ChatList } from "../../features/sidebar/chat/list";
+import { ChatSection } from "../../features/sidebar/chat/section";
 
 type Props = {
   isOpen: boolean,
   setIsOpen: Dispatch<SetStateAction<boolean>>,
-}
-const Sidebar:FC<Props> = ({isOpen, setIsOpen}) => {
-  const [active, setActive] = useState("Chat");
-  const navigate = useNavigate();
+};
 
+const Sidebar: FC<Props> = ({ isOpen, setIsOpen }) => {
+  const [chatOpen, setChatOpen] = useState(false); // для dropdown
+  const { data: sessionData } = useGetSessionsQuery();
+  const [activeChat, setActiveChat] = useState<null | number>(null);
   const menuItems = [
-    { title: "Chat", icon: <MessageCircle size={23} />, id: 1, to: "/chat" },
+    { title: "Chat", icon: <MessageCircle size={23} />, id: 1 },
     { title: "Quiz", icon: <TestTube size={23} />, id: 2, to: "/quiz" },
     { title: "Games", icon: <Gamepad size={23} />, id: 3, to: "/games" },
     { title: "Cards", icon: <WalletCards size={23} />, id: 4, to: "/cards" },
   ];
-
-  const handleTo = (item: {title: string, to: string}) => {
-    setActive(item.title);
-    navigate(item.to);
-  };
 
   return (
     <aside
@@ -43,20 +41,24 @@ const Sidebar:FC<Props> = ({isOpen, setIsOpen}) => {
 
       {/* Меню */}
       <nav className="flex-1 mt-8">
-        <ul className="flex flex-col">
+        <ul className="flex flex-col gap-1">
           {menuItems.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => handleTo(item)}
-              className={`cursor-pointer pl-6 py-3 hover:bg-[--primary-hover-color] flex gap-3 items-center ${
-                active === item.title
-                  ? "bg-[--primary-hover-color] font-semibold"
-                  : ""
-              }`}
-            >
-              <div>{item.icon}</div>
-              <div className={isOpen ? "" : "opacity-0"}>{item.title}</div>
-            </li>
+            <React.Fragment key={item.id}>
+             <ChatSection
+              isOpen={isOpen}
+              chatOpen={chatOpen}
+              sessionData={sessionData}
+              item={item}
+              setChatOpen={setChatOpen}
+             />
+              {item.title === "Chat" && chatOpen && isOpen && (
+                <ChatList
+                  activeChat={activeChat}
+                  setActiveChat={setActiveChat}
+                  sessionData={sessionData}
+                />
+              )}
+            </React.Fragment>
           ))}
         </ul>
       </nav>
