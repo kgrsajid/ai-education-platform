@@ -2,6 +2,7 @@ import { MessageCircle, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { SessionResponse } from "../../api/session/type";
 import type { FC } from "react";
+import { ROUTES } from "../../../app/router/config";
 
 type Props = {
   sessionData?: SessionResponse;
@@ -19,7 +20,7 @@ export const ChatList:FC<Props> = ({sessionData, activeChat, setActiveChat}) => 
             <li
               key={session.id}
               onClick={() => {
-                navigate(`/chat/${session.id}`);
+                navigate(`${ROUTES.Chat}/${session.id}`);
                 setActiveChat(session.id);
               }}
               className={`
@@ -43,7 +44,7 @@ export const ChatList:FC<Props> = ({sessionData, activeChat, setActiveChat}) => 
       </ul>
       <div className="my-2 border-t border-white/10" />
       <button
-        onClick={() => navigate("/chat/new")}
+        onClick={() => navigate(`${ROUTES.Chat}/new`)}
         className="
           w-full
           flex items-center justify-center gap-2

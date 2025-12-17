@@ -4,6 +4,7 @@ import { loginApi } from '../../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../providers/context/const/const';
 import { message } from 'antd';
+import { ROUTES } from '../../../../app/router/config';
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: loginApi.login,
     onSuccess: (data) => {
-      navigate("/chat");
+      navigate(ROUTES.Chat);
       message.success("Вы упешно вошли в свой аккаунт");
       auth.login(data.token);
     },

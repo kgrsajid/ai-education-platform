@@ -2,6 +2,7 @@ import { ChevronDown } from "lucide-react";
 import { useState, type FC, type JSX } from "react";
 import { useNavigate } from "react-router-dom";
 import type { SessionResponse } from "../../api/session/type";
+import { ROUTES } from "../../../app/router/config";
 
 type Props = {
   item: {title: string, icon: JSX.Element, id: number, to?: string},
@@ -23,7 +24,7 @@ export const ChatSection:FC<Props> = ({item, setChatOpen, isOpen, chatOpen, sess
         if (item.title === "Chat") {
           setChatOpen((prev) => !prev); 
           if (!sessionData?.sessions?.length) {
-            navigate("/chat/new");
+            navigate(`${ROUTES.Chat}/new`);
           }
         } else {
           handleTo(item);

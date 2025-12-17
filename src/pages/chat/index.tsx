@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { ChatEmpty } from "../../modules/Chat/chat-empty";
-import { ChatWindow } from "../../modules/Chat/chat-window";
+import { ChatEmpty } from "../../widgets/Chat/chat-empty";
+import { ChatWindow } from "../../widgets/Chat/chat-window";
 
 
 export const ChatPage = () => {

@@ -2,6 +2,7 @@ import { useState, type FC } from "react";
 import { useCreateChatMutation } from "../../features/query/chat";
 import { useNavigate } from "react-router-dom";
 import { ChatInput } from "../../features/chat/chat-input";
+import { ROUTES } from "../../app/router/config";
 
 export const ChatEmpty:FC = () => {
   const [input, setInput] = useState("");
@@ -11,7 +12,7 @@ export const ChatEmpty:FC = () => {
     const firstMessage = input;
     setInput("");
     const res = await createChat.mutateAsync({message: firstMessage});
-    navigate(`/chat/${res.session_id}`, { replace: true });
+    navigate(`${ROUTES.Chat}/${res.session_id}`, { replace: true });
     return;
   }
   return(

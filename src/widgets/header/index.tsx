@@ -2,6 +2,7 @@ import { LogOut } from "lucide-react";
 import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/context/const/const";
+import { ROUTES } from "../../app/router/config";
 
 type Props = {
   isOpen: boolean
@@ -10,7 +11,7 @@ const Header:FC<Props> = ({isOpen}) => {
   const navigate = useNavigate();
   const auth = useAuth();
   const logOut = () => {
-    navigate("/login");
+    navigate(ROUTES.Login);
     localStorage.removeItem("token");
     auth.logout();
   }
