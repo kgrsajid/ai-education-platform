@@ -1,0 +1,22 @@
+{
+  "chat": {
+    "words": {
+      "label": "Чат"
+    },
+    "phrases": {
+      "empty-title": "Сіз Не істеп жатырсыз?",
+      "input": {
+        "placeholder": "Хабарламаны енгізіңіз..."
+      },
+      "new-chat": "Жаңа чат"
+    }
+  },
+  "sidebar": {
+    "labels": {
+      "chat": "Чат",
+      "quiz": "Тест",
+      "games": "Ойындар",
+      "cards": "Карталар"
+    }
+  }
+}

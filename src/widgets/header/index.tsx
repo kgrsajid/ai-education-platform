@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/context/const/const";
 import { ROUTES } from "../../app/router/config";
+import { LanguageDropdown } from "../../features/header/language-dropdown";
 
 type Props = {
   isOpen: boolean
@@ -22,6 +23,7 @@ const Header:FC<Props> = ({isOpen}) => {
 
       {/* Профиль и логаут */}
       <div className="flex items-center gap-7">
+        <LanguageDropdown/>
         <div>Profile</div>
         <LogOut className="cursor-pointer" onClick={logOut}/>
       </div>

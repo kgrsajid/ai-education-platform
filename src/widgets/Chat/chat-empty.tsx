@@ -3,10 +3,12 @@ import { useCreateChatMutation } from "../../features/query/chat";
 import { useNavigate } from "react-router-dom";
 import { ChatInput } from "../../features/chat/chat-input";
 import { ROUTES } from "../../app/router/config";
+import { useTranslation } from "react-i18next";
 
 export const ChatEmpty:FC = () => {
   const [input, setInput] = useState("");
   const createChat = useCreateChatMutation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleSend = async() => {
     const firstMessage = input;
@@ -18,7 +20,7 @@ export const ChatEmpty:FC = () => {
   return(
     <div className="flex flex-col flex-1 h-full items-center justify-center gap-6 mb-10">
       <h1 className="text-2xl text-black font-medium">
-        What are you working on?
+        {t("chat.phrases.empty-title")}
       </h1>
       <div className="w-full max-w-xl">
         <ChatInput

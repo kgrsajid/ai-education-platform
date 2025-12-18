@@ -1,0 +1,21 @@
+{
+  "chat": {
+    "words": {
+    },
+    "phrases": {
+      "empty-title": "What are you working on?",
+      "input": {
+        "placeholder": "Enter a message..."
+      },
+      "new-chat": "New chat"
+    }
+  },
+  "sidebar": {
+    "labels": {
+      "chat": "Chat",
+      "quiz": "Quiz",
+      "games": "Games",
+      "cards": "Cards"
+    }
+  }
+}

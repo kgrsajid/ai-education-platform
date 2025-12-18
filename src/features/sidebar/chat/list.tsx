@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import type { FC } from "react";
 import { ROUTES } from "../../../app/router/config";
 import { useSidebar } from "../../../widgets/sidebar/model/use-sidebar";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   list?: {label: string; id: string}[];
 }
 export const ChatList:FC<Props> = ({list}) => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const {isListSubActive} = useSidebar();
   return (
     <div className="mt-2 mx-2 bg-[--primary-hover-color] py-2 rounded-2xl shadow-lg">
@@ -52,7 +54,7 @@ export const ChatList:FC<Props> = ({list}) => {
         "
       >
         <Plus size={16} />
-        Новый чат
+        {t("chat.phrases.new-chat")}
       </button>
     </div>
   );

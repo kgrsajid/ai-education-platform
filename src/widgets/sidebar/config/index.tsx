@@ -6,25 +6,25 @@ import type { SidebarItem } from "../type/type";
 export const sidebarItems: SidebarItem[] = [
   {
     type: "list",
-    label: "Chat",
+    label: "sidebar.labels.chat",
     list: [],
     icon: <MessageCircle size={23} />
   },
   {
     type: "item",
-    label: "Quiz",
+    label: "sidebar.labels.quiz",
     path: ROUTES.Quiz,
     icon: <TestTube size={23} />,
   },
   {
     type: "item",
-    label: "Games",
+    label: "sidebar.labels.games",
     path: ROUTES.Games,
     icon: <Gamepad size={23} />,
   },
   {
     type: "item",
-    label: "Cards",
+    label: "sidebar.labels.cards",
     path: ROUTES.Cards,
     icon: <WalletCards size={23} />,
   }
