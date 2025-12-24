@@ -21,9 +21,9 @@ export const ListSection:FC<Props> = ({item, active, isOpen}) => {
         onClick={() => {
           if (item.label === "sidebar.labels.chat") {
             setIsOpen((prev) => !prev); 
-            if (!item.list.length) {
+            if (!item.list.length && !open) {
               navigate(`${ROUTES.Chat}/new`);
-            }else {
+            }else if(!open){
               navigate(`${ROUTES.Chat}/${item.list[0].id}`)
             }
           }
