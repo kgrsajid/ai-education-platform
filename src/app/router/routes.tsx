@@ -9,6 +9,7 @@ import { PrivateRoute } from "../../providers/private-router";
 import { ChatPage } from "../../pages/chat";
 import { ROUTES } from "./config";
 import { QuizDetailsPage } from "../../widgets/Tests/components/quiz-info";
+import { QuizCreatePage } from "../../pages/quiz/create";
 
 
 const AppRoutes = () => {
@@ -22,6 +23,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.Quiz} element={<QuizListPage />} />
             <Route path={ROUTES.QuizDetail} element={<QuizDetailsPage />} />
             <Route path={ROUTES.QuizDetailStart} element={<QuizPage />} />
+            <Route path={ROUTES.QuizCreate} element={<QuizCreatePage/>} />
             <Route path={ROUTES.Games} element={<div>Игра</div>} />
             <Route path={ROUTES.Cards} element={<QuizletFlashcardsApp />} />
           </Route>

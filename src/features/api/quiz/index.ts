@@ -1,5 +1,5 @@
 import { baseApi } from ".."
-import { type QuizResponse, type QuizPayload, type TQuizDetails, type QuizDetailResponse, type TQuizResultResponse, type TQuizResultGetPayload, type TQuizResultAddPayload } from "./type";
+import { type QuizResponse, type QuizPayload, type TQuizDetails, type QuizDetailResponse, type TQuizResultResponse, type TQuizResultGetPayload, type TQuizResultAddPayload, type QuizCreatePayload } from "./type";
 
 export const quizApi = {
   getAll: async(params: QuizPayload): Promise<QuizResponse["data"]> => {
@@ -22,6 +22,10 @@ export const quizApi = {
         duration: payload.duration
       }
     });
+    return data.data;
+  },
+  create: async(payload: QuizCreatePayload): Promise<TQuizDetails> => {
+    const {data} = await baseApi.post<{data: TQuizDetails}>("/test", payload);
     return data.data;
   }
 }

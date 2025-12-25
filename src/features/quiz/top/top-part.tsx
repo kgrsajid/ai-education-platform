@@ -1,17 +1,22 @@
-import { Input, Select } from "antd";
-import { Option } from "antd/es/mentions";
-import { Filter, Search } from "lucide-react";
-import type { FC } from "react";
+import { Button, Input } from "antd";
+import { FilterIcon, Plus, Search } from "lucide-react";
+import { useState, type FC } from "react";
+import { FilterModal } from "../filterModal";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   search: string;
   handleSearch: (value: string) => void;
-  categories: string[];
-  filter: string;
-  HandleFilter: (value: string) => void;
 }
-export const QuizTop:FC<Props> = ({search, handleSearch, categories, filter, HandleFilter}) => {
-  
+export const QuizTop:FC<Props> = ({search, handleSearch}) => {
+  const [isFiltrerOpen, setIsFilterOpen] = useState(false);
+  const navigate = useNavigate();
+  const handleClose = () => {
+    setIsFilterOpen(false);
+  }
+  const handleOpen = () => {
+    setIsFilterOpen(true);
+  }
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-center mb-10">
       <Input
@@ -23,19 +28,18 @@ export const QuizTop:FC<Props> = ({search, handleSearch, categories, filter, Han
         size="large"
         allowClear
       />
-      <Select
-        value={filter}
-        onChange={(value) => HandleFilter(value)}
-        className="w-full sm:w-52 rounded-2xl shadow-md"
-        size="large"
-        suffixIcon={<Filter size={18} className="text-gray-400" />}
+      <Button onClick={handleOpen} className="rounded-full w-[40px] h-[40px] p-0 flex justify-center items-center">
+        <FilterIcon className="w-[15px]"/>
+      </Button>
+      <Button
+        onClick={() => navigate("/quiz/create")}
+        type="primary"
+        className="flex justify-center items-center"
       >
-        {categories.map((cat) => (
-          <Option value={cat}>
-            {cat}
-          </Option>
-        ))}
-      </Select>
+        Создать 
+        <Plus size={15}/>
+      </Button>
+      <FilterModal open={isFiltrerOpen} handleClose={handleClose}/>
     </div>
   );
 }

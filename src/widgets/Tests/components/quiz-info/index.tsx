@@ -2,16 +2,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   PlayCircle,
-  HelpCircle,
 } from "lucide-react";
 import {
   useGetAllUserQuizResult,
   useGetQuizByIdQuery,
 } from "../../../../features/query/quiz";
-import { RadialScore } from "../../../../features/quiz/chart/radial-score";
-import { ProgressChart } from "../../../../features/quiz/chart/progress-chart";
 import { QuizInfoTop } from "../../quiz-info-top/index.tsx";
 import { QuizRole } from "../../quiz-rule/index.tsx";
+import { QuizSampleQuestions } from "../../quiz-sample-questions/index.tsx";
+import { QuizCharts } from "../../quiz-charts/index.tsx";
+import { QuizStat } from "../../../../features/quiz/stat/index.tsx";
 
 export const QuizDetailsPage = () => {
   const { id } = useParams();
@@ -60,78 +60,36 @@ export const QuizDetailsPage = () => {
       <QuizInfoTop quiz={quiz}/>
 
       {/* STATS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 border shadow-sm">
-          <p className="text-sm text-gray-500 mb-1">Questions</p>
-          <p className="text-3xl font-bold text-gray-800">
-            {quiz.questions.length}
-          </p>
-        </div>
-        <div className="bg-white rounded-2xl p-6 border shadow-sm">
-          <p className="text-sm text-gray-500 mb-1">Estimated time</p>
-          <p className="text-2xl font-semibold">~{estimatedTime} min</p>
-        </div>
-      </div>
+      {
+        quizResultLoading || results.length <= 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+            <QuizStat title="Questions" value={quiz.questions.length}/>
+            <QuizStat title="Estimated time" value={`~${estimatedTime} min`}/>
+          </div>
+        )
+
+      }
       
       {!quizResultLoading && results.length > 0 && (
         <>
           {/* SUMMARY */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-14">
-            <div className="bg-white rounded-2xl p-6 border shadow-sm">
-              <p className="text-sm text-gray-500">Attempts</p>
-              <p className="text-3xl font-bold">{results.length}</p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 border shadow-sm">
-              <p className="text-sm text-gray-500">Best result</p>
-              <p className="text-3xl font-bold text-green-600">{bestResult}%</p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 border shadow-sm">
-              <p className="text-sm text-gray-500">Last attempt</p>
-              <p className="text-3xl font-bold">{lastAttempt?.percentage}%</p>
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-14">
+            <QuizStat title="Questions" value={quiz.questions.length}/>
+            <QuizStat title="Estimated time" value={`~${estimatedTime} min`}/>
+            <QuizStat title="Attempts" value={results.length}/>
+            <QuizStat title="Best result" value={`${bestResult}%`}/>
           </div>
 
           {/* CHARTS */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-14">
-            <div className="lg:col-span-2">
-              <ProgressChart
-                data={results.map((r) => ({
-                  attempt: r.attempt,
-                  percentage: r.percentage,
-                }))}
-              />
-            </div>
-
-            {lastAttempt && <RadialScore percentage={lastAttempt.percentage} />}
-          </div>
+          <QuizCharts
+            lastAttempt={lastAttempt}
+            results={results}
+          />
         </>
       )}
 
       {/* SAMPLE QUESTIONS */}
-      <div className="bg-white rounded-3xl p-8 border shadow-sm mb-14">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Sample questions
-        </h2>
-
-        <ul className="space-y-4">
-          {quiz.questions.slice(0, 3).map((q, index) => (
-            <li
-              key={index}
-              className="p-4 rounded-xl bg-gray-50 border text-gray-700"
-            >
-              {index + 1}. {q.question}
-            </li>
-          ))}
-        </ul>
-
-        {quiz.questions.length > 3 && (
-          <p className="mt-4 text-sm text-gray-500">
-            + {quiz.questions.length - 3} more questions
-          </p>
-        )}
-      </div>
+      <QuizSampleQuestions quiz={quiz}/>
 
       {/* RULES */}
       <QuizRole/>
