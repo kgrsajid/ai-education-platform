@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { quizzes } from "../../data";
 import { QuizTop } from "../../../../features/quiz/top/top-part";
 import { useGetAllQuizQuery } from "../../../../features/query/quiz";
 import { QuizCard } from "../../../../features/quiz/card";
@@ -9,7 +8,7 @@ const QuizListPage = () => {
   const [pagination, setPagination] = useState({page: 0, limit: 10});
   const [filter, setFilter] = useState("All");
   const {data: quizData, isLoading} = useGetAllQuizQuery({...pagination, search});
-  const categories = ["All", ...new Set(quizzes.map((q) => q.category))];
+  const categories = [];
 
   const data = quizData?.data ?? [];
   return (
@@ -26,7 +25,7 @@ const QuizListPage = () => {
         categories={categories}
       />
       {/* 🧩 Quiz Cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {data.map((quiz) => (
           <QuizCard quiz={quiz}/>
         ))}

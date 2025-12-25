@@ -1,6 +1,5 @@
 import { Routes, Route, Outlet } from "react-router-dom";
 import QuizListPage from "../../widgets/Tests/components/quiz-list";
-import QuizInfoPage from "../../widgets/Tests/components/quiz-info";
 import QuizPage from "../../widgets/Tests/components/quiz";
 import QuizletFlashcardsApp from "../../widgets/Cards";
 import { LoginPage } from "../../pages/login/sugn_in";
@@ -9,6 +8,7 @@ import { RegisterPage } from "../../pages/login/sing_up";
 import { PrivateRoute } from "../../providers/private-router";
 import { ChatPage } from "../../pages/chat";
 import { ROUTES } from "./config";
+import { QuizDetailsPage } from "../../widgets/Tests/components/quiz-info";
 
 
 const AppRoutes = () => {
@@ -20,7 +20,7 @@ const AppRoutes = () => {
           <Route element={<PrivateRoute><Outlet /></PrivateRoute>}>
             <Route path={ROUTES.ChatDetail} element={<ChatPage/>} />
             <Route path={ROUTES.Quiz} element={<QuizListPage />} />
-            <Route path={ROUTES.QuizDetail} element={<QuizInfoPage />} />
+            <Route path={ROUTES.QuizDetail} element={<QuizDetailsPage />} />
             <Route path={ROUTES.QuizDetailStart} element={<QuizPage />} />
             <Route path={ROUTES.Games} element={<div>Игра</div>} />
             <Route path={ROUTES.Cards} element={<QuizletFlashcardsApp />} />

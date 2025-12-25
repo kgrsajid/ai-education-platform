@@ -12,7 +12,7 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: loginApi.login,
     onSuccess: (data) => {
-      navigate(ROUTES.Chat);
+      navigate(`${ROUTES.Chat}/new`);
       message.success("Вы упешно вошли в свой аккаунт");
       auth.login(data.token);
     },

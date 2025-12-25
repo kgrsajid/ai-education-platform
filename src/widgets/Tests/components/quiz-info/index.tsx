@@ -1,87 +1,151 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { quizzes } from "../../data";
-import { ArrowLeft, PlayCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  PlayCircle,
+  HelpCircle,
+} from "lucide-react";
+import {
+  useGetAllUserQuizResult,
+  useGetQuizByIdQuery,
+} from "../../../../features/query/quiz";
+import { RadialScore } from "../../../../features/quiz/chart/radial-score";
+import { ProgressChart } from "../../../../features/quiz/chart/progress-chart";
+import { QuizInfoTop } from "../../quiz-info-top/index.tsx";
+import { QuizRole } from "../../quiz-rule/index.tsx";
 
-const QuizInfoPage = () => {
+export const QuizDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const quiz = quizzes.find((q) => q.id === Number(id));
 
-  if (!quiz)
+  const { data: quiz, isLoading } = useGetQuizByIdQuery(id);
+  const { data: quizResultData, isLoading: quizResultLoading } =
+    useGetAllUserQuizResult({ testId: quiz?.id });
+
+  const results = quizResultData || [];
+
+  const bestResult =
+    results.length > 0 ? Math.max(...results.map((r) => r.percentage)) : 0;
+
+  const lastAttempt = results.length > 0 ? results[results.length - 1] : null;
+
+  if (isLoading) {
     return (
-      <div className="flex h-screen justify-center items-center text-lg text-gray-600">
+      <div className="flex h-screen items-center justify-center text-gray-500">
+        Loading quiz details...
+      </div>
+    );
+  }
+
+  if (!quiz) {
+    return (
+      <div className="flex h-screen items-center justify-center text-gray-600">
         Quiz not found 😢
       </div>
     );
+  }
+
+  const estimatedTime = Math.ceil(quiz.questions.length * 1.5);
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-10">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="max-w-lg w-full bg-white/80 backdrop-blur shadow-xl rounded-3xl p-8 border border-gray-100 text-center"
+    <div className="px-8 py-12">
+      {/* Back */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-10"
       >
-        {/* Заголовок */}
-        <h1 className="text-3xl font-extrabold text-gray-800 mb-4">
-          {quiz.title}
-        </h1>
+        <ArrowLeft size={18} />
+      </button>
 
-        {/* Категория и количество */}
-        <div className="flex justify-center items-center gap-3 mb-6">
-          <span className="text-sm font-semibold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">
-            {quiz.category}
-          </span>
-          <span className="text-sm text-gray-500">
-            {quiz.questions.length} questions
-          </span>
+      {/* HERO */}
+      <QuizInfoTop quiz={quiz}/>
+
+      {/* STATS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white rounded-2xl p-6 border shadow-sm">
+          <p className="text-sm text-gray-500 mb-1">Questions</p>
+          <p className="text-3xl font-bold text-gray-800">
+            {quiz.questions.length}
+          </p>
         </div>
-
-        {/* Описание */}
-        <p className="text-gray-700 leading-relaxed mb-8">
-          {quiz.description}
-        </p>
-
-        {/* Кнопки */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => navigate(`/quiz/${quiz.id}/start`)}
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-md hover:shadow-xl transition"
-          >
-            <PlayCircle size={20} />
-            Start Quiz
-          </motion.button>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => navigate(-1)}
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition"
-          >
-            <ArrowLeft size={18} />
-            Back
-          </motion.button>
+        <div className="bg-white rounded-2xl p-6 border shadow-sm">
+          <p className="text-sm text-gray-500 mb-1">Estimated time</p>
+          <p className="text-2xl font-semibold">~{estimatedTime} min</p>
         </div>
-      </motion.div>
+      </div>
+      
+      {!quizResultLoading && results.length > 0 && (
+        <>
+          {/* SUMMARY */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-14">
+            <div className="bg-white rounded-2xl p-6 border shadow-sm">
+              <p className="text-sm text-gray-500">Attempts</p>
+              <p className="text-3xl font-bold">{results.length}</p>
+            </div>
 
-      {/* Дополнительные визуальные детали */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.08, scale: 1 }}
-        transition={{ delay: 0.2, duration: 1 }}
-        className="absolute top-20 right-20 w-64 h-64 bg-blue-300 rounded-full blur-3xl"
-      ></motion.div>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.1, scale: 1 }}
-        transition={{ delay: 0.4, duration: 1 }}
-        className="absolute bottom-20 left-16 w-64 h-64 bg-indigo-300 rounded-full blur-3xl"
-      ></motion.div>
+            <div className="bg-white rounded-2xl p-6 border shadow-sm">
+              <p className="text-sm text-gray-500">Best result</p>
+              <p className="text-3xl font-bold text-green-600">{bestResult}%</p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 border shadow-sm">
+              <p className="text-sm text-gray-500">Last attempt</p>
+              <p className="text-3xl font-bold">{lastAttempt?.percentage}%</p>
+            </div>
+          </div>
+
+          {/* CHARTS */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-14">
+            <div className="lg:col-span-2">
+              <ProgressChart
+                data={results.map((r) => ({
+                  attempt: r.attempt,
+                  percentage: r.percentage,
+                }))}
+              />
+            </div>
+
+            {lastAttempt && <RadialScore percentage={lastAttempt.percentage} />}
+          </div>
+        </>
+      )}
+
+      {/* SAMPLE QUESTIONS */}
+      <div className="bg-white rounded-3xl p-8 border shadow-sm mb-14">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Sample questions
+        </h2>
+
+        <ul className="space-y-4">
+          {quiz.questions.slice(0, 3).map((q, index) => (
+            <li
+              key={index}
+              className="p-4 rounded-xl bg-gray-50 border text-gray-700"
+            >
+              {index + 1}. {q.question}
+            </li>
+          ))}
+        </ul>
+
+        {quiz.questions.length > 3 && (
+          <p className="mt-4 text-sm text-gray-500">
+            + {quiz.questions.length - 3} more questions
+          </p>
+        )}
+      </div>
+
+      {/* RULES */}
+      <QuizRole/>
+      {/* FINAL CTA */}
+      <div className="flex justify-center mt-20">
+        <button
+          onClick={() => navigate(`/quiz/${quiz.id}/start`)}
+          className="flex items-center gap-4 bg-indigo-600 hover:bg-indigo-700 text-white px-14 py-5 rounded-3xl text-xl font-bold transition shadow-xl"
+        >
+          <PlayCircle size={26} />
+          Start Quiz Now
+        </button>
+      </div>
     </div>
   );
 };
 
-export default QuizInfoPage;

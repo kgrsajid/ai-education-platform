@@ -1,181 +1,212 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { quizzes } from "../../data";
+import { useAddQuizResultMutation, useGetQuizByIdQuery } from "../../../../features/query/quiz";
+import { Button } from "antd";
+import type { TQuizResultAddPayload } from "../../../../features/api/quiz/type";
+
+type AnswerResult = {
+  question: string;
+  selected: string;
+  correct: string;
+  isCorrect: boolean;
+};
 
 const QuizPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const quiz = quizzes.find((q) => q.id === Number(id));
-
+  const date = new Date();
+  const { data: quiz, isLoading } = useGetQuizByIdQuery(id);
+  const addResultMutation = useAddQuizResultMutation();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [answers, setAnswers] = useState([]);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [answers, setAnswers] = useState<AnswerResult[]>([]);
   const [isFinished, setIsFinished] = useState(false);
 
-  if (!quiz)
+  if (isLoading) {
+    return (
+      <div className="flex h-screen justify-center items-center text-gray-600">
+        Loading quiz...
+      </div>
+    );
+  }
+
+  if (!quiz) {
     return (
       <div className="flex h-screen justify-center items-center text-lg text-gray-600">
         Quiz not found 😢
       </div>
     );
+  }
 
-  const questionsData = quiz.questions;
-  const currentQuestion = questionsData[currentIndex];
-  const isMultiple = currentQuestion.type === "multiple";
+  const questions = quiz.questions;
+  const currentQuestion = questions[currentIndex];
 
-  const handleSelect = (option: string) => {
-    if (isMultiple) {
-      // multiple choice — toggle selection
-      setSelectedOptions((prev) =>
-        prev.includes(option)
-          ? prev.filter((o) => o !== option)
-          : [...prev, option]
-      );
-    } else {
-      // single choice — allow only one
-      setSelectedOptions([option]);
-    }
+  const handleSelect = (optionText: string) => {
+    setSelectedOption(optionText);
   };
 
+  const addResult = () => {
+    const finishTime =  new Date();
+    const diffMs = finishTime.getTime() - date.getTime();
+    const durationSec = Math.floor(diffMs / 1000);
+    const payload:TQuizResultAddPayload = {
+      startedAt: date.toISOString(),
+      finishedAt: finishTime.toISOString(),
+      score: score,
+      maxScore: questions.length,
+      testId: quiz.id,
+      durationSec: durationSec
+    }
+    addResultMutation.mutate(payload)
+  }
+
   const handleNext = () => {
-    const correctAnswers = Array.isArray(currentQuestion.correct)
-      ? currentQuestion.correct
-      : [currentQuestion.correct];
+    if (!selectedOption) return;
 
-    const isCorrect =
-      selectedOptions.length === correctAnswers.length &&
-      selectedOptions.every((opt) => correctAnswers.includes(opt));
+    const correctOption = currentQuestion.options.find(
+      (o) => o.isCorrect
+    );
 
-    setAnswers([
-      ...answers,
+    const isCorrect = selectedOption === correctOption?.optionText;
+
+    setAnswers((prev) => [
+      ...prev,
       {
-        question: currentQuestion.title,
-        selected: selectedOptions,
-        correctAnswers,
+        question: currentQuestion.question,
+        selected: selectedOption,
+        correct: correctOption?.optionText || "",
         isCorrect,
       },
     ]);
 
-    setSelectedOptions([]);
+    setSelectedOption(null);
 
-    if (currentIndex + 1 < questionsData.length) setCurrentIndex(currentIndex + 1);
-    else setIsFinished(true);
+    if (currentIndex + 1 < questions.length) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      addResult();
+      setIsFinished(true);
+    }
   };
 
   const score = answers.filter((a) => a.isCorrect).length;
-  const percentage = Math.round((score / questionsData.length) * 100);
+  const percentage = Math.round((score / questions.length) * 100);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-indigo-100">
       {!isFinished ? (
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="max-w-2xl w-full bg-white shadow-lg rounded-2xl p-8 space-y-6"
+          className="max-w-2xl w-full bg-white rounded-3xl shadow-lg p-8"
         >
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-800">{quiz.title}</h2>
-            <span className="text-gray-600 text-sm font-medium">
-              Question {currentIndex + 1} / {questionsData.length}
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">
+              {quiz.title}
+            </h2>
+            <span className="text-sm text-gray-500">
+              {currentIndex + 1} / {questions.length}
             </span>
           </div>
 
-          <p className="text-lg text-gray-700 font-medium">
-            {currentQuestion.title}
-          </p>
-          <p className="text-sm text-gray-500 italic">
-            {isMultiple ? "Choose all that apply" : "Choose one answer"}
+          {/* Question */}
+          <p className="text-lg font-medium text-gray-800 mb-6">
+            {currentQuestion.question}
           </p>
 
-          <div className="grid gap-3 mt-4">
-            {currentQuestion.options.map((option, i) => {
-              const isSelected = selectedOptions.includes(option);
+          {/* Options */}
+          <div className="space-y-3 mb-8">
+            {currentQuestion.options.map((option) => {
+              const isSelected = selectedOption === option.optionText;
+
               return (
                 <motion.button
-                  key={i}
-                  onClick={() => handleSelect(option)}
+                  key={option.id}
+                  onClick={() => handleSelect(option.optionText)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`p-3 rounded-xl border-2 transition font-medium ${
+                  className={`w-full text-left px-5 py-3 rounded-xl border transition font-medium ${
                     isSelected
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-white text-gray-800 border-gray-300 hover:border-blue-400"
+                      ? "bg-indigo-600 text-white border-indigo-600"
+                      : "bg-white text-gray-800 border-gray-300 hover:border-indigo-400"
                   }`}
                 >
-                  {option}
+                  {option.optionText}
                 </motion.button>
               );
             })}
           </div>
 
-          <div className="flex justify-between items-center mt-6">
-            <div className="w-full bg-gray-200 h-2 rounded-full mr-4">
+          {/* Footer */}
+          <div className="flex items-center justify-between">
+            {/* Progress */}
+            <div className="w-full h-2 bg-gray-200 rounded-full mr-4">
               <div
-                className="bg-blue-500 h-full rounded-full transition-all duration-500"
+                className="h-full bg-indigo-600 rounded-full transition-all"
                 style={{
-                  width: `${((currentIndex + 1) / questionsData.length) * 100}%`,
+                  width: `${((currentIndex + 1) / questions.length) * 100}%`,
                 }}
-              ></div>
+              />
             </div>
 
-            <button
+            <Button
+              type="primary"
               onClick={handleNext}
-              disabled={selectedOptions.length === 0}
-              className={`px-6 py-2 rounded-lg text-white font-semibold transition ${
-                selectedOptions.length === 0
+              disabled={!selectedOption}
+              className={`px-6 py-2 rounded-xl font-semibold text-white transition ${
+                !selectedOption
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
+                  : "bg-indigo-600 hover:bg-indigo-700"
               }`}
             >
-              {currentIndex + 1 === questionsData.length ? "Finish" : "Next"}
-            </button>
+              {currentIndex + 1 === questions.length ? "Finish" : "Next"}
+            </Button>
           </div>
         </motion.div>
       ) : (
+        /* RESULT */
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="max-w-xl w-full bg-white shadow-xl rounded-2xl p-8 text-center space-y-6"
+          className="max-w-xl w-full bg-white rounded-3xl shadow-xl p-8 text-center"
         >
-          <h2 className="text-3xl font-bold text-gray-800">🎉 Quiz Finished!</h2>
-          <p className="text-gray-700 text-lg">
-            Your Score:{" "}
-            <span className="font-semibold">{score}</span> / {questionsData.length}
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            🎉 Quiz Finished
+          </h2>
+
+          <p className="text-lg text-gray-700 mb-2">
+            Score: <b>{score}</b> / {questions.length}
           </p>
-          <p className="text-blue-600 font-bold text-2xl">{percentage}%</p>
 
-          <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${percentage}%` }}
-              transition={{ duration: 0.8 }}
-              className="h-full bg-blue-600"
-            ></motion.div>
-          </div>
+          <p className="text-2xl font-bold text-indigo-600 mb-6">
+            {percentage}%
+          </p>
 
-          <div className="space-y-4 mt-6">
+          {/* Result list */}
+          <div className="space-y-4 text-left mb-6">
             {answers.map((a, i) => (
               <div
                 key={i}
-                className={`p-4 rounded-xl text-left ${
+                className={`p-4 rounded-xl border ${
                   a.isCorrect
-                    ? "bg-green-50 border border-green-400"
-                    : "bg-red-50 border border-red-400"
+                    ? "bg-green-50 border-green-400"
+                    : "bg-red-50 border-red-400"
                 }`}
               >
                 <p className="font-medium text-gray-800">
                   {i + 1}. {a.question}
                 </p>
-                <p className="text-sm text-gray-700 mt-1">
-                  Your answers: {a.selected.join(", ")}
+                <p className="text-sm text-gray-700">
+                  Your answer: {a.selected}
                 </p>
                 {!a.isCorrect && (
-                  <p className="text-sm text-green-700 mt-1">
-                    Correct answers: {a.correctAnswers.join(", ")}
+                  <p className="text-sm text-green-700">
+                    Correct answer: {a.correct}
                   </p>
                 )}
               </div>
@@ -184,9 +215,9 @@ const QuizPage = () => {
 
           <button
             onClick={() => navigate(-1)}
-            className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-semibold"
+            className="px-8 py-3 bg-indigo-600 text-white rounded-2xl font-semibold hover:bg-indigo-700 transition"
           >
-            Back to Quizzes
+            Back to quizzes
           </button>
         </motion.div>
       )}
