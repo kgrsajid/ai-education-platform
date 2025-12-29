@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Hash } from "lucide-react";
+import { BookOpen, Eye, Hash } from "lucide-react";
 import type { DifficultyEnumType, TQuiz } from "../../api/quiz/type";
 
 type Props = {
@@ -112,28 +112,33 @@ export const QuizCard: FC<Props> = ({ quiz }) => {
 
       {/* Footer */}
       <div className="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
-        <span
-          className="
-            inline-flex items-center gap-1
-            text-xs font-medium
-            text-blue-600 bg-blue-50
-            px-3 py-1 rounded-full
-          "
-        >
-          <BookOpen size={14} />
-          {quiz.numberOfQuestion} questions
-        </span>
+        <div className="flex gap-2">
+          <span
+            className="
+              inline-flex items-center gap-1
+              text-xs font-medium
+              text-blue-600 bg-blue-50
+              px-3 py-1 rounded-full
+            "
+          >
+            <BookOpen size={14} />
+            {quiz.numberOfQuestion} questions
+          </span>
 
-        <span
-          className={`
-            text-xs font-semibold uppercase tracking-wide
-            px-3 py-1 rounded-full
-            ${difficulty.className}
-          `}
-        >
-          {difficulty.label}
-        </span>
-
+          <span
+            className={`
+              text-xs font-semibold uppercase tracking-wide
+              px-3 py-1 rounded-full
+              ${difficulty.className}
+            `}
+          >
+            {difficulty.label}
+          </span>
+        </div>
+        <div className="text-gray-400 text-[14px] flex items-center gap-2">
+          {quiz.viewCount} 
+          <Eye size={15}/>
+        </div>
       </div>
     </div>
   );

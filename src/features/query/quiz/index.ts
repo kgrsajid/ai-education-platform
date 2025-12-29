@@ -26,6 +26,16 @@ export const useGetAllUserQuizResult = (payload: TQuizResultGetPayload) => {
   })
 }
 
+export const useAddQuizViewMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: quizApi.addView,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["quiz"]});
+    }
+  })
+}
+
 export const useAddQuizResultMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({

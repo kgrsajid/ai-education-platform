@@ -12,6 +12,7 @@ export type QuizPayload = PaginationType<{categories?: number[], search?: string
 export type TQuiz = {
   id: string;
   title: string;
+  viewCount: number;
   description: string;
   categories: QuizCategory[];
   difficulty: DifficultyEnumType;

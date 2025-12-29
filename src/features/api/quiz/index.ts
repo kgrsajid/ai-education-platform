@@ -24,6 +24,10 @@ export const quizApi = {
     });
     return data.data;
   },
+  addView: async(testId: string) => {
+    const {data} = await baseApi.post(`test/view`, {testId});
+    return data.data;
+  },
   create: async(payload: QuizCreatePayload): Promise<TQuizDetails> => {
     const {data} = await baseApi.post<{data: TQuizDetails}>("/test", payload);
     return data.data;

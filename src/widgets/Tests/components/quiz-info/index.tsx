@@ -4,6 +4,7 @@ import {
   PlayCircle,
 } from "lucide-react";
 import {
+  useAddQuizViewMutation,
   useGetAllUserQuizResult,
   useGetQuizByIdQuery,
 } from "../../../../features/query/quiz";
@@ -20,9 +21,14 @@ export const QuizDetailsPage = () => {
   const { data: quiz, isLoading } = useGetQuizByIdQuery(id);
   const { data: quizResultData, isLoading: quizResultLoading } =
     useGetAllUserQuizResult({ testId: quiz?.id });
-
+  const viewMutation = useAddQuizViewMutation();
   const results = quizResultData || [];
 
+  const handleStart = () => {
+    if(!quiz) return;
+    viewMutation.mutate(quiz.id);
+    navigate(`/quiz/${quiz.id}/start`);
+  }
   const bestResult =
     results.length > 0 ? Math.max(...results.map((r) => r.percentage)) : 0;
 
@@ -57,7 +63,7 @@ export const QuizDetailsPage = () => {
       </button>
 
       {/* HERO */}
-      <QuizInfoTop quiz={quiz}/>
+      <QuizInfoTop handleStart={handleStart} quiz={quiz}/>
 
       {/* STATS */}
       {
@@ -96,7 +102,7 @@ export const QuizDetailsPage = () => {
       {/* FINAL CTA */}
       <div className="flex justify-center mt-20">
         <button
-          onClick={() => navigate(`/quiz/${quiz.id}/start`)}
+          onClick={handleStart}
           className="flex items-center gap-4 bg-indigo-600 hover:bg-indigo-700 text-white px-14 py-5 rounded-3xl text-xl font-bold transition shadow-xl"
         >
           <PlayCircle size={26} />

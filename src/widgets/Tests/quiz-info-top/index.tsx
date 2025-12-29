@@ -1,15 +1,14 @@
 import { Clock, Layers, PlayCircle, Tag } from "lucide-react"
-import { useNavigate } from "react-router-dom"
 import type { TQuizDetails } from "../../../features/api/quiz/type"
 import type { FC } from "react"
 import { difficultyColors } from "../const"
 import { motion } from "framer-motion";
 
 type Props = {
-  quiz: TQuizDetails
+  quiz: TQuizDetails,
+  handleStart: () => void;
 }
-export const QuizInfoTop:FC<Props> = ({quiz}) => {
-  const navigate = useNavigate();
+export const QuizInfoTop:FC<Props> = ({quiz, handleStart}) => {
   const estimatedTime = Math.ceil(quiz.questions.length * 1.5);
   
   return (
@@ -72,7 +71,7 @@ export const QuizInfoTop:FC<Props> = ({quiz}) => {
 
         {/* CTA */}
         <button
-          onClick={() => navigate(`/quiz/${quiz.id}/start`)}
+          onClick={handleStart}
           className="flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-2xl text-lg font-semibold transition shadow-md"
         >
           <PlayCircle size={22} />
