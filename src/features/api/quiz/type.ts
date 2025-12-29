@@ -8,7 +8,7 @@ export const Difficulty = {
 } as const
 export type DifficultyEnumType =  typeof Difficulty[keyof typeof Difficulty];
 
-export type QuizPayload = PaginationType<{categories?: number[], search?: string, difficulty?: string, minQ?: number, maxQ?: number}>;
+export type QuizPayload = PaginationType<{categories?: number[], search?: string, difficulty?: string, minQ?: number, maxQ?: number, isPrivate?: boolean}>;
 export type TQuiz = {
   id: string;
   title: string;

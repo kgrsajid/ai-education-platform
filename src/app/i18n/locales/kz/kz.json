@@ -60,6 +60,9 @@
             "label": "Тегтер",
             "placeholder": "Тегті енгізіңіз"
           },
+          "isPrivate": {
+            "label": "Жеке викторина"
+          },
           "question": {
             "message": "Сұрақ мәтінін енгізіңіз",
             "placeholder": "Сұрақ мәтіні"

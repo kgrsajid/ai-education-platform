@@ -9,6 +9,7 @@ import {
   Checkbox,
   InputNumber,
   Divider,
+  Switch,
 } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { useCreateQuizMutation, useGetQuizCategoryQuery } from "../../../features/query/quiz";
@@ -121,6 +122,15 @@ export const QuizCreatePage = () => {
             <Radio.Button value="medium">{t("quiz.words.diff.medium")}</Radio.Button>
             <Radio.Button value="hard">{t("quiz.words.diff.hard")}</Radio.Button>
           </Radio.Group>
+        </Form.Item>
+
+
+        <Form.Item
+          name="isPrivate"
+          label={t("quiz.phrases.createPage.form.isPrivate.label")}
+          valuePropName="checked"
+        >
+          <Switch />
         </Form.Item>
 
         <Divider />

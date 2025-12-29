@@ -59,6 +59,9 @@
             "label": "Tags",
             "placeholder": "Enter the tag"
           },
+          "isPrivate": {
+            "label": "Private quiz"
+          },
           "question": {
             "message": "Enter the question text",
             "placeholder": "Question text"

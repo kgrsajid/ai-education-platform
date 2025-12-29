@@ -1,5 +1,4 @@
 import { Routes, Route, Outlet } from "react-router-dom";
-import QuizListPage from "../../widgets/Tests/components/quiz-list";
 import QuizPage from "../../widgets/Tests/components/quiz";
 import QuizletFlashcardsApp from "../../widgets/Cards";
 import { LoginPage } from "../../pages/login/sugn_in";
@@ -10,6 +9,7 @@ import { ChatPage } from "../../pages/chat";
 import { ROUTES } from "./config";
 import { QuizDetailsPage } from "../../widgets/Tests/components/quiz-info";
 import { QuizCreatePage } from "../../pages/quiz/create";
+import QuizListPage from "../../pages/quiz/list";
 
 
 const AppRoutes = () => {
