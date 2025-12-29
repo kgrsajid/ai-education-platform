@@ -31,7 +31,7 @@ const QuizListPage = () => {
   return (
     <div className="p-8 min-h-screen">
       <h1 className="text-4xl font-extrabold mb-10 text-gray-800 tracking-tight">
-        Explore Our <span className="text-blue-600">Quizzes</span>
+        <span className="text-blue-600">Quizzes</span>
       </h1>
 
       {/* 🔍 Search & Filter */}

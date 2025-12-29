@@ -10,6 +10,66 @@
       "new-chat": "New chat"
     }
   },
+  "quiz": {
+    "words": {
+      "create": "Create",
+      "diff": {
+          "easy": "Easy",
+          "medium": "Medium",
+          "hard": "Hard"
+      },
+      "difficulty": "Difficulty",
+      "filter": {
+        "filters": "Filters",
+        "categories": "Categories",
+        "apply": "Apply"
+      },
+      "createPage": {
+        "question": "Question",
+        "variant": "Variant",
+        "second": "sec"
+      }
+    },
+    "phrases": {
+      "search": "Search for a quiz...",
+      "filter": {
+        "categoryPlaceholder": "Choose categories",
+        "numberOfQuestions": "The number of questions:"
+      },
+      "createPage": {
+        "title": "Creating a quiz",
+        "form": {
+          "addAnother": "Add another question",
+          "createText": "Create a quiz",
+          "name": {
+            "label": "Name of the quiz",
+            "placeholder": "Enter the name of the quiz",
+            "message": "Enter the name of the quiz"
+          },
+          "description": {
+            "label": "Description of the quiz",
+            "placeholder": "Enter a description of the quiz"
+          },
+          "categories": {
+            "label": "Categories",
+            "placeholder": "Select categories",
+            "message": "Select categories"
+          },
+          "tags": {
+            "label": "Tags",
+            "placeholder": "Enter the tag"
+          },
+          "question": {
+            "message": "Enter the question text",
+            "placeholder": "Question text"
+          },
+          "variant": {
+            "message": "Enter the option"
+          }
+        }
+      }
+    }
+  },
   "sidebar": {
     "labels": {
       "chat": "Chat",

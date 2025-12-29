@@ -11,6 +11,66 @@
       "new-chat": "Жаңа чат"
     }
   },
+  "quiz": {
+    "words": {
+      "create": "Жасау",
+      "diff": {
+        "easy": "Оңай",
+        "medium": "Орташа",
+        "hard": "Қиын"
+      },
+      "difficulty": "Қиындық",
+      "filter": {
+        "filters": "Фильтрлер",
+        "categories": "Санаттар",
+        "apply": "Қолдану"
+      },
+      "createPage": {
+        "question": "Сұрақ",
+        "variant": "Нұсқа",
+        "second": "сек"
+      }
+    },
+    "phrases": {
+      "search": "Викторинаны іздеу...",
+      "filter": {
+        "categoryPlaceholder": "Санатты таңдаңыз",
+        "numberOfQuestions": "Сұрақтар саны:"
+      },
+      "createPage": {
+        "title": "Викторина жасау",
+        "form": {
+          "addAnother": "Тағы бір сұрақ қосу",
+          "createText": "Викторина жасау",
+          "name": {
+            "label": "Викторинаның атауы",
+            "placeholder": "Викторинаның атауын енгізіңіз",
+            "message": "Викторинаның атауын енгізіңіз"
+          },
+          "description": {
+            "label": "Сипаттама",
+            "placeholder": "Сипаттаманы енгізіңіз"
+          },
+          "categories": {
+            "label": "Санаттар",
+            "placeholder": "Санатты таңдаңыз",
+            "message": "Санатты таңдаңыз"
+          },
+          "tags": {
+            "label": "Тегтер",
+            "placeholder": "Тегті енгізіңіз"
+          },
+          "question": {
+            "message": "Сұрақ мәтінін енгізіңіз",
+            "placeholder": "Сұрақ мәтіні"
+          },
+          "variant": {
+            "message": "Нұсқаны енгізіңіз"
+          }
+        }
+      }
+    }
+  },
   "sidebar": {
     "labels": {
       "chat": "Чат",

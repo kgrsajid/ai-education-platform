@@ -3,6 +3,7 @@ import { FilterIcon, Plus, Search } from "lucide-react";
 import { useState, type FC } from "react";
 import { FilterModal } from "../filterModal";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   search: string;
@@ -10,6 +11,7 @@ type Props = {
 }
 export const QuizTop:FC<Props> = ({search, handleSearch}) => {
   const [isFiltrerOpen, setIsFilterOpen] = useState(false);
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const handleClose = () => {
     setIsFilterOpen(false);
@@ -20,7 +22,7 @@ export const QuizTop:FC<Props> = ({search, handleSearch}) => {
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-center mb-10">
       <Input
-        placeholder="Search for a quiz..."
+        placeholder={t("quiz.phrases.search")}
         prefix={<Search size={18} className="text-gray-400" />}
         value={search}
         onChange={(e) => handleSearch(e.target.value)}
@@ -36,7 +38,7 @@ export const QuizTop:FC<Props> = ({search, handleSearch}) => {
         type="primary"
         className="flex justify-center items-center"
       >
-        Создать 
+        {t("quiz.words.create")} 
         <Plus size={15}/>
       </Button>
       <FilterModal open={isFiltrerOpen} handleClose={handleClose}/>

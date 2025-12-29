@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useGetQuizCategoryQuery } from "../../query/quiz";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   open: boolean;
@@ -20,6 +21,7 @@ const defaultRange = {
 }
 
 export const FilterModal: FC<Props> = ({ open, handleClose }) => {
+  const {t} = useTranslation();
   const {data: categoryData, isLoading: isCategoryLoading} = useGetQuizCategoryQuery();
   const categoryOptions = useMemo(() => {
     return categoryData?.map(val => ({label: val.name, value: val.id}));
@@ -75,17 +77,17 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
     <Modal
       open={open}
       onCancel={handleClose}
-      title="Фильтры"
+      title={t("quiz.words.filter.filters")}
       footer={null}
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         {/* Категории */}
         <div>
-          <div style={{ marginBottom: 8 }}>Категории</div>
+          <div style={{ marginBottom: 8 }}>{t("quiz.words.filter.categories")}</div>
           <Select
             mode="multiple"
             allowClear
-            placeholder="Выберите категории"
+            placeholder={t("quiz.phrases.filter.categoryPlaceholder")}
             options={categoryOptions}
             loading={isCategoryLoading}
             value={filters.categories}
@@ -98,7 +100,7 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
 
         {/* Сложность */}
         <div>
-          <div style={{ marginBottom: 8 }}>Сложность</div>
+          <div style={{ marginBottom: 8 }}>{t("quiz.words.difficulty")}</div>
           <Radio.Group
             value={filters.difficulty}
             onChange={(e) =>
@@ -108,16 +110,16 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
               }))
             }
           >
-            <Radio value="easy">Easy</Radio>
-            <Radio value="medium">Medium</Radio>
-            <Radio value="hard">Hard</Radio>
+            <Radio value="easy">{t("quiz.words.diff.easy")}</Radio>
+            <Radio value="medium">{t("quiz.words.diff.medium")}</Radio>
+            <Radio value="hard">{t("quiz.words.diff.hard")}</Radio>
           </Radio.Group>
         </div>
 
         {/* Диапазон вопросов */}
         <div>
           <div style={{ marginBottom: 8 }}>
-            Количество вопросов: {filters.questionsRange[0]}–{filters.questionsRange[1]}
+            {t("quiz.phrases.filter.numberOfQuestions")} {filters.questionsRange[0]}–{filters.questionsRange[1]}
           </div>
           <Slider
             range
@@ -137,7 +139,7 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
         <Space style={{ justifyContent: "flex-end", width: "100%" }}>
           <Button onClick={handleReset}>Сбросить</Button>
           <Button type="primary" onClick={handleApply}>
-            Применить
+            {t("quiz.words.filter.apply")}
           </Button>
         </Space>
       </Space>

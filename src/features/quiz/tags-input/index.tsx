@@ -1,5 +1,6 @@
 import { Input, Tag, Space } from "antd";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 type TagsInputProps = {
   value?: string[];
@@ -9,7 +10,7 @@ type TagsInputProps = {
 export const TagsInput = ({ value = [], onChange }: TagsInputProps) => {
   const [tags, setTags] = useState<string[]>(value);
   const [inputValue, setInputValue] = useState("");
-
+  const {t} = useTranslation();
   useEffect(() => {
     setTags(value);
   }, [value]);
@@ -40,7 +41,7 @@ export const TagsInput = ({ value = [], onChange }: TagsInputProps) => {
         ))}
       </Space>
       <Input
-        placeholder="Введите тег и нажмите Enter"
+        placeholder={t("quiz.phrases.createPage.form.tags.placeholder")}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onPressEnter={addTag}

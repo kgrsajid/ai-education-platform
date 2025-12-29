@@ -16,11 +16,13 @@ import { useMemo } from "react";
 import { TagsInput } from "../../../features/quiz/tags-input";
 import type { QuizCreatePayload } from "../../../features/api/quiz/type";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 export const QuizCreatePage = () => {
   const [form] = Form.useForm<QuizCreatePayload>();
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const {data: categoryData, isLoading: isCategoryLoading} = useGetQuizCategoryQuery();
   const createMutation = useCreateQuizMutation();
   const categoryOptions = useMemo(() => {
@@ -35,7 +37,7 @@ export const QuizCreatePage = () => {
   return (
     <div className="p-10 w-[60%] mx-auto">
       <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
-        Создание викторины
+        {t("quiz.phrases.createPage.title")}
       </h1>
 
       <Form<QuizCreatePayload>
@@ -61,23 +63,23 @@ export const QuizCreatePage = () => {
         {/* Заголовок викторины */}
         <Form.Item
           name="title"
-          label="Название викторины"
-          rules={[{ required: true, message: "Введите название викторины" }]}
+          label={t("quiz.phrases.createPage.form.name.label")}
+          rules={[{ required: true, message: t("quiz.phrases.createPage.form.name.message") }]}
         >
           <Input
             size="large"
-            placeholder="Введите название викторины"
+            placeholder={t("quiz.phrases.createPage.form.name.placeholder")}
             className="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
         </Form.Item>
         {/* Описание викторины */}
         <Form.Item
           name="description"
-          label="Описание викторины"
+          label={t("quiz.phrases.createPage.form.description.label")}
         >
           <Input.TextArea
             rows={4}
-            placeholder="Введите описание викторины"
+            placeholder={t("quiz.phrases.createPage.form.description.placeholder")}
             size="large"
             className="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
@@ -85,10 +87,14 @@ export const QuizCreatePage = () => {
 
 
         {/* Категории */}
-        <Form.Item name="categories" label="Категории">
+        <Form.Item 
+          name="categories" 
+          label={t("quiz.phrases.createPage.form.categories.label")}
+          rules={[{required: true, message: t("quiz.phrases.createPage.form.categories.message")}]}
+        >
           <Select
             mode="multiple"
-            placeholder="Выберите категории"
+            placeholder={t("quiz.phrases.createPage.form.categories.placeholder")}
             size="large"
             className="rounded-lg"
             options={categoryOptions}
@@ -99,7 +105,7 @@ export const QuizCreatePage = () => {
 
         {/* Теги */}
         <Form.Item
-          label="Теги"
+          label={t("quiz.phrases.createPage.form.tags.label")}
           name="tags"
           valuePropName="value"
         >
@@ -109,11 +115,11 @@ export const QuizCreatePage = () => {
 
 
         {/* Сложность */}
-        <Form.Item name="difficulty" label="Сложность">
+        <Form.Item name="difficulty" label={t("quiz.words.difficulty")}>
           <Radio.Group optionType="button" buttonStyle="solid">
-            <Radio.Button value="easy">Easy</Radio.Button>
-            <Radio.Button value="medium">Medium</Radio.Button>
-            <Radio.Button value="hard">Hard</Radio.Button>
+            <Radio.Button value="easy">{t("quiz.words.diff.easy")}</Radio.Button>
+            <Radio.Button value="medium">{t("quiz.words.diff.medium")}</Radio.Button>
+            <Radio.Button value="hard">{t("quiz.words.diff.hard")}</Radio.Button>
           </Radio.Group>
         </Form.Item>
 
@@ -126,7 +132,7 @@ export const QuizCreatePage = () => {
               {fields.map(({ key, name, ...restField }, idx) => (
                 <Card
                   key={key}
-                  title={`Вопрос ${idx + 1}`}
+                  title={`${t("quiz.words.createPage.question")} ${idx + 1}`}
                   bordered
                   hoverable
                   className="mb-6 rounded-xl shadow-lg transition-transform transform hover:scale-[1.01]"
@@ -145,11 +151,11 @@ export const QuizCreatePage = () => {
                       <Form.Item
                         {...restField}
                         name={[name, "title"]}
-                        rules={[{ required: true, message: "Введите текст вопроса" }]}
+                        rules={[{ required: true, message: t("quiz.phrases.createPage.form.question.message") }]}
                         className="flex-1"
                       >
                         <Input
-                          placeholder="Текст вопроса"
+                          placeholder={t("quiz.phrases.createPage.form.question.placeholder")}
                           size="large"
                           className="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         />
@@ -158,7 +164,7 @@ export const QuizCreatePage = () => {
                         <InputNumber
                           min={10}
                           className="rounded-lg w-28"
-                          addonAfter="сек"
+                          addonAfter={t("quiz.words.createPage.second")}
                         />
                       </Form.Item>
                     </div>
@@ -183,10 +189,10 @@ export const QuizCreatePage = () => {
                               <Form.Item
                                 {...oRest}
                                 name={[oName, "optionText"]}
-                                rules={[{ required: true, message: "Введите вариант" }]}
+                                rules={[{ required: true, message: t("quiz.phrases.createPage.form.variant.message") }]}
                                 className="flex-1 mb-0"
                               >
-                                <Input placeholder={`Вариант ${oIdx + 1}`} className="rounded-lg" />
+                                <Input placeholder={`${t("quiz.words.createPage.variant")} ${oIdx + 1}`} className="rounded-lg" />
                               </Form.Item>
                             </div>
                           ))}
@@ -215,7 +221,7 @@ export const QuizCreatePage = () => {
                 icon={<PlusOutlined />}
                 className="rounded-lg border-dashed border-gray-300 mt-2"
               >
-                Добавить ещё вопрос
+                {t("quiz.phrases.createPage.form.addAnother")}
               </Button>
             </>
           )}
@@ -231,7 +237,7 @@ export const QuizCreatePage = () => {
             size="large"
             className="rounded-lg bg-blue-600 hover:bg-blue-700"
           >
-            Создать викторину
+            {t("quiz.phrases.createPage.form.createText")}
           </Button>
         </Form.Item>
       </Form>

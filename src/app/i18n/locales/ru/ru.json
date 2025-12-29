@@ -11,6 +11,66 @@
       "new-chat": "Новый чат"
     }
   },
+  "quiz": {
+    "words": {
+      "create": "Создать",
+      "diff": {
+        "easy": "Легко",
+        "medium": "Средне",
+        "hard": "Трудно"
+      },
+      "difficulty": "Сложность",
+      "filter": {
+        "filters": "Фильтры",
+        "categories": "Категории",
+        "apply": "Применить"
+      },
+      "createPage": {
+        "question": "Вопрос",
+        "variant": "Вариант",
+        "second": "сек"
+      }
+    },
+    "phrases": {
+      "search": "Поиск викторины...",
+      "filter": {
+        "categoryPlaceholder": "Выберите категории",
+        "numberOfQuestions": "Количество вопросов:"
+      },
+      "createPage": {
+        "title": "Создание викторины",
+        "form": {
+          "addAnother": "Добавить ещё один вопрос",
+          "createText": "Создать викторину",
+          "name": {
+            "label": "Название викторины",
+            "placeholder": "Введите название викторины",
+            "message": "Введите название викторины"
+          },
+          "description": {
+            "label": "Описание",
+            "placeholder": "Введите описание викторины"
+          },
+          "categories": {
+            "label": "Категории",
+            "placeholder": "Выберите категории",
+            "message": "Выберите категории"
+          },
+          "tags": {
+            "label": "Теги",
+            "placeholder": "Введите тег"
+          },
+          "question": {
+            "message": "Введите текст вопроса",
+            "placeholder": "Текст вопроса"
+          },
+          "variant": {
+            "message": "Введите вариант"
+          }
+        }
+      }
+    }
+  },
   "sidebar": {
     "labels": {
       "chat": "Чат",
