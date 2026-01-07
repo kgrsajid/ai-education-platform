@@ -41,10 +41,11 @@ export type TQuizDetails = {
   description: string;
   categories: QuizCategory[];
   difficulty: DifficultyEnumType;
+  authorId: string;
+  isPrivate: boolean;
   tags?: string[];
   questions: TQuestion[];
 }
-
 export type QuizDetailResponse = {
   test: TQuizDetails
 }
@@ -75,8 +76,14 @@ export type TQuizResultGetPayload = {
 export type QuizCreatePayload = {
   title: string;
   description?: string;
+  isPrivate: boolean;
   tags?: string[];
   categories: number[];
   difficulty: string;
   questions: TQuestion[];
+}
+
+export type QuizUpdatePayload = {
+  quiz: QuizCreatePayload,
+  quizId: string;
 }

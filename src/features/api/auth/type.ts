@@ -6,12 +6,17 @@ export interface LoginPayload {
 
 export interface LoginResponse {
   token: string;
-  user: {
-    id: number;
-    email: string;
-  };
+  user: UserResponse
 }
 
+
+export type UserResponse = {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  id: string;
+}
 
 export type RegisterPayload = {
   name: string;

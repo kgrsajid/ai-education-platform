@@ -36,6 +36,10 @@
         "categoryPlaceholder": "Choose categories",
         "numberOfQuestions": "The number of questions:"
       },
+      "editPage": {
+        "title": "Editing a quiz",
+        "editText": "Edit a quiz"
+      },
       "createPage": {
         "title": "Creating a quiz",
         "form": {

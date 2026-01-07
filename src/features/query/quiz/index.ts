@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import type { QuizPayload, TQuizResultAddPayload, TQuizResultGetPayload } from "../../api/quiz/type";
 import { quizApi } from "../../api/quiz";
 import { QuizCategoryApi } from "../../api/quiz-category";
+import { message } from "antd";
 
 export const useGetAllQuizQuery = (params: QuizPayload) => {
   return useQuery({
@@ -52,6 +53,17 @@ export const useCreateQuizMutation = () => {
     mutationFn: quizApi.create,
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ['quiz'] })
+    }
+  });
+}
+
+export const useUpdateQuizMutation = () => {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: quizApi.update,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['quiz'] })
+      message.success("Тест успешно обновлено")
     }
   });
 }

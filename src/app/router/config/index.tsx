@@ -5,6 +5,7 @@ export const ROUTES = {
   Quiz: "/quiz",
   QuizDetail: "/quiz/:id",
   QuizDetailStart: "/quiz/:id/start",
+  QuizEdit: "/quiz/:id/edit",
   QuizCreate: "/quiz/create",
   Login: "/login",
   Register: "/register",

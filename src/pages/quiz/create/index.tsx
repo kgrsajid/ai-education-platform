@@ -12,115 +12,149 @@ import {
   Switch,
 } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { useCreateQuizMutation, useGetQuizCategoryQuery } from "../../../features/query/quiz";
-import { useMemo } from "react";
+import {
+  useCreateQuizMutation,
+  useGetQuizByIdQuery,
+  useGetQuizCategoryQuery,
+  useUpdateQuizMutation,
+} from "../../../features/query/quiz";
+import { useEffect, useMemo, type FC } from "react";
 import { TagsInput } from "../../../features/quiz/tags-input";
-import type { QuizCreatePayload } from "../../../features/api/quiz/type";
-import { useNavigate } from "react-router-dom";
+import type { QuizCreatePayload, TOption, TQuestion } from "../../../features/api/quiz/type";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import type { QuizCategory } from "../../../features/api/quiz-category/type";
 
+type Props = {
+  isEdit?: boolean;
+};
 
-export const QuizCreatePage = () => {
+export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
   const [form] = Form.useForm<QuizCreatePayload>();
   const navigate = useNavigate();
-  const {t} = useTranslation();
-  const {data: categoryData, isLoading: isCategoryLoading} = useGetQuizCategoryQuery();
-  const createMutation = useCreateQuizMutation();
-  const categoryOptions = useMemo(() => {
-    return categoryData?.map(val => ({label: val.name, value: val.id}));
-  },[categoryData]);
+  const { state } = useLocation();
+  const { t } = useTranslation();
+
+  const quizId = state?.quizId;
+
+  const { data: categoryData, isLoading: isCategoryLoading } =
+    useGetQuizCategoryQuery();
+
+  const { data: quiz, isLoading: isQuizLoading } = useGetQuizByIdQuery(
+    quizId,
+  );
+
+  const createQuizMutation = useCreateQuizMutation();
+  const updateQuizMutation = useUpdateQuizMutation();
+
+  const categoryOptions = useMemo(
+    () => categoryData?.map((c) => ({ label: c.name, value: c.id })),
+    [categoryData]
+  );
+
+  useEffect(() => {
+    if (!quiz || !isEdit) return;
+    form.setFieldsValue({
+      title: quiz.title,
+      description: quiz.description,
+      difficulty: quiz.difficulty,
+      isPrivate: quiz.isPrivate,
+      tags: quiz.tags ?? [],
+      categories: quiz.categories?.map((c: QuizCategory) => c.id) ?? [],
+      questions: quiz.questions.map((q: TQuestion) => ({
+        question: q.question,
+        options: q.options.map((o: TOption) => ({
+          optionText: o.optionText,
+          isCorrect: o.isCorrect,
+        })),
+      })),
+    });
+  }, [quiz, isEdit, form]);
+
   const onFinish = (values: QuizCreatePayload) => {
-    console.log("Форма отправлена:", values);
-    createMutation.mutate(values);
-    navigate("/quiz");
+    if (isEdit) {
+      updateQuizMutation.mutate({ quizId: quizId, quiz: values });
+    } else {
+      createQuizMutation.mutate(values);
+    }
+    if(isEdit) {
+      navigate(`/quiz/${quizId}`);
+    }else {
+      navigate('/quiz');
+    }
+
   };
+
+  if (isEdit && isQuizLoading) {
+    return <div className="p-10 text-center">Loading...</div>;
+  }
 
   return (
     <div className="p-10 w-[60%] mx-auto">
       <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
-        {t("quiz.phrases.createPage.title")}
+        {isEdit
+          ? t("quiz.phrases.editPage.title")
+          : t("quiz.phrases.createPage.title")}
       </h1>
 
       <Form<QuizCreatePayload>
         form={form}
         layout="vertical"
         onFinish={onFinish}
-        initialValues={{
-          difficulty: "easy",
-          questions: [
-            {
-              title: "",
-              options: [
-                { text: "", isCorrect: false },
-                { text: "", isCorrect: false },
-                { text: "", isCorrect: false },
-                { text: "", isCorrect: false },
-              ],
-              time: 90,
-            },
-          ],
-        }}
+        initialValues={
+          isEdit
+            ? undefined
+            : {
+                difficulty: "easy",
+                isPrivate: false,
+                questions: [
+                  {
+                    title: "",
+                    time: 90,
+                    options: Array(4).fill({
+                      optionText: "",
+                      isCorrect: false,
+                    }),
+                  },
+                ],
+              }
+        }
       >
-        {/* Заголовок викторины */}
+        {/* Название */}
         <Form.Item
           name="title"
           label={t("quiz.phrases.createPage.form.name.label")}
-          rules={[{ required: true, message: t("quiz.phrases.createPage.form.name.message") }]}
+          rules={[{ required: true }]}
         >
-          <Input
-            size="large"
-            placeholder={t("quiz.phrases.createPage.form.name.placeholder")}
-            className="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
-        </Form.Item>
-        {/* Описание викторины */}
-        <Form.Item
-          name="description"
-          label={t("quiz.phrases.createPage.form.description.label")}
-        >
-          <Input.TextArea
-            rows={4}
-            placeholder={t("quiz.phrases.createPage.form.description.placeholder")}
-            size="large"
-            className="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
+          <Input size="large" />
         </Form.Item>
 
+        {/* Описание */}
+        <Form.Item name="description">
+          <Input.TextArea rows={4} size="large" />
+        </Form.Item>
 
         {/* Категории */}
-        <Form.Item 
-          name="categories" 
-          label={t("quiz.phrases.createPage.form.categories.label")}
-          rules={[{required: true, message: t("quiz.phrases.createPage.form.categories.message")}]}
-        >
+        <Form.Item name="categories" rules={[{ required: true }]}>
           <Select
             mode="multiple"
-            placeholder={t("quiz.phrases.createPage.form.categories.placeholder")}
             size="large"
-            className="rounded-lg"
             options={categoryOptions}
             loading={isCategoryLoading}
-          >
-          </Select>
+          />
         </Form.Item>
 
         {/* Теги */}
-        <Form.Item
-          label={t("quiz.phrases.createPage.form.tags.label")}
-          name="tags"
-          valuePropName="value"
-        >
+        <Form.Item name="tags" valuePropName="value">
           <TagsInput />
         </Form.Item>
 
-
-
         {/* Сложность */}
-        <Form.Item name="difficulty" label={t("quiz.words.difficulty")}>
-          <Radio.Group optionType="button" buttonStyle="solid">
-            <Radio.Button value="easy">{t("quiz.words.diff.easy")}</Radio.Button>
-            <Radio.Button value="medium">{t("quiz.words.diff.medium")}</Radio.Button>
-            <Radio.Button value="hard">{t("quiz.words.diff.hard")}</Radio.Button>
+        <Form.Item name="difficulty">
+          <Radio.Group optionType="button">
+            <Radio.Button value="easy">Easy</Radio.Button>
+            <Radio.Button value="medium">Medium</Radio.Button>
+            <Radio.Button value="hard">Hard</Radio.Button>
           </Radio.Group>
         </Form.Item>
 
@@ -160,7 +194,7 @@ export const QuizCreatePage = () => {
                     <div className="flex gap-4">
                       <Form.Item
                         {...restField}
-                        name={[name, "title"]}
+                        name={[name, "question"]}
                         rules={[{ required: true, message: t("quiz.phrases.createPage.form.question.message") }]}
                         className="flex-1"
                       >
@@ -214,24 +248,21 @@ export const QuizCreatePage = () => {
               ))}
 
               <Button
-                type="dashed"
                 onClick={() =>
                   add({
                     title: "",
-                    options: [
-                      { text: "", isCorrect: false },
-                      { text: "", isCorrect: false },
-                      { text: "", isCorrect: false },
-                      { text: "", isCorrect: false },
-                    ],
                     time: 90,
+                    options: Array(4).fill({
+                      optionText: "",
+                      isCorrect: false,
+                    }),
                   })
                 }
                 block
                 icon={<PlusOutlined />}
                 className="rounded-lg border-dashed border-gray-300 mt-2"
               >
-                {t("quiz.phrases.createPage.form.addAnother")}
+                Add question
               </Button>
             </>
           )}
@@ -247,7 +278,7 @@ export const QuizCreatePage = () => {
             size="large"
             className="rounded-lg bg-blue-600 hover:bg-blue-700"
           >
-            {t("quiz.phrases.createPage.form.createText")}
+            { !isEdit ? t("quiz.phrases.createPage.form.createText") :  t("quiz.phrases.editPage.editText") }
           </Button>
         </Form.Item>
       </Form>

@@ -3,6 +3,8 @@ import type { TQuizDetails } from "../../../features/api/quiz/type"
 import type { FC } from "react"
 import { difficultyColors } from "../const"
 import { motion } from "framer-motion";
+import { useAuth } from "../../../providers/context/const/const";
+import { EditButton } from "../../../features/quiz/edit/edit-button";
 
 type Props = {
   quiz: TQuizDetails,
@@ -10,16 +12,23 @@ type Props = {
 }
 export const QuizInfoTop:FC<Props> = ({quiz, handleStart}) => {
   const estimatedTime = Math.ceil(quiz.questions.length * 1.5);
-  
+  const {checkById} = useAuth();
   return (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-3xl shadow-lg border border-gray-100 p-10 mb-14"
       >
-        <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
-          {quiz.title}
-        </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
+            {quiz.title}
+          </h1>
+          {
+            checkById(quiz.authorId) && (
+              <EditButton quizId={quiz.id}/>
+            )
+          }
+        </div>
 
         <p className="text-gray-600 text-lg mb-6 max-w-3xl">
           {quiz.description}

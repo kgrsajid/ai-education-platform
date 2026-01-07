@@ -24,6 +24,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.QuizDetail} element={<QuizDetailsPage />} />
             <Route path={ROUTES.QuizDetailStart} element={<QuizPage />} />
             <Route path={ROUTES.QuizCreate} element={<QuizCreatePage/>} />
+            <Route path={ROUTES.QuizEdit} element={<QuizCreatePage isEdit={true}/>} />
             <Route path={ROUTES.Games} element={<div>Игра</div>} />
             <Route path={ROUTES.Cards} element={<QuizletFlashcardsApp />} />
           </Route>
