@@ -99,6 +99,11 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
 
       <Form<QuizCreatePayload>
         form={form}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}
         layout="vertical"
         onFinish={onFinish}
         initialValues={

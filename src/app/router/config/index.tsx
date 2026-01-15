@@ -10,5 +10,8 @@ export const ROUTES = {
   Login: "/login",
   Register: "/register",
   Games: "/games",
-  Cards: "/cards"
+  Cards: "/cards",
+  CardsCreate: "/cards/create",
+  CardDetail: "/cards/:id",
+  CardEdit: "/cards/:id/edit",
 }

@@ -29,3 +29,15 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+.perspective {
+  perspective: 1200px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-x-180 {
+  transform: rotateX(180deg);
+}
