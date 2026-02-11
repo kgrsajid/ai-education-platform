@@ -7,6 +7,12 @@ export type TSession = {
   title: string;
 }
 
+export const StatusEnum = {
+  Success :"success",
+  Error: "error",
+  Pending: "pending",
+} as const;
+export type StatusEnumType =  typeof StatusEnum[keyof typeof StatusEnum];
 
 export interface ChatResponse {
   chat: TChat[];
@@ -19,4 +25,5 @@ export type TChat = {
   id: string;
   content: string;
   role: string;
+  status: StatusEnumType;
 }

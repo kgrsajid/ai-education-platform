@@ -1,20 +1,32 @@
-import { useState, type FC } from "react";
-import { useCreateChatMutation } from "../../features/query/chat";
+import { useState, type Dispatch, type FC, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatInput } from "../../features/chat/chat-input";
 import { ROUTES } from "../../app/router/config";
 import { useTranslation } from "react-i18next";
+import { useCreateSessionMutation } from "../../features/query/session";
 
-export const ChatEmpty:FC = () => {
-  const [input, setInput] = useState("");
-  const createChat = useCreateChatMutation();
+type Props = {
+  setFirstMessage: Dispatch<SetStateAction<string>>;
+}
+export const ChatEmpty:FC<Props> = ({setFirstMessage}) => {
+  
+  const createChat = useCreateSessionMutation();
   const { t } = useTranslation();
+  const [input, setInput] = useState("");
   const navigate = useNavigate();
+  const [isActiveMode, setIsActiveMode] = useState(false);
+   const handleChangeActiveMode = () => {
+    setIsActiveMode(prev => !prev);
+  }
   const handleSend = async() => {
     const firstMessage = input;
+    setFirstMessage(firstMessage);
     setInput("");
-    const res = await createChat.mutateAsync({message: firstMessage});
-    navigate(`${ROUTES.Chat}/${res.session_id}`, { replace: true });
+    const res = await createChat.mutateAsync();
+    if (res) {
+      console.log(res);
+      navigate(`${ROUTES.Chat}/${res.id}`, { replace: true, state: {message: firstMessage} });
+    }
     return;
   }
   return(
@@ -24,6 +36,8 @@ export const ChatEmpty:FC = () => {
       </h1>
       <div className="w-full max-w-xl">
         <ChatInput
+          isActiveMode={isActiveMode}
+          handleChangeActiveMode={handleChangeActiveMode}
           input={input}
           setInput={setInput}
           handleSend={handleSend}

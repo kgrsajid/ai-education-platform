@@ -12,6 +12,17 @@ export const useAddChatMutation = () => {
   })
 }
 
+
+export const useRetryLastMessage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn:chatApi.retryLastMessage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['session'] });
+    }
+  })
+}
+
 export const useCreateChatMutation = () => {
   const queryClient = useQueryClient();
 
