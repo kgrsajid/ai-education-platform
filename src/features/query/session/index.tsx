@@ -1,27 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { sessionApi } from "../../api/session"
-
+import {
+  useCreateSessionApiMutation,
+  useGetAllSessionsApiQuery,
+  useGetSessionByIdApiQuery,
+} from '../../api/session';
 
 export const useCreateSessionMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: sessionApi.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["session"]});
-    }
-  })
-}
+  const [trigger, result] = useCreateSessionApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: trigger,
+    mutateAsync: trigger,
+  };
+};
+
 export const useGetSessionsQuery = () => {
-  return useQuery({
-    queryKey: ["session"],
-    queryFn: sessionApi.getAll,
-    
-  })
-}
+  return useGetAllSessionsApiQuery();
+};
+
 export const useGetSessionByIdQuery = (id?: string) => {
-  return useQuery({
-    queryKey: ["session", id],
-    queryFn: () => sessionApi.getSessionById(id as string),
-    enabled: Boolean(id) && id != "new", 
+  return useGetSessionByIdApiQuery(id as string, {
+    skip: !id || id === 'new',
   });
 };

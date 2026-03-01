@@ -1,30 +1,28 @@
-import axios, { AxiosError } from "axios";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const baseApi = axios.create({
-  baseURL: "http://localhost:8082/",
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
+const rawBaseQuery = fetchBaseQuery({
+  baseUrl: 'http://localhost:8082/',
+  credentials: 'include',
+  prepareHeaders: (headers) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
   },
 });
 
-baseApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+const baseQueryWithAuth: typeof rawBaseQuery = async (args, api, extraOptions) => {
+  const result = await rawBaseQuery(args, api, extraOptions);
+  if (result.error?.status === 401) {
+    localStorage.removeItem('token');
   }
+  return result;
+};
 
-  return config;
+export const baseApi = createApi({
+  reducerPath: 'api',
+  tagTypes: ['Quiz', 'Card', 'Session', 'QuizCategory'],
+  baseQuery: baseQueryWithAuth,
+  endpoints: () => ({}),
 });
-
-baseApi.interceptors.response.use(
-  (response) => response,
-  (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-    }
-
-    return Promise.reject(error);
-  }
-);

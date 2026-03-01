@@ -1,42 +1,42 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { CardPayload, CardsCreatePayload, CardUpdatePayload } from "../../api/card/type";
-import { cardApi } from "../../api/card";
-import { message } from "antd";
+import { message } from 'antd';
+import {
+  useGetAllCardsApiQuery,
+  useGetCardByIdApiQuery,
+  useCreateCardApiMutation,
+  useUpdateCardApiMutation,
+} from '../../api/card';
+import type { CardPayload, CardsCreatePayload, CardUpdatePayload } from '../../api/card/type';
 
 export const useGetAllCardQuery = (params: CardPayload) => {
-  return useQuery({
-    queryKey: ["card", params],
-    queryFn: () => cardApi.getAll(params),
-  });
+  return useGetAllCardsApiQuery(params);
 };
 
 export const useGetCardByIdQuery = (id?: string) => {
-  return useQuery({
-    queryKey: ["card", id],
-    queryFn: () => cardApi.getById(id),
-    enabled: !!id,
-  });
-}
+  return useGetCardByIdApiQuery(id as string, { skip: !id });
+};
 
 export const useCreateCardMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey: ["card"],
-    mutationFn: (payload: CardsCreatePayload) => cardApi.create(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["card"]});
-    }
-  })
-}
+  const [trigger, result] = useCreateCardApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (payload: CardsCreatePayload) => trigger(payload),
+    mutateAsync: (payload: CardsCreatePayload) => trigger(payload),
+  };
+};
 
 export const useUpdateCardMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey: ["card"],
-    mutationFn: (payload: CardUpdatePayload) => cardApi.update(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["card"]});
-      message.success("Карточка успешно обновлено")
-    }
-  })
-}
+  const [trigger, result] = useUpdateCardApiMutation();
+
+  const mutate = async (payload: CardUpdatePayload) => {
+    await trigger(payload).unwrap();
+    message.success('Карточка успешно обновлено');
+  };
+
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate,
+    mutateAsync: mutate,
+  };
+};

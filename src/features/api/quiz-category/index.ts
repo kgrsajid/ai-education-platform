@@ -1,9 +1,16 @@
-import { baseApi } from ".."
-import type { TQUizCategoryResponse } from "./type";
+import { baseApi } from '..';
+import type { QuizCategory, TQUizCategoryResponse } from './type';
 
-export const QuizCategoryApi = {
-  getAll: async(): Promise<TQUizCategoryResponse['categories']> => {
-    const {data} = await baseApi.get<TQUizCategoryResponse>("/test/category");
-    return data.categories;
-  }
-}
+const quizCategoryApiSlice = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getAllQuizCategories: builder.query<QuizCategory[], void>({
+      query: () => '/test/category',
+      transformResponse: (response: TQUizCategoryResponse) => response.categories,
+      providesTags: ['QuizCategory'],
+    }),
+  }),
+});
+
+export const {
+  useGetAllQuizCategoriesQuery: useGetAllQuizCategoriesApiQuery,
+} = quizCategoryApiSlice;

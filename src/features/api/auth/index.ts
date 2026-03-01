@@ -1,22 +1,26 @@
-import { baseApi } from "..";
-import type { LoginPayload, LoginResponse, RegisterPayload } from "./type";
+import { baseApi } from '..';
+import type { LoginPayload, LoginResponse, RegisterPayload } from './type';
 
-export const loginApi = {
-  login: async (payload: LoginPayload): Promise<LoginResponse> => {
-    const { data } = await baseApi.post<LoginResponse>(
-      '/auth/login',
-      payload
-    );
-    return data;
-  },
-};
+const authApiSlice = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    login: builder.mutation<LoginResponse, LoginPayload>({
+      query: (payload) => ({
+        url: '/auth/login',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
+    register: builder.mutation<RegisterPayload, RegisterPayload>({
+      query: (payload) => ({
+        url: '/auth/register',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
+  }),
+});
 
-export const registerApi = {
-  register: async (payload: RegisterPayload): Promise<RegisterPayload> => {
-    const {data} = await baseApi.post<RegisterPayload>(
-      '/auth/register',
-      payload
-    );
-    return data;
-  }
-}
+export const {
+  useLoginMutation: useLoginApiMutation,
+  useRegisterMutation: useRegisterApiMutation,
+} = authApiSlice;

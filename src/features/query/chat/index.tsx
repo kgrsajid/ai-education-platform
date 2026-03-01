@@ -1,35 +1,36 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { chatApi } from "../../api/chat"
+import {
+  useAddMessageApiMutation,
+  useRetryLastMessageApiMutation,
+  useAddMessageAndCreateSessionApiMutation,
+} from '../../api/chat';
+import type { ChatPayload, ChatCreatePayload } from '../../api/chat/type';
 
 export const useAddChatMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn:chatApi.addMessage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['session'] });
-    }
-  })
-}
-
+  const [trigger, result] = useAddMessageApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (payload: ChatPayload) => trigger(payload),
+    mutateAsync: (payload: ChatPayload) => trigger(payload),
+  };
+};
 
 export const useRetryLastMessage = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn:chatApi.retryLastMessage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['session'] });
-    }
-  })
-}
+  const [trigger, result] = useRetryLastMessageApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (sessionId: string) => trigger(sessionId),
+    mutateAsync: (sessionId: string) => trigger(sessionId),
+  };
+};
 
 export const useCreateChatMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn:chatApi.addMessageAndCreateSession,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['session'] });
-    }
-  })
-}
+  const [trigger, result] = useAddMessageAndCreateSessionApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (payload: ChatCreatePayload) => trigger(payload),
+    mutateAsync: (payload: ChatCreatePayload) => trigger(payload),
+  };
+};

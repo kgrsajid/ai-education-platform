@@ -1,23 +1,29 @@
-import { baseApi } from ".."
-import type { ChatResponse, SessionResponse, TSession } from "./type";
+import { baseApi } from '..';
+import type { ChatResponse, SessionResponse, TSession } from './type';
 
-export const sessionApi = {
-  create: async (): Promise<TSession> => {
-    const {data} = await baseApi.post<{data: TSession}>(
-      `/session`,
-    );
-    return data.data;
-  },
-  getAll: async (): Promise<SessionResponse> => {
-      const { data } = await baseApi.get<SessionResponse>(
-        '/session',
-      );
-      return data;
-    },
-  getSessionById: async (sessionId: string): Promise<ChatResponse> => {
-    const {data} = await baseApi.get<ChatResponse>(
-      `/session/${sessionId}`
-    );
-    return data;
-  }
-}
+const sessionApiSlice = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    createSession: builder.mutation<TSession, void>({
+      query: () => ({
+        url: '/session',
+        method: 'POST',
+      }),
+      transformResponse: (response: { data: TSession }) => response.data,
+      invalidatesTags: ['Session'],
+    }),
+    getAllSessions: builder.query<SessionResponse, void>({
+      query: () => '/session',
+      providesTags: ['Session'],
+    }),
+    getSessionById: builder.query<ChatResponse, string>({
+      query: (sessionId) => `/session/${sessionId}`,
+      providesTags: (_, __, id) => [{ type: 'Session' as const, id }],
+    }),
+  }),
+});
+
+export const {
+  useCreateSessionMutation: useCreateSessionApiMutation,
+  useGetAllSessionsQuery: useGetAllSessionsApiQuery,
+  useGetSessionByIdQuery: useGetSessionByIdApiQuery,
+} = sessionApiSlice;

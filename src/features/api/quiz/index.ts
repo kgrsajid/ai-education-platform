@@ -1,39 +1,80 @@
-import { baseApi } from ".."
-import { type QuizResponse, type QuizPayload, type TQuizDetails, type QuizDetailResponse, type TQuizResultResponse, type TQuizResultGetPayload, type TQuizResultAddPayload, type QuizCreatePayload, type QuizUpdatePayload } from "./type";
+import { baseApi } from '..';
+import type {
+  QuizPayload,
+  QuizResponse,
+  TQuizDetails,
+  QuizDetailResponse,
+  TQuizResultResponse,
+  TQuizResultGetPayload,
+  TQuizResultAddPayload,
+  QuizCreatePayload,
+  QuizUpdatePayload,
+} from './type';
 
-export const quizApi = {
-  getAll: async(params: QuizPayload): Promise<QuizResponse["data"]> => {
-    const {data} = await baseApi.get<QuizResponse>("/test", {
-      params: params
-    });
-    return data.data;
-  },
-  getById: async(id?: string): Promise<TQuizDetails> => {
-    const {data} = await baseApi.get<QuizDetailResponse>(`/test/${id}`);
-    return data.test;
-  },
-  addResult: async(payload: TQuizResultAddPayload): Promise<TQuizResultResponse> => {
-    const {data} = await baseApi.post<{data: TQuizResultResponse}>("/test/result", payload);
-    return data.data;
-  },
-  getAllUserResult: async(payload: TQuizResultGetPayload): Promise<TQuizResultResponse[]> => {
-    const {data} = await baseApi.get<{data: TQuizResultResponse[]}>(`/test/result/${payload.testId}`, {
-      params: {
-        duration: payload.duration
-      }
-    });
-    return data.data;
-  },
-  addView: async(testId: string) => {
-    const {data} = await baseApi.post(`test/view`, {testId});
-    return data.data;
-  },
-  create: async(payload: QuizCreatePayload): Promise<TQuizDetails> => {
-    const {data} = await baseApi.post<{data: TQuizDetails}>("/test", payload);
-    return data.data;
-  },
-  update: async(payload: QuizUpdatePayload): Promise<TQuizDetails> => {
-    const {data} = await baseApi.put<{data: TQuizDetails}>(`/test/${payload.quizId}`, payload.quiz);
-    return data.data;
-  }
-}
+const quizApiSlice = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getAllQuiz: builder.query<QuizResponse['data'], QuizPayload>({
+      query: (params) => ({ url: '/test', params }),
+      transformResponse: (response: QuizResponse) => response.data,
+      providesTags: ['Quiz'],
+    }),
+    getQuizById: builder.query<TQuizDetails, string>({
+      query: (id) => `/test/${id}`,
+      transformResponse: (response: QuizDetailResponse) => response.test,
+      providesTags: (_, __, id) => [{ type: 'Quiz' as const, id }],
+    }),
+    addQuizResult: builder.mutation<TQuizResultResponse, TQuizResultAddPayload>({
+      query: (payload) => ({
+        url: '/test/result',
+        method: 'POST',
+        body: payload,
+      }),
+      transformResponse: (response: { data: TQuizResultResponse }) => response.data,
+      invalidatesTags: ['Quiz'],
+    }),
+    getAllUserQuizResult: builder.query<TQuizResultResponse[], TQuizResultGetPayload>({
+      query: ({ testId, duration }) => ({
+        url: `/test/result/${testId}`,
+        params: { duration },
+      }),
+      transformResponse: (response: { data: TQuizResultResponse[] }) => response.data,
+      providesTags: ['Quiz'],
+    }),
+    addQuizView: builder.mutation<void, string>({
+      query: (testId) => ({
+        url: 'test/view',
+        method: 'POST',
+        body: { testId },
+      }),
+      invalidatesTags: ['Quiz'],
+    }),
+    createQuiz: builder.mutation<TQuizDetails, QuizCreatePayload>({
+      query: (payload) => ({
+        url: '/test',
+        method: 'POST',
+        body: payload,
+      }),
+      transformResponse: (response: { data: TQuizDetails }) => response.data,
+      invalidatesTags: ['Quiz'],
+    }),
+    updateQuiz: builder.mutation<TQuizDetails, QuizUpdatePayload>({
+      query: ({ quizId, quiz }) => ({
+        url: `/test/${quizId}`,
+        method: 'PUT',
+        body: quiz,
+      }),
+      transformResponse: (response: { data: TQuizDetails }) => response.data,
+      invalidatesTags: ['Quiz'],
+    }),
+  }),
+});
+
+export const {
+  useGetAllQuizQuery: useGetAllQuizApiQuery,
+  useGetQuizByIdQuery: useGetQuizByIdApiQuery,
+  useAddQuizResultMutation: useAddQuizResultApiMutation,
+  useGetAllUserQuizResultQuery: useGetAllUserQuizResultApiQuery,
+  useAddQuizViewMutation: useAddQuizViewApiMutation,
+  useCreateQuizMutation: useCreateQuizApiMutation,
+  useUpdateQuizMutation: useUpdateQuizApiMutation,
+} = quizApiSlice;

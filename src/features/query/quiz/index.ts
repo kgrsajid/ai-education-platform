@@ -1,77 +1,74 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import type { QuizPayload, TQuizResultAddPayload, TQuizResultGetPayload } from "../../api/quiz/type";
-import { quizApi } from "../../api/quiz";
-import { QuizCategoryApi } from "../../api/quiz-category";
-import { message } from "antd";
+import { message } from 'antd';
+import {
+  useGetAllQuizApiQuery,
+  useGetQuizByIdApiQuery,
+  useGetAllUserQuizResultApiQuery,
+  useAddQuizViewApiMutation,
+  useAddQuizResultApiMutation,
+  useCreateQuizApiMutation,
+  useUpdateQuizApiMutation,
+} from '../../api/quiz';
+import { useGetAllQuizCategoriesApiQuery } from '../../api/quiz-category';
+import type { QuizPayload, TQuizResultAddPayload, TQuizResultGetPayload, QuizCreatePayload, QuizUpdatePayload } from '../../api/quiz/type';
 
 export const useGetAllQuizQuery = (params: QuizPayload) => {
-  return useQuery({
-    queryKey: ["quiz", params],
-    queryFn: () => quizApi.getAll(params),
-  });
-}
+  return useGetAllQuizApiQuery(params);
+};
 
 export const useGetQuizByIdQuery = (id?: string) => {
-  return useQuery({
-    queryKey: ["quiz", id],
-    queryFn: () => quizApi.getById(id),
-    enabled: !!id,
-  })
-}
+  return useGetQuizByIdApiQuery(id as string, { skip: !id });
+};
 
 export const useGetAllUserQuizResult = (payload: TQuizResultGetPayload) => {
-  return useQuery({
-    queryKey: ["quiz", payload.testId, payload.duration],
-    queryFn: () => quizApi.getAllUserResult(payload),
-    enabled: !!payload.testId
-  })
-}
+  return useGetAllUserQuizResultApiQuery(payload, { skip: !payload.testId });
+};
 
 export const useAddQuizViewMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: quizApi.addView,
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["quiz"]});
-    }
-  })
-}
+  const [trigger, result] = useAddQuizViewApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: trigger,
+    mutateAsync: trigger,
+  };
+};
 
 export const useAddQuizResultMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (payload: TQuizResultAddPayload) => quizApi.addResult(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['quiz'] });
-    }
-  })
-}
+  const [trigger, result] = useAddQuizResultApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (payload: TQuizResultAddPayload) => trigger(payload),
+    mutateAsync: (payload: TQuizResultAddPayload) => trigger(payload),
+  };
+};
 
 export const useCreateQuizMutation = () => {
-  const client = useQueryClient();
-  return useMutation({
-    mutationFn: quizApi.create,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ['quiz'] })
-    }
-  });
-}
+  const [trigger, result] = useCreateQuizApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (payload: QuizCreatePayload) => trigger(payload),
+    mutateAsync: (payload: QuizCreatePayload) => trigger(payload),
+  };
+};
 
 export const useUpdateQuizMutation = () => {
-  const client = useQueryClient();
-  return useMutation({
-    mutationFn: quizApi.update,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ['quiz'] })
-      message.success("Тест успешно обновлено")
-    }
-  });
-}
+  const [trigger, result] = useUpdateQuizApiMutation();
 
+  const mutate = async (payload: QuizUpdatePayload) => {
+    await trigger(payload).unwrap();
+    message.success('Тест успешно обновлено');
+  };
+
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate,
+    mutateAsync: mutate,
+  };
+};
 
 export const useGetQuizCategoryQuery = () => {
-  return useQuery({
-    queryKey: ["quiz-category"],
-    queryFn: QuizCategoryApi.getAll,
-  })
-}
+  return useGetAllQuizCategoriesApiQuery();
+};
