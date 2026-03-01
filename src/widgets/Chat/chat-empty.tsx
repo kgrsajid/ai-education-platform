@@ -25,7 +25,7 @@ export const ChatEmpty:FC<Props> = ({setFirstMessage}) => {
     const res = await createChat.mutateAsync();
     if (res) {
       console.log(res);
-      navigate(`${ROUTES.Chat}/${res.id}`, { replace: true, state: {message: firstMessage} });
+      navigate(`${ROUTES.Chat}/${res.data?.id}`, { replace: true, state: {message: firstMessage} });
     }
     return;
   }
