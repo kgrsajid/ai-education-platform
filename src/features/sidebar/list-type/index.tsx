@@ -28,8 +28,8 @@ export const ListSection:FC<Props> = ({item, active, isOpen}) => {
             }
           }
         }}
-        className={`cursor-pointer mx-2 px-3 py-2 rounded-2xl hover:bg-[--primary-hover-color] flex justify-between items-center gap-3 ${
-          active ? "bg-[--primary-hover-color] font-semibold" : ""
+        className={`cursor-pointer mx-2 px-3 py-2 rounded-lg hover:bg-[--primary-color] flex justify-between items-center gap-3 ${
+          active ? "bg-[--primary-color] font-semibold" : ""
         }`}
       >
         <div className="flex gap-3 items-center">

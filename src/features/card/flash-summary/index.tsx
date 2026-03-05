@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { Button } from "antd";
 
 type Card = {
   id: string;
@@ -23,93 +24,60 @@ export function FlashcardsSummary({
   onBack,
 }: Props) {
   const total = knows.length + stillLearning.length;
-  const successRate = total === 0 ? 0 : knows.length / total;
   const percentage = total === 0 ? 0 : Math.round((knows.length / total) * 100);
+  const successRate = total === 0 ? 0 : knows.length / total;
+
   const RADIUS = 52;
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-  const strokeOffset =
-    CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE;
-  const progressStyles = () => {
-    if (percentage === 100) {
-      return {
-        stroke: "#10b981", // emerald-500
-        bg: "#d1fae5",
-        text: "text-emerald-600",
-      };
-    }
+  const strokeOffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE;
 
-    if (percentage >= 75) {
-      return {
-        stroke: "#6366f1", // indigo-500
-        bg: "#e0e7ff",
-        text: "text-indigo-600",
-      };
-    }
-
-    if (percentage >= 50) {
-      return {
-        stroke: "#f59e0b", // amber-500
-        bg: "#fef3c7",
-        text: "text-amber-600",
-      };
-    }
-
-    return {
-      stroke: "#f43f5e", // rose-500
-      bg: "#ffe4e6",
-      text: "text-rose-600",
-    };
+  const getStrokeColor = () => {
+    if (percentage === 100) return "#10b981";
+    if (percentage >= 75) return "#1152d4";
+    if (percentage >= 50) return "#f59e0b";
+    return "#f43f5e";
   };
 
-  const styles = progressStyles();
-
   const getMessage = () => {
-    if (successRate === 1)
-      return "🎉 Поздравляю! Ты справился на ура!";
-    if (successRate >= 0.75)
-      return "🔥 Отличный результат, совсем немного осталось!";
-    if (successRate >= 0.5)
-      return "👍 Хорошая работа, продолжаем!";
-    return "🚀 Неплохое начало, попробуй ещё раз!";
+    if (successRate === 1) return "Perfect score! All cards mastered!";
+    if (successRate >= 0.75) return "Great job! Almost there!";
+    if (successRate >= 0.5) return "Good progress, keep going!";
+    return "Nice start, let's review again!";
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="w-full mx-auto text-gray-900 bg-white p-10 shadow-md rounded-3xl"
+      className="bg-slate-900/50 border border-slate-800 rounded-xl p-8"
     >
-      <h2 className="text-3xl font-semibold mb-8">
-        {getMessage()}
-      </h2>
+      <h2 className="text-2xl font-bold text-slate-100 mb-6">{getMessage()}</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* Левая колонка */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Left — ring + stats */}
         <div className="space-y-6">
           <div className="flex items-center gap-6">
+            {/* SVG Ring */}
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 260 }}
-              className="relative w-28 h-28 flex items-center justify-center"
+              className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center"
             >
-              {/* Background circle */}
               <svg className="absolute w-full h-full -rotate-90">
                 <circle
                   cx="56"
                   cy="56"
                   r={RADIUS}
-                  stroke="#e5e7eb"
+                  stroke="rgb(30 41 59)"
                   strokeWidth="8"
                   fill="none"
                 />
-
-                {/* Progress circle */}
                 <motion.circle
                   cx="56"
                   cy="56"
                   r={RADIUS}
-                  stroke={styles.stroke}
+                  stroke={getStrokeColor()}
                   strokeWidth="8"
                   fill="none"
                   strokeLinecap="round"
@@ -119,55 +87,56 @@ export function FlashcardsSummary({
                   transition={{ duration: 0.8, ease: "easeOut" }}
                 />
               </svg>
-
-              {/* Center content */}
-              <div
-                className={`w-28 h-28 rounded-full flex items-center justify-center ${styles.text}`}
-              >
-                <span className="text-[26px] font-bold">
-                  {percentage === 100 ? <Check size={40}/> : `${percentage}%`}
-                </span>
-              </div>
+              <span className="text-slate-100 text-2xl font-bold z-10">
+                {percentage === 100 ? <Check size={36} className="text-emerald-400" /> : `${percentage}%`}
+              </span>
             </motion.div>
 
+            {/* Know / Still learning */}
             <div className="flex-1 space-y-3">
-              <div className="flex justify-between items-center px-4 py-2 rounded-full bg-emerald-50 text-emerald-700">
-                <span className="text-sm font-medium">Изучено</span>
-                <span className="font-semibold">{knows.length}</span>
+              <div className="flex justify-between items-center px-4 py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                <span className="text-emerald-400 text-sm font-medium">Mastered</span>
+                <span className="text-emerald-300 font-bold">{knows.length}</span>
               </div>
-
-              <div className="flex justify-between items-center px-4 py-2 rounded-full bg-gray-100 text-gray-700">
-                <span className="text-sm font-medium">Осталось</span>
-                <span className="font-semibold">{stillLearning.length}</span>
+              <div className="flex justify-between items-center px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700">
+                <span className="text-slate-400 text-sm font-medium">Still learning</span>
+                <span className="text-slate-300 font-bold">{stillLearning.length}</span>
               </div>
             </div>
           </div>
 
           <button
             onClick={onBack}
-            className="text-sm text-gray-500 hover:text-gray-700 transition"
+            className="text-sm text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1"
           >
-            ← Вернуться к последнему вопросу
+            <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_back</span>
+            Back to last card
           </button>
         </div>
 
-        {/* Правая колонка */}
-        <div className="flex flex-col gap-4 justify-center">
+        {/* Right — actions */}
+        <div className="flex flex-col gap-3 justify-center">
           {stillLearning.length > 0 && (
-            <button
+            <Button
+              type="primary"
+              size="large"
+              block
               onClick={onLearnUnknown}
-              className="w-full py-3 rounded-xl bg-[--primary-color] text-white font-medium hover:bg-[primary-hover-color] transition"
+              style={{ background: "#1152d4", borderColor: "#1152d4" }}
+              className="font-semibold"
             >
-              Изучить незнающие вопросы
-            </button>
+              Study remaining ({stillLearning.length})
+            </Button>
           )}
-
-          <button
+          <Button
+            size="large"
+            block
             onClick={onRestart}
-            className="w-full py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+            className="font-semibold border-slate-700 text-slate-300 hover:text-slate-100"
+            style={{ background: "transparent", borderColor: "rgb(51 65 85)" }}
           >
-            Restart
-          </button>
+            Restart all cards
+          </Button>
         </div>
       </div>
     </motion.div>

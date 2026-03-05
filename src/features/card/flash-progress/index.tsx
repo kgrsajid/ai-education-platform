@@ -4,13 +4,23 @@ import type { TCardResponse } from "../../api/card/type";
 type Props = {
   index: number;
   cardsOrder: TCardResponse[];
-}
-export const FlashProgress:FC<Props> = ({index, cardsOrder}) => {
-  return(
-    <div className="mt-3">
-      <div className="w-full h-[3px] rounded-full bg-gray-300">
-        <div style={{width: `${(index/(cardsOrder.length)) * 100}%`}} className="bg-[--primary-hover-color] h-full rounded-full transition-all duration-300"></div>
+};
+
+export const FlashProgress: FC<Props> = ({ index, cardsOrder }) => {
+  const progress = cardsOrder.length === 0 ? 0 : (index / cardsOrder.length) * 100;
+
+  return (
+    <div className="mt-4">
+      <div className="flex justify-between items-center mb-1.5">
+        <span className="text-xs text-slate-500 font-medium">Progress</span>
+        <span className="text-xs text-slate-500">{Math.round(progress)}%</span>
+      </div>
+      <div className="w-full h-1.5 rounded-full bg-slate-800">
+        <div
+          style={{ width: `${progress}%` }}
+          className="bg-[#1152d4] h-full rounded-full transition-all duration-300"
+        />
       </div>
     </div>
   );
-}
+};

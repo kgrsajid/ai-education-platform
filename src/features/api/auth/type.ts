@@ -24,3 +24,17 @@ export type RegisterPayload = {
   password: string;
   role: string;
 };
+
+export type ForgotPasswordPayload = {
+  email: string;
+};
+
+export type VerifyCodePayload = {
+  email: string;
+  code: string;
+};
+
+export type ResetPasswordPayload = {
+  token: string;
+  new_password: string;
+};

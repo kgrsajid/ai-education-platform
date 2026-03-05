@@ -15,7 +15,7 @@ export const MainLayout: FC = () => {
         {/* фиксируем header */}
         <Header isOpen={isOpen}/>
         {/* Контент, который занимает всю оставшуюся высоту */}
-        <main className="flex-1 flex flex-col mt-[72px] min-h-[calc(100vh-72px)] bg-[--primary-bg-color]">
+        <main className="flex-1 flex flex-col mt-[72px] min-h-[calc(100vh-72px)] bg-[#101622]">
            <Outlet />
         </main>
       </div>

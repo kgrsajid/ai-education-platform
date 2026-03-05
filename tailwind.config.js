@@ -6,6 +6,14 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: "#1152d4",
+        "bg-dark": "#101622",
+        "bg-light": "#f6f6f8",
+      },
+      fontFamily: {
+        display: ["Lexend", "sans-serif"],
+      },
       animation: {
         bounce200: 'bounce 1s infinite',
         bounce400: 'bounce 1s infinite',

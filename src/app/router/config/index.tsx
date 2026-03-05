@@ -9,6 +9,7 @@ export const ROUTES = {
   QuizCreate: "/quiz/create",
   Login: "/login",
   Register: "/register",
+  ForgotPassword: "/forgot-password",
   Games: "/games",
   Cards: "/cards",
   CardsCreate: "/cards/create",

@@ -1,32 +1,36 @@
-import {
-  Form,
-  Input,
-  Select,
-  Radio,
-  Button,
-  Card,
-  Space,
-  Checkbox,
-  InputNumber,
-  Divider,
-  Switch,
-} from "antd";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { Breadcrumb, Form } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   useCreateQuizMutation,
   useGetQuizByIdQuery,
   useGetQuizCategoryQuery,
   useUpdateQuizMutation,
-} from "../../../features/query/quiz";
-import { useEffect, useMemo, type FC } from "react";
-import { TagsInput } from "../../../features/quiz/tags-input";
-import type { QuizCreatePayload, TOption, TQuestion } from "../../../features/api/quiz/type";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import type { QuizCategory } from "../../../features/api/quiz-category/type";
+} from '../../../features/query/quiz';
+import { useEffect, useMemo, type FC } from 'react';
+import type {
+  QuizCreatePayload,
+  TOption,
+  TQuestion,
+} from '../../../features/api/quiz/type';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import type { QuizCategory } from '../../../features/api/quiz-category/type';
+import { CreateGeneralInfoSection } from '../../../features/quiz/create-general-info';
+import { CreateQuestionCard } from '../../../features/quiz/create-question-card';
 
 type Props = {
   isEdit?: boolean;
+};
+
+const DEFAULT_QUESTION = {
+  question: '',
+  time: 30,
+  options: [
+    { optionText: '', isCorrect: false },
+    { optionText: '', isCorrect: false },
+    { optionText: '', isCorrect: false },
+    { optionText: '', isCorrect: false },
+  ],
 };
 
 export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
@@ -40,16 +44,15 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
   const { data: categoryData, isLoading: isCategoryLoading } =
     useGetQuizCategoryQuery();
 
-  const { data: quiz, isLoading: isQuizLoading } = useGetQuizByIdQuery(
-    quizId,
-  );
+  const { data: quiz, isLoading: isQuizLoading } =
+    useGetQuizByIdQuery(quizId);
 
   const createQuizMutation = useCreateQuizMutation();
   const updateQuizMutation = useUpdateQuizMutation();
 
   const categoryOptions = useMemo(
     () => categoryData?.map((c) => ({ label: c.name, value: c.id })),
-    [categoryData]
+    [categoryData],
   );
 
   useEffect(() => {
@@ -73,219 +76,147 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
 
   const onFinish = (values: QuizCreatePayload) => {
     if (isEdit) {
-      updateQuizMutation.mutate({ quizId: quizId, quiz: values });
+      updateQuizMutation.mutate({ quizId, quiz: values });
+      navigate(`/quiz/${quizId}`);
     } else {
       createQuizMutation.mutate(values);
-    }
-    if(isEdit) {
-      navigate(`/quiz/${quizId}`);
-    }else {
       navigate('/quiz');
     }
-
   };
 
   if (isEdit && isQuizLoading) {
-    return <div className="p-10 text-center">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-slate-400">Loading...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="p-10 w-[60%] mx-auto">
-      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
-        {isEdit
-          ? t("quiz.phrases.editPage.title")
-          : t("quiz.phrases.createPage.title")}
-      </h1>
+    <div className="px-6 lg:px-40 py-8 max-w-[1280px] mx-auto w-full">
+      {/* Breadcrumb */}
+      <Breadcrumb
+        className="mb-4"
+        items={[
+          {
+            title: (
+              <Link to="/quiz" className="hover:text-primary transition-colors">
+                Tests
+              </Link>
+            ),
+          },
+          { title: isEdit ? 'Edit Test' : 'Create New' },
+        ]}
+      />
+
+      {/* Page header */}
+      <div className="flex flex-wrap justify-between items-center gap-6 mb-8">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-white text-4xl font-black leading-tight tracking-tight">
+            {isEdit ? t('quiz.phrases.editPage.title') : 'Create New Test'}
+          </h1>
+          <p className="text-slate-400 text-base font-normal">
+            Design your assessment with AI-enhanced tools.
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => form.submit()}
+            className="px-6 py-2.5 rounded-lg border border-slate-700 font-semibold text-slate-200 hover:bg-slate-800 transition-all"
+          >
+            Save Draft
+          </button>
+          <button
+            type="button"
+            onClick={() => form.submit()}
+            className="px-6 py-2.5 rounded-lg bg-primary text-white font-semibold hover:bg-blue-600 transition-all shadow-lg shadow-primary/20"
+          >
+            {isEdit ? t('quiz.phrases.editPage.editText') : 'Publish Test'}
+          </button>
+        </div>
+      </div>
 
       <Form<QuizCreatePayload>
         form={form}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-          }
-        }}
         layout="vertical"
         onFinish={onFinish}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') e.preventDefault();
+        }}
         initialValues={
           isEdit
             ? undefined
             : {
-                difficulty: "easy",
+                difficulty: 'easy',
                 isPrivate: false,
-                questions: [
-                  {
-                    title: "",
-                    time: 90,
-                    options: Array(4).fill({
-                      optionText: "",
-                      isCorrect: false,
-                    }),
-                  },
-                ],
+                questions: [DEFAULT_QUESTION],
               }
         }
       >
-        {/* Название */}
-        <Form.Item
-          name="title"
-          label={t("quiz.phrases.createPage.form.name.label")}
-          rules={[{ required: true }]}
-        >
-          <Input size="large" />
-        </Form.Item>
+        {/* General Information section */}
+        <CreateGeneralInfoSection
+          categoryOptions={categoryOptions}
+          isCategoryLoading={isCategoryLoading}
+        />
 
-        {/* Описание */}
-        <Form.Item name="description">
-          <Input.TextArea rows={4} size="large" />
-        </Form.Item>
-
-        {/* Категории */}
-        <Form.Item name="categories" rules={[{ required: true }]}>
-          <Select
-            mode="multiple"
-            size="large"
-            options={categoryOptions}
-            loading={isCategoryLoading}
-          />
-        </Form.Item>
-
-        {/* Теги */}
-        <Form.Item name="tags" valuePropName="value">
-          <TagsInput />
-        </Form.Item>
-
-        {/* Сложность */}
-        <Form.Item name="difficulty">
-          <Radio.Group optionType="button">
-            <Radio.Button value="easy">Easy</Radio.Button>
-            <Radio.Button value="medium">Medium</Radio.Button>
-            <Radio.Button value="hard">Hard</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-
-
-        <Form.Item
-          name="isPrivate"
-          label={t("quiz.phrases.createPage.form.isPrivate.label")}
-          valuePropName="checked"
-        >
-          <Switch />
-        </Form.Item>
-
-        <Divider />
-
-        {/* Вопросы */}
+        {/* Questions section */}
         <Form.List name="questions">
           {(fields, { add, remove }) => (
             <>
-              {fields.map(({ key, name, ...restField }, idx) => (
-                <Card
-                  key={key}
-                  title={`${t("quiz.words.createPage.question")} ${idx + 1}`}
-                  bordered
-                  hoverable
-                  className="mb-6 rounded-xl shadow-lg transition-transform transform hover:scale-[1.01]"
-                  extra={
-                    fields.length > 1 && (
-                      <MinusCircleOutlined
-                        onClick={() => remove(name)}
-                        className="text-red-500 text-lg"
-                      />
-                    )
-                  }
+              {/* Section header */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-primary">
+                    quiz
+                  </span>
+                  <h2 className="text-white text-xl font-bold leading-tight">
+                    Questions
+                  </h2>
+                  <span className="bg-primary/20 text-primary text-xs font-bold px-2.5 py-1 rounded-full">
+                    {fields.length}{' '}
+                    {fields.length === 1 ? 'Question' : 'Questions'} Added
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => add(DEFAULT_QUESTION)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-blue-600 transition-all"
                 >
-                  <Space direction="vertical" style={{ width: "100%" }} size="middle">
-                    {/* Заголовок и время */}
-                    <div className="flex gap-4">
-                      <Form.Item
-                        {...restField}
-                        name={[name, "question"]}
-                        rules={[{ required: true, message: t("quiz.phrases.createPage.form.question.message") }]}
-                        className="flex-1"
-                      >
-                        <Input
-                          placeholder={t("quiz.phrases.createPage.form.question.placeholder")}
-                          size="large"
-                          className="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        />
-                      </Form.Item>
-                      <Form.Item {...restField} name={[name, "time"]}>
-                        <InputNumber
-                          min={10}
-                          className="rounded-lg w-28"
-                          addonAfter={t("quiz.words.createPage.second")}
-                        />
-                      </Form.Item>
-                    </div>
+                  <PlusOutlined />
+                  Add Question
+                </button>
+              </div>
 
-                    {/* Варианты */}
-                    <Form.List name={[name, "options"]}>
-                      {(optionFields) => (
-                        <div className="grid grid-cols-2 gap-4">
-                          {optionFields.map(({ key: oKey, name: oName, ...oRest }, oIdx) => (
-                            <div
-                              key={oKey}
-                              className="flex items-center gap-3 bg-gray-50 p-2 rounded-lg shadow-sm"
-                            >
-                              <Form.Item
-                                {...oRest}
-                                name={[oName, "isCorrect"]}
-                                valuePropName="checked"
-                                className="mb-0"
-                              >
-                                <Checkbox />
-                              </Form.Item>
-                              <Form.Item
-                                {...oRest}
-                                name={[oName, "optionText"]}
-                                rules={[{ required: true, message: t("quiz.phrases.createPage.form.variant.message") }]}
-                                className="flex-1 mb-0"
-                              >
-                                <Input placeholder={`${t("quiz.words.createPage.variant")} ${oIdx + 1}`} className="rounded-lg" />
-                              </Form.Item>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </Form.List>
-                  </Space>
-                </Card>
-              ))}
+              {/* Question cards */}
+              <div className="space-y-6">
+                {fields.map(({ key, name }, idx) => (
+                  <CreateQuestionCard
+                    key={key}
+                    name={name}
+                    index={idx}
+                    onRemove={remove}
+                    canRemove={fields.length > 1}
+                  />
+                ))}
+              </div>
 
-              <Button
-                onClick={() =>
-                  add({
-                    title: "",
-                    time: 90,
-                    options: Array(4).fill({
-                      optionText: "",
-                      isCorrect: false,
-                    }),
-                  })
-                }
-                block
-                icon={<PlusOutlined />}
-                className="rounded-lg border-dashed border-gray-300 mt-2"
+              {/* Add another question dashed button */}
+              <button
+                type="button"
+                onClick={() => add(DEFAULT_QUESTION)}
+                className="w-full mt-6 py-12 border-2 border-dashed border-slate-800 rounded-xl flex flex-col items-center justify-center gap-3 text-slate-400 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all group"
               >
-                Add question
-              </Button>
+                <div className="size-12 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-primary/10 transition-all">
+                  <span className="material-symbols-outlined text-2xl">
+                    add_circle
+                  </span>
+                </div>
+                <span className="font-bold">Add another question</span>
+              </button>
             </>
           )}
         </Form.List>
-
-        <Divider />
-
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            block
-            size="large"
-            className="rounded-lg bg-blue-600 hover:bg-blue-700"
-          >
-            { !isEdit ? t("quiz.phrases.createPage.form.createText") :  t("quiz.phrases.editPage.editText") }
-          </Button>
-        </Form.Item>
       </Form>
     </div>
   );

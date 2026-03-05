@@ -1,5 +1,12 @@
 import { baseApi } from '..';
-import type { LoginPayload, LoginResponse, RegisterPayload } from './type';
+import type {
+  LoginPayload,
+  LoginResponse,
+  RegisterPayload,
+  ForgotPasswordPayload,
+  VerifyCodePayload,
+  ResetPasswordPayload,
+} from './type';
 
 const authApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,10 +24,34 @@ const authApiSlice = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    forgotPassword: builder.mutation<{ message: string }, ForgotPasswordPayload>({
+      query: (payload) => ({
+        url: '/auth/forgot-password',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
+    verifyCode: builder.mutation<{ message: string, token: string }, VerifyCodePayload>({
+      query: (payload) => ({
+        url: '/auth/verify-code',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
+    resetPassword: builder.mutation<{ message: string }, ResetPasswordPayload>({
+      query: (payload) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation: useLoginApiMutation,
   useRegisterMutation: useRegisterApiMutation,
+  useForgotPasswordMutation: useForgotPasswordApiMutation,
+  useVerifyCodeMutation: useVerifyCodeApiMutation,
+  useResetPasswordMutation: useResetPasswordApiMutation,
 } = authApiSlice;

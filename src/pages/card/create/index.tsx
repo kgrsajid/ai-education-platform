@@ -2,31 +2,30 @@ import {
   Form,
   Input,
   Button,
-  Card,
-  Space,
-  Divider,
   Select,
 } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { useEffect, useMemo, type FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { useTranslation } from "react-i18next";
 
 import { TagsInput } from "../../../features/quiz/tags-input";
 import { useGetQuizCategoryQuery } from "../../../features/query/quiz";
 import type { QuizCategory } from "../../../features/api/quiz-category/type";
 import type { CardsCreatePayload } from "../../../features/api/card/type";
-import { useCreateCardMutation, useGetCardByIdQuery, useUpdateCardMutation } from "../../../features/query/card";
+import {
+  useCreateCardMutation,
+  useGetCardByIdQuery,
+  useUpdateCardMutation,
+} from "../../../features/query/card";
 
 type Props = {
   isEdit?: boolean;
 };
 
-export const CardsCreatePage:FC<Props> = ({ isEdit = false }) => {
+export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
   const [form] = Form.useForm<CardsCreatePayload>();
   const navigate = useNavigate();
   const { state } = useLocation();
-  // const { t } = useTranslation();
 
   const cardsId = state?.cardId;
 
@@ -34,8 +33,7 @@ export const CardsCreatePage:FC<Props> = ({ isEdit = false }) => {
   const createMutation = useCreateCardMutation();
   const updateMutation = useUpdateCardMutation();
 
-  const { data: categoryData, isLoading: isCategoryLoading } =
-    useGetQuizCategoryQuery();
+  const { data: categoryData, isLoading: isCategoryLoading } = useGetQuizCategoryQuery();
 
   const categoryOptions = useMemo(
     () =>
@@ -46,11 +44,8 @@ export const CardsCreatePage:FC<Props> = ({ isEdit = false }) => {
     [categoryData]
   );
 
-  /**
-   * 🧠 Edit mode — заполняем форму
-   */
   useEffect(() => {
-    if (!isEdit  || !cards) return;
+    if (!isEdit || !cards) return;
     form.setFieldsValue({
       title: cards.title,
       description: cards.description,
@@ -63,9 +58,6 @@ export const CardsCreatePage:FC<Props> = ({ isEdit = false }) => {
     });
   }, [isEdit, form, cards]);
 
-  /**
-   * 🚀 Submit
-   */
   const onFinish = (values: CardsCreatePayload) => {
     const payload: CardsCreatePayload = {
       title: values.title,
@@ -83,24 +75,41 @@ export const CardsCreatePage:FC<Props> = ({ isEdit = false }) => {
       navigate("/cards");
     }
   };
+
   if (isEdit && isLoading) {
-    return <div className="p-10 text-center">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-60">
+        <span className="text-slate-400">Loading...</span>
+      </div>
+    );
   }
 
   return (
-    <div className="p-10 w-[60%] mx-auto">
-      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
-        {isEdit ? "Edit cards" : "Create cards"}
-      </h1>
+    <div className="flex flex-col flex-1 w-2/3 mx-auto">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="material-symbols-outlined text-[#1152d4]">style</span>
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+            Flashcards
+          </span>
+        </div>
+        <h1 className="text-2xl font-bold text-slate-100">
+          {isEdit ? "Edit Card Set" : "Create Card Set"}
+        </h1>
+        <p className="text-slate-400 text-sm mt-1">
+          {isEdit
+            ? "Update your flashcard set"
+            : "Build a new flashcard set to study smarter"}
+        </p>
+      </div>
 
       <Form<CardsCreatePayload>
         form={form}
         layout="vertical"
         onFinish={onFinish}
         onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-          }
+          if (e.key === "Enter") e.preventDefault();
         }}
         initialValues={
           isEdit
@@ -111,106 +120,181 @@ export const CardsCreatePage:FC<Props> = ({ isEdit = false }) => {
               }
         }
       >
-        {/* Title */}
-        <Form.Item
-          name="title"
-          label="Title"
-          rules={[{ required: true }]}
-        >
-          <Input size="large" />
-        </Form.Item>
+        {/* General Info Card */}
+        <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6">
+          <h2 className="text-sm font-bold text-slate-300 uppercase tracking-widest mb-5">
+            General Information
+          </h2>
 
-        {/* Description */}
-        <Form.Item name="description" label="Description">
-          <Input.TextArea rows={4} size="large" />
-        </Form.Item>
+          <Form.Item
+            name="title"
+            label={<span className="text-slate-300 text-sm font-medium">Title</span>}
+            rules={[{ required: true, message: "Title is required" }]}
+          >
+            <Input
+              size="large"
+              placeholder="e.g. JavaScript Fundamentals"
+              style={{
+                background: "rgb(15 23 42 / 0.6)",
+                borderColor: "rgb(51 65 85)",
+                color: "#e2e8f0",
+              }}
+            />
+          </Form.Item>
 
-        {/* Categories */}
-        <Form.Item
-          name="categories"
-          label="Categories"
-          rules={[{ required: true }]}
-        >
-          <Select
-            mode="multiple"
-            size="large"
-            options={categoryOptions}
-            loading={isCategoryLoading}
-          />
-        </Form.Item>
+          <Form.Item
+            name="description"
+            label={<span className="text-slate-300 text-sm font-medium">Description</span>}
+          >
+            <Input.TextArea
+              rows={3}
+              placeholder="What is this card set about?"
+              style={{
+                background: "rgb(15 23 42 / 0.6)",
+                borderColor: "rgb(51 65 85)",
+                color: "#e2e8f0",
+                resize: "none",
+              }}
+            />
+          </Form.Item>
 
-        {/* Tags */}
-        <Form.Item name="tags" label="Tags" valuePropName="value">
-          <TagsInput />
-        </Form.Item>
+          <div className="grid grid-cols-2 gap-4">
+            <Form.Item
+              name="categories"
+              label={<span className="text-slate-300 text-sm font-medium">Categories</span>}
+              rules={[{ required: true, message: "Pick at least one category" }]}
+            >
+              <Select
+                mode="multiple"
+                size="large"
+                options={categoryOptions}
+                loading={isCategoryLoading}
+                placeholder="Select categories"
+                style={{ background: "rgb(15 23 42 / 0.6)" }}
+              />
+            </Form.Item>
 
-        <Divider />
+            <Form.Item
+              name="tags"
+              label={<span className="text-slate-300 text-sm font-medium">Tags</span>}
+              valuePropName="value"
+            >
+              <TagsInput />
+            </Form.Item>
+          </div>
+        </div>
 
         {/* Cards */}
         <Form.List name="cards">
           {(fields, { add, remove }) => (
-            <>
+            <div className="space-y-4">
               {fields.map(({ key, name, ...rest }, idx) => (
-                <Card
+                <div
                   key={key}
-                  title={`Card ${idx + 1}`}
-                  className="mb-6 rounded-xl shadow-md"
-                  extra={
-                    fields.length > 1 && (
-                      <MinusCircleOutlined
-                        onClick={() => remove(name)}
-                        className="text-red-500 text-lg"
-                      />
-                    )
-                  }
+                  className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors"
                 >
-                  <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-[#1152d4]/20 flex items-center justify-center">
+                        <span className="text-[#1152d4] text-xs font-bold">{idx + 1}</span>
+                      </div>
+                      <span className="text-slate-300 text-sm font-semibold">Card {idx + 1}</span>
+                    </div>
+                    {fields.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => remove(name)}
+                        className="text-slate-600 hover:text-rose-400 transition-colors"
+                      >
+                        <MinusCircleOutlined style={{ fontSize: "1rem" }} />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4">
                     <Form.Item
                       {...rest}
                       name={[name, "question"]}
-                      label="Question"
-                      rules={[{ required: true }]}
+                      label={
+                        <span className="text-[#1152d4] text-xs font-bold uppercase tracking-widest">
+                          Question
+                        </span>
+                      }
+                      rules={[{ required: true, message: "Required" }]}
                     >
-                      <Input size="large" />
+                      <Input
+                        size="large"
+                        placeholder="Enter question"
+                        style={{
+                          background: "rgb(15 23 42 / 0.6)",
+                          borderColor: "rgb(51 65 85)",
+                          color: "#e2e8f0",
+                        }}
+                      />
                     </Form.Item>
 
                     <Form.Item
                       {...rest}
                       name={[name, "answer"]}
-                      label="Answer"
-                      rules={[{ required: true }]}
+                      label={
+                        <span className="text-emerald-500 text-xs font-bold uppercase tracking-widest">
+                          Answer
+                        </span>
+                      }
+                      rules={[{ required: true, message: "Required" }]}
                     >
-                      <Input.TextArea rows={3} />
+                      <Input.TextArea
+                        rows={2}
+                        placeholder="Enter answer"
+                        style={{
+                          background: "rgb(15 23 42 / 0.6)",
+                          borderColor: "rgb(51 65 85)",
+                          color: "#e2e8f0",
+                          resize: "none",
+                        }}
+                      />
                     </Form.Item>
-                  </Space>
-                </Card>
+                  </div>
+                </div>
               ))}
 
-              <Button
-                block
-                icon={<PlusOutlined />}
+              <button
+                type="button"
                 onClick={() => add({ question: "", answer: "" })}
-                className="border-dashed"
+                className="w-full py-4 border border-dashed border-slate-700 rounded-xl
+                           text-slate-500 hover:text-slate-300 hover:border-[#1152d4]/50
+                           transition-all flex items-center justify-center gap-2 text-sm font-medium"
               >
-                Add card
-              </Button>
-            </>
+                <PlusOutlined />
+                Add another card
+              </button>
+            </div>
           )}
         </Form.List>
 
-        <Divider />
-
-        <Form.Item>
+        {/* Submit */}
+        <div className="mt-8 flex justify-end gap-3">
+          <Button
+            size="large"
+            onClick={() => navigate("/cards")}
+            style={{
+              background: "transparent",
+              borderColor: "rgb(51 65 85)",
+              color: "#94a3b8",
+            }}
+          >
+            Cancel
+          </Button>
           <Button
             type="primary"
             htmlType="submit"
-            block
             size="large"
-            className="rounded-lg bg-blue-600 hover:bg-blue-700"
+            style={{ background: "#1152d4", borderColor: "#1152d4" }}
+            className="font-semibold px-8"
           >
-            {isEdit ? "Save changes" : "Create"}
+            {isEdit ? "Save Changes" : "Create Set"}
           </Button>
-        </Form.Item>
+        </div>
       </Form>
     </div>
   );

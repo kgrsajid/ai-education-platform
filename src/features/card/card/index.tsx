@@ -1,6 +1,5 @@
 import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Hash } from "lucide-react";
 import type { TCard } from "../../api/card/type";
 import { ROUTES } from "../../../app/router/config";
 
@@ -8,107 +7,92 @@ type Props = {
   card: TCard;
 };
 
+const CARD_COLORS = [
+  { bg: "bg-blue-500/20", text: "text-blue-400", icon: "style" },
+  { bg: "bg-purple-500/20", text: "text-purple-400", icon: "psychology" },
+  { bg: "bg-emerald-500/20", text: "text-emerald-400", icon: "biotech" },
+  { bg: "bg-amber-500/20", text: "text-amber-400", icon: "history_edu" },
+  { bg: "bg-rose-500/20", text: "text-rose-400", icon: "menu_book" },
+  { bg: "bg-indigo-500/20", text: "text-indigo-400", icon: "layers" },
+];
 
-const DESCRIPTION_LIMIT = 120;
-const MAX_TAGS = 5;
+function getCardColor(id: string | number) {
+  const str = String(id);
+  const sum = str.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  return CARD_COLORS[sum % CARD_COLORS.length];
+}
+
+const DESCRIPTION_LIMIT = 100;
 
 export const CardItem: FC<Props> = ({ card }) => {
   const navigate = useNavigate();
+  const color = getCardColor(card.id);
 
   const shortDescription =
     card.description.length > DESCRIPTION_LIMIT
       ? card.description.slice(0, DESCRIPTION_LIMIT) + "…"
       : card.description;
 
-  const visibleTags = card.tags?.slice(0, MAX_TAGS) ?? [];
-  const hiddenTagsCount = (card.tags?.length ?? 0) - visibleTags.length;
   return (
     <div
       onClick={() => navigate(`${ROUTES.Cards}/${card.id}`)}
-      className="
-        group relative cursor-pointer rounded-3xl
-        bg-white/70 backdrop-blur-xl
-        border border-white/40
-        shadow-[0_20px_40px_rgba(0,0,0,0.08)]
-        hover:shadow-[0_30px_60px_rgba(59,130,246,0.25)]
-        transition-all duration-300
-        hover:-translate-y-2
-        p-6 flex flex-col justify-between
-      "
+      className="bg-slate-900/50 border border-slate-800 rounded-xl p-5 hover:border-[#1152d4]/50 transition-all duration-200 group cursor-pointer flex flex-col justify-between hover:shadow-lg hover:shadow-[#1152d4]/5"
     >
-      {/* Glow */}
-      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition pointer-events-none" />
+      <div>
+        {/* Icon + card count badge */}
+        <div className="flex justify-between items-start mb-4">
+          <div className={`p-2 ${color.bg} ${color.text} rounded-lg`}>
+            <span className="material-symbols-outlined">{color.icon}</span>
+          </div>
+          <span className="px-2 py-1 bg-slate-800 text-slate-400 text-[10px] font-bold rounded uppercase tracking-wide">
+            {card.numberOfQuestions} cards
+          </span>
+        </div>
 
-      {/* Content */}
-      <div className="relative z-10">
         {/* Title */}
-        <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition mb-2 line-clamp-2">
+        <h3 className="text-base font-bold text-slate-100 mb-2 line-clamp-2 group-hover:text-[#1152d4] transition-colors">
           {card.title}
-        </h2>
+        </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 leading-relaxed mb-4">
+        <p className="text-sm text-slate-400 mb-4 line-clamp-2 leading-relaxed">
           {shortDescription}
         </p>
 
-        {/* Categories */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {(card.categories ?? []).map((category) => (
+        {/* Categories + tags */}
+        <div className="flex flex-wrap gap-1.5 mb-5">
+          {(card.categories ?? []).map((cat) => (
             <span
-              key={category.id}
-              className="
-                text-xs font-medium
-                bg-gradient-to-r from-indigo-500 to-blue-500
-                text-white px-3 py-1 rounded-full
-                shadow-sm
-              "
+              key={cat.id}
+              className="px-2 py-0.5 bg-slate-800 text-slate-400 text-xs rounded font-medium"
             >
-              {category.name}
+              {cat.name}
             </span>
           ))}
-        </div>
-
-        {/* Tags */}
-        <div className="flex flex-wrap items-center gap-2">
-          {visibleTags.map((tag) => (
+          {card.tags?.slice(0, 2).map((tag) => (
             <span
               key={tag}
-              className="
-                flex items-center gap-1
-                text-xs text-gray-600
-                bg-gray-100 hover:bg-gray-200
-                px-2 py-1 rounded-full transition
-              "
+              className="px-2 py-0.5 bg-slate-800 text-slate-500 text-xs rounded"
             >
-              <Hash size={12} />
-              {tag}
+              #{tag}
             </span>
           ))}
-
-          {hiddenTagsCount > 0 && (
-            <span className="text-xs text-gray-400">
-              +{hiddenTagsCount} more
-            </span>
-          )}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
-        <div className="flex gap-2">
-          <span
-            className="
-              inline-flex items-center gap-1
-              text-xs font-medium
-              text-blue-600 bg-blue-50
-              px-3 py-1 rounded-full
-            "
-          >
-            <BookOpen size={14} />
-            {card.numberOfQuestions} questions
-          </span>
-        </div>
-      </div>
+      {/* Study button */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`${ROUTES.Cards}/${card.id}`);
+        }}
+        className="w-full py-2.5 bg-slate-800 group-hover:bg-[#1152d4] group-hover:text-white text-slate-300 font-bold rounded-lg transition-all text-sm flex items-center justify-center gap-1.5"
+      >
+        <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>
+          school
+        </span>
+        Study Cards
+      </button>
     </div>
   );
 };

@@ -17,9 +17,12 @@ const Header:FC<Props> = ({isOpen}) => {
     auth.logout();
   }
   return (
-    <header className={`fixed top-0 ${!isOpen?'left-16':'left-64'} transition-all duration-200 right-0 h-[72px] flex justify-between items-center px-6 py-4 shadow-md bg-white z-50`}>
+    <header className={`fixed top-0 ${!isOpen?'left-16':'left-64'} transition-all duration-200 right-0 h-[72px] flex justify-between items-center px-6 py-4 shadow-md bg-slate-900 border-b border-slate-800 z-50`}>
       {/* Логотип */}
-      <div className="text-2xl font-bold">MyApp</div>
+      <div className="flex items-center gap-4">
+        <span className="material-symbols-outlined text-primary text-2xl">school</span>
+        <h2 className="text-lg font-bold tracking-tight">AI education</h2>
+      </div>
 
       {/* Профиль и логаут */}
       <div className="flex items-center gap-7">

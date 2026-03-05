@@ -3,6 +3,7 @@ import QuizPage from "../../widgets/Tests/components/quiz";
 import { LoginPage } from "../../pages/login/sugn_in";
 import { MainLayout } from "../../providers/main-layout";
 import { RegisterPage } from "../../pages/login/sing_up";
+import { ForgotPasswordPage } from "../../pages/login/forgot-password";
 import { PrivateRoute } from "../../providers/private-router";
 import { ChatPage } from "../../pages/chat";
 import { ROUTES } from "./config";
@@ -19,6 +20,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path={ROUTES.Login} element={<LoginPage/>}/>
         <Route path={ROUTES.Register} element={<RegisterPage/>}/>
+        <Route path={ROUTES.ForgotPassword} element={<ForgotPasswordPage/>}/>
         <Route path={ROUTES.All} element={<MainLayout />}>
           <Route element={<PrivateRoute><Outlet /></PrivateRoute>}>
             <Route path={ROUTES.ChatDetail} element={<ChatPage/>} />

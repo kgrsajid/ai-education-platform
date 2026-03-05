@@ -45,7 +45,7 @@ export const TagsInput = ({ value = [], onChange }: TagsInputProps) => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onPressEnter={addTag}
-        className="mt-2 rounded-lg"
+        className=" rounded-lg"
       />
     </div>
   );

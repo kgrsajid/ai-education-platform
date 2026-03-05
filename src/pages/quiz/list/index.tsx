@@ -1,23 +1,24 @@
 import { useState } from "react";
-import { Pagination, Segmented } from "antd";
-import { useSearchParams } from "react-router-dom";
+import { Button, Pagination, Segmented, Skeleton } from "antd";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useGetAllQuizQuery } from "../../../features/query/quiz";
 import { QuizCard } from "../../../features/quiz/card";
 import { QuizTop } from "../../../features/quiz/top/top-part";
 
 const QuizListPage = () => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [pagination, setPagination] = useState({ page: 1, limit: 12 });
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Получаем параметр section из URL
   const sectionParam = searchParams.get("section");
   const section: "all" | "my" = sectionParam === "my" ? "my" : "all";
 
-  // Изменяем секцию
   const handleSectionChange = (value: "all" | "my") => {
-    searchParams.set("section", value);
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams);
+    params.set("section", value);
+    setSearchParams(params);
+    setPagination((p) => ({ ...p, page: 1 }));
   };
 
   const categories = searchParams.get("categories");
@@ -40,39 +41,70 @@ const QuizListPage = () => {
   const total = quizData?.total ?? 0;
 
   return (
-    <div className="p-8 min-h-screen">
-      <h1 className="text-4xl font-extrabold mb-6 text-gray-800 tracking-tight">
-        <span className="text-blue-600">Quizzes</span>
-      </h1>
+    <div className="flex-1 overflow-y-auto p-8">
+      {/* Page title + CTA */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100 m-0">
+            Available Tests
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1 mb-0">
+            Refine your skills with curated challenges and AI-generated assessments.
+          </p>
+        </div>
 
-      {/* 🔘 Segmented для выбора секции */}
-      <Segmented
-        options={[
-          { label: "Все тесты", value: "all" },
-          { label: "Мои тесты", value: "my" },
-        ]}
-        value={section}
-        onChange={handleSectionChange}
-        className="mb-6"
-      />
-
-      {/* 🔍 Search & Filter */}
-      <QuizTop search={search} handleSearch={setSearch} />
-
-      {/* 🧩 Quiz Cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : data.length > 0 ? (
-          data.map((quiz) => <QuizCard key={quiz.id} quiz={quiz} />)
-        ) : (
-          <div className="text-center mt-16 text-gray-500">No quizzes found 😔</div>
-        )}
+        <div className="flex items-center gap-3">
+          <Segmented
+            options={[
+              { label: "All Tests", value: "all" },
+              { label: "My Tests", value: "my" },
+            ]}
+            value={section}
+            onChange={handleSectionChange}
+          />
+          <Button
+            type="primary"
+            size="large"
+            icon={<span className="material-symbols-outlined" style={{ fontSize: '1.1rem', lineHeight: 1 }}>add</span>}
+            onClick={() => navigate("/quiz/create")}
+            className="flex items-center gap-1"
+          >
+            Create Test
+          </Button>
+        </div>
       </div>
 
-      {/* 📄 Pagination */}
+      {/* Search + category chips */}
+      <QuizTop search={search} handleSearch={setSearch} />
+
+      {/* Quiz cards grid */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+              <Skeleton active paragraph={{ rows: 4 }} />
+            </div>
+          ))}
+        </div>
+      ) : data.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {data.map((quiz) => (
+            <QuizCard key={quiz.id} quiz={quiz} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <div className="size-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
+            <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '2rem' }}>search_off</span>
+          </div>
+          <p className="text-slate-500 dark:text-slate-400 font-medium">No tests found</p>
+          <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Try adjusting your search or filters</p>
+        </div>
+      )}
+
+      {/* Pagination */}
       {total > pagination.limit && (
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-10">
           <Pagination
             current={pagination.page}
             pageSize={pagination.limit}

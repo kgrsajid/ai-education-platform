@@ -13,7 +13,7 @@ export const ChatList:FC<Props> = ({list}) => {
   const {t} = useTranslation();
   const {isListSubActive} = useSidebar();
   return (
-    <div className="mt-2 mx-2 bg-[--primary-hover-color] py-2 rounded-2xl shadow-lg">
+    <div className="mt-2 mx-2 bg-[--primary-color] py-2 rounded-lg shadow-lg">
       <ul className="flex flex-col max-h-72 px-2 overflow-y-auto ">
         {/* Sessions */}
         {list?.length ? (
@@ -25,16 +25,16 @@ export const ChatList:FC<Props> = ({list}) => {
                 navigate(`${ROUTES.Chat}/${session.id}`);
               }}
               className={`
-                group flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer
+                group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer
                 transition-all
                 ${
                   active
-                    ? "bg-white/15 border-l-4 border-blue-400"
+                    ? "bg-white/15 border-l-4 border-blue-500"
                     : "hover:bg-white/10"
                 }
               `}
             >
-              <MessageCircle size={16} className="text-blue-300 shrink-0" />
+              <MessageCircle size={16} className="text-blue-500 shrink-0" />
 
               <span className="truncate text-sm">{session.label}</span>
             </li>
@@ -50,7 +50,7 @@ export const ChatList:FC<Props> = ({list}) => {
           w-full
           flex items-center justify-center gap-2
           py-2 rounded-xl text-sm font-medium
-          bg-blue-500 hover:bg-blue-600 transition
+          bg-[--primary-color] hover:bg-blue-600 transition
         "
       >
         <Plus size={16} />

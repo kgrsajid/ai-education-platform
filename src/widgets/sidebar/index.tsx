@@ -38,7 +38,7 @@ const Sidebar: FC<Props> = ({ isOpen, setIsOpen }) => {
 
   return (
     <aside
-      className={`bg-[--primary-color] text-white ${
+      className={`  dark:bg-slate-900 border-r border-slate-800 flex flex-col justify-between ${
         isOpen ? "w-64" : "w-16"
       } fixed z-10 left-0 top-0 h-screen flex flex-col transition-all duration-200`}
     >
@@ -63,8 +63,8 @@ const Sidebar: FC<Props> = ({ isOpen, setIsOpen }) => {
                 <NavLink
                   key={item.path}
                   to={item.path}
-                  className={`cursor-pointer mx-2 px-3 py-2 rounded-2xl hover:bg-[--primary-hover-color] flex items-center gap-3 ${
-                    active ? "bg-[--primary-hover-color] font-semibold" : ""
+                  className={`cursor-pointer mx-2 px-3 py-2 rounded-lg hover:bg-slate-800 flex items-center gap-3 ${
+                    active ? "bg-[--primary-color] font-semibold" : ""
                   }`}
                 >
                   <div className="flex gap-3 items-center justify-center">

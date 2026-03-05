@@ -1,145 +1,94 @@
 import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Eye, Hash } from "lucide-react";
 import type { DifficultyEnumType, TQuiz } from "../../api/quiz/type";
 
 type Props = {
   quiz: TQuiz;
 };
 
-const DIFFICULTY_STYLES: Record<
-  DifficultyEnumType,
-  { label: string; className: string }
-> = {
-  easy: {
-    label: "Easy",
-    className: "bg-green-100 text-green-700",
-  },
-  medium: {
-    label: "Medium",
-    className: "bg-yellow-100 text-yellow-700",
-  },
-  hard: {
-    label: "Hard",
-    className: "bg-red-100 text-red-700",
-  },
+const DIFFICULTY_LABEL: Record<DifficultyEnumType, string> = {
+  easy: "Beginner",
+  medium: "Intermediate",
+  hard: "Advanced",
 };
 
-const DESCRIPTION_LIMIT = 120;
-const MAX_TAGS = 5;
+const CARD_COLORS = [
+  { bg: "bg-blue-100 dark:bg-blue-900/40", text: "text-blue-600 dark:text-blue-400", icon: "calculate" },
+  { bg: "bg-purple-100 dark:bg-purple-900/40", text: "text-purple-600 dark:text-purple-400", icon: "code" },
+  { bg: "bg-emerald-100 dark:bg-emerald-900/40", text: "text-emerald-600 dark:text-emerald-400", icon: "biotech" },
+  { bg: "bg-amber-100 dark:bg-amber-900/40", text: "text-amber-600 dark:text-amber-400", icon: "history_edu" },
+  { bg: "bg-rose-100 dark:bg-rose-900/40", text: "text-rose-600 dark:text-rose-400", icon: "menu_book" },
+  { bg: "bg-indigo-100 dark:bg-indigo-900/40", text: "text-indigo-600 dark:text-indigo-400", icon: "database" },
+];
+
+function getCardColor(id: string | number) {
+  const str = String(id);
+  const sum = str.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  return CARD_COLORS[sum % CARD_COLORS.length];
+}
 
 export const QuizCard: FC<Props> = ({ quiz }) => {
   const navigate = useNavigate();
+  const color = getCardColor(quiz.id);
 
-  const shortDescription =
-    quiz.description.length > DESCRIPTION_LIMIT
-      ? quiz.description.slice(0, DESCRIPTION_LIMIT) + "…"
-      : quiz.description;
+  const handleNavigate = () => navigate(`/quiz/${quiz.id}`);
 
-  const visibleTags = quiz.tags?.slice(0, MAX_TAGS) ?? [];
-  const hiddenTagsCount = (quiz.tags?.length ?? 0) - visibleTags.length;
-  const difficulty = DIFFICULTY_STYLES[quiz.difficulty];
   return (
     <div
-      onClick={() => navigate(`/quiz/${quiz.id}`)}
-      className="
-        group relative cursor-pointer rounded-3xl
-        bg-white/70 backdrop-blur-xl
-        border border-white/40
-        shadow-[0_20px_40px_rgba(0,0,0,0.08)]
-        hover:shadow-[0_30px_60px_rgba(59,130,246,0.25)]
-        transition-all duration-300
-        hover:-translate-y-2
-        p-6 flex flex-col justify-between
-      "
+      onClick={handleNavigate}
+      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 hover:border-[#1152d4]/50 transition-all duration-200 group cursor-pointer flex flex-col justify-between hover:shadow-lg hover:shadow-[#1152d4]/5"
     >
-      {/* Glow */}
-      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition pointer-events-none" />
+      <div>
+        {/* Icon + difficulty badge */}
+        <div className="flex justify-between items-start mb-4">
+          <div className={`p-2 ${color.bg} ${color.text} rounded-lg`}>
+            <span className="material-symbols-outlined">{color.icon}</span>
+          </div>
+          <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold rounded uppercase tracking-wide">
+            {DIFFICULTY_LABEL[quiz.difficulty]}
+          </span>
+        </div>
 
-      {/* Content */}
-      <div className="relative z-10">
         {/* Title */}
-        <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition mb-2 line-clamp-2">
+        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 line-clamp-2 group-hover:text-[#1152d4] transition-colors">
           {quiz.title}
-        </h2>
+        </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 leading-relaxed mb-4">
-          {shortDescription}
+        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2 leading-relaxed">
+          {quiz.description}
         </p>
 
-        {/* Categories */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {quiz.categories.map((category) => (
+        {/* Categories + first 2 tags */}
+        <div className="flex flex-wrap gap-1.5 mb-5">
+          {quiz.categories.map((cat) => (
             <span
-              key={category.id}
-              className="
-                text-xs font-medium
-                bg-gradient-to-r from-indigo-500 to-blue-500
-                text-white px-3 py-1 rounded-full
-                shadow-sm
-              "
+              key={cat.id}
+              className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs rounded font-medium"
             >
-              {category.name}
+              {cat.name}
             </span>
           ))}
-        </div>
-
-        {/* Tags */}
-        <div className="flex flex-wrap items-center gap-2">
-          {visibleTags.map((tag) => (
+          {quiz.tags?.slice(0, 2).map((tag) => (
             <span
               key={tag}
-              className="
-                flex items-center gap-1
-                text-xs text-gray-600
-                bg-gray-100 hover:bg-gray-200
-                px-2 py-1 rounded-full transition
-              "
+              className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-500 text-xs rounded"
             >
-              <Hash size={12} />
-              {tag}
+              #{tag}
             </span>
           ))}
-
-          {hiddenTagsCount > 0 && (
-            <span className="text-xs text-gray-400">
-              +{hiddenTagsCount} more
-            </span>
-          )}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
-        <div className="flex gap-2">
-          <span
-            className="
-              inline-flex items-center gap-1
-              text-xs font-medium
-              text-blue-600 bg-blue-50
-              px-3 py-1 rounded-full
-            "
-          >
-            <BookOpen size={14} />
-            {quiz.numberOfQuestion} questions
-          </span>
-
-          <span
-            className={`
-              text-xs font-semibold uppercase tracking-wide
-              px-3 py-1 rounded-full
-              ${difficulty.className}
-            `}
-          >
-            {difficulty.label}
-          </span>
-        </div>
-        <div className="text-gray-400 text-[14px] flex items-center gap-2">
-          {quiz.viewCount} 
-          <Eye size={15}/>
-        </div>
-      </div>
+      {/* Take Test button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); handleNavigate(); }}
+        className="w-full py-2.5 bg-slate-100 dark:bg-slate-800 group-hover:bg-[#1152d4] group-hover:text-white text-slate-700 dark:text-slate-300 font-bold rounded-lg transition-all text-sm flex items-center justify-center gap-1.5"
+      >
+        <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>play_arrow</span>
+        Take Test
+        <span className="opacity-50 font-normal text-xs ml-1">· {quiz.numberOfQuestion}Q</span>
+      </button>
     </div>
   );
 };
