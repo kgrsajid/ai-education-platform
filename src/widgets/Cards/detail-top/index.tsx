@@ -67,7 +67,7 @@ export const CardInfoTop: FC<Props> = ({ card, isLoading }) => {
       {/* Categories */}
       {(card.categories ?? []).length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">
-          {card.categories.map((cat) => (
+          {(card.categories ?? []).map((cat) => (
             <span
               key={cat.id}
               className="px-2.5 py-1 bg-slate-800 text-slate-300 text-xs font-medium rounded border border-slate-700"

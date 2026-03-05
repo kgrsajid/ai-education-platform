@@ -83,7 +83,7 @@ export const PerformanceBarChart: FC<Props> = ({ results }) => {
               color: '#f1f5f9',
               fontSize: 12,
             }}
-            formatter={(v: number) => [`${v}%`, 'Score']}
+            formatter={(v: number | undefined) => [v !== undefined ? `${v}%` : '', 'Score']}
           />
           <Bar dataKey="score" radius={[6, 6, 0, 0]}>
             {data.map((entry, idx) => (

@@ -41,7 +41,7 @@ export const AttemptDetailModal: FC<Props> = ({ result, onClose }) => {
       centered
       width={480}
       styles={{
-        content: { background: '#0f172a', border: '1px solid #1e293b', borderRadius: 16, padding: 0 },
+        body: { background: '#0f172a', border: '1px solid #1e293b', borderRadius: 16, padding: 0 },
         mask: { backdropFilter: 'blur(4px)' },
       }}
     >

@@ -66,11 +66,6 @@ export const AntdProvider = ({ children }: { children: ReactNode }) => (
           colorTextDescription: '#94a3b8',
           colorSplit: '#334155',
           navArrowColor: '#334155',
-          finishIconBorderColor: '#1152d4',
-          waitIconBorderColor: '#334155',
-          waitTitleColor: '#94a3b8',
-          finishTitleColor: '#f1f5f9',
-          processTitleColor: '#f1f5f9',
         },
         Message: {
           colorBgElevated: '#1a2233',
