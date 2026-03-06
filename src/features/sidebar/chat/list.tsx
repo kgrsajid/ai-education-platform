@@ -1,9 +1,11 @@
-import { MessageCircle, Plus } from "lucide-react";
+import { MessageCircle, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import { ROUTES } from "../../../app/router/config";
 import { useSidebar } from "../../../widgets/sidebar/model/use-sidebar";
 import { useTranslation } from "react-i18next";
+import { useDeleteSessionByIdApiMutation } from "../../api/session";
+import { Modal } from "antd";
 
 type Props = {
   list?: {label: string; id: string}[];
@@ -12,7 +14,33 @@ export const ChatList:FC<Props> = ({list}) => {
   const navigate = useNavigate();
   const {t} = useTranslation();
   const {isListSubActive} = useSidebar();
+  const [deleteSession, { isLoading }] = useDeleteSessionByIdApiMutation();
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+
+  const handleConfirmDelete = async () => {
+    if (!pendingDeleteId) return;
+    await deleteSession(pendingDeleteId);
+    setPendingDeleteId(null);
+  };
+
   return (
+    <>
+    <Modal
+      open={!!pendingDeleteId}
+      onCancel={() => setPendingDeleteId(null)}
+      onOk={handleConfirmDelete}
+      confirmLoading={isLoading}
+      okText="Удалить"
+      cancelText="Отмена"
+      okButtonProps={{ danger: true }}
+      title="Удалить чат?"
+      centered
+      styles={{
+          mask: { backdropFilter: 'blur(4px)' },
+      }}
+    >
+      <p className="text-gray-300 text-sm">Это действие нельзя отменить.</p>
+    </Modal>
     <div className="mt-2 mx-2 bg-[--primary-color] py-2 rounded-lg shadow-lg">
       <ul className="flex flex-col max-h-72 px-2 overflow-y-auto ">
         {/* Sessions */}
@@ -36,11 +64,21 @@ export const ChatList:FC<Props> = ({list}) => {
             >
               <MessageCircle size={16} className="text-blue-500 shrink-0" />
 
-              <span className="truncate text-sm">{session.label}</span>
+              <span className="truncate text-sm flex-1">{session.label}</span>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPendingDeleteId(session.id);
+                }}
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-white/30 hover:text-red-400 shrink-0"
+              >
+                <Trash2 size={14} />
+              </button>
             </li>
           })
         ) : (
-          <div className="px-3 py-2 text-sm text-gray-300">Пока нет чатов</div>
+          <div className="px-3 py-2 text-sm text-gray-200 text-center">Пока нет чатов</div>
         )}
       </ul>
       <div className="my-2 border-t border-white/10" />
@@ -57,5 +95,6 @@ export const ChatList:FC<Props> = ({list}) => {
         {t("chat.phrases.new-chat")}
       </button>
     </div>
+    </>
   );
 };

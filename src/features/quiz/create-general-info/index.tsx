@@ -81,7 +81,7 @@ export const CreateGeneralInfoSection: FC<Props> = ({
               <div className="flex flex-col gap-1">
                 <span className="text-white font-semibold">Private Mode</span>
                 <p className="text-xs text-slate-400">
-                  Only people with the link can access this test.
+                  Only you access this test.
                 </p>
               </div>
               <Form.Item name="isPrivate" valuePropName="checked" className="!mb-0">

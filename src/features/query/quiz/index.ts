@@ -7,9 +7,10 @@ import {
   useAddQuizResultApiMutation,
   useCreateQuizApiMutation,
   useUpdateQuizApiMutation,
+  useGenerateQuizApiMutation,
 } from '../../api/quiz';
 import { useGetAllQuizCategoriesApiQuery } from '../../api/quiz-category';
-import type { QuizPayload, TQuizResultAddPayload, TQuizResultGetPayload, QuizCreatePayload, QuizUpdatePayload } from '../../api/quiz/type';
+import type { QuizPayload, TQuizResultAddPayload, TQuizResultGetPayload, QuizCreatePayload, QuizUpdatePayload, GenerateQuizPayload } from '../../api/quiz/type';
 
 export const useGetAllQuizQuery = (params: QuizPayload) => {
   return useGetAllQuizApiQuery(params);
@@ -71,4 +72,14 @@ export const useUpdateQuizMutation = () => {
 
 export const useGetQuizCategoryQuery = () => {
   return useGetAllQuizCategoriesApiQuery();
+};
+
+export const useGenerateQuizMutation = () => {
+  const [trigger, result] = useGenerateQuizApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (payload: GenerateQuizPayload) => trigger(payload),
+    mutateAsync: (payload: GenerateQuizPayload) => trigger(payload).unwrap(),
+  };
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Pagination, Skeleton } from "antd";
+import { Button, Pagination, Segmented, Skeleton } from "antd";
 import { CardItem } from "../../../features/card/card";
 import { useGetAllCardQuery } from "../../../features/query/card";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -22,12 +22,17 @@ export const CardsListPage = () => {
   };
 
   const categories = searchParams.get("categories");
+  const minQ = searchParams.get("minQ");
+  const maxQ = searchParams.get("maxQ");
 
   const { data: cardData, isLoading } = useGetAllCardQuery({
     page: pagination.page,
     limit: pagination.limit,
     search,
     categories: categories ? categories.split(",").map(Number) : undefined,
+    minQ: minQ ? Number(minQ) : undefined,
+    maxQ: maxQ ? Number(maxQ) : undefined,
+    isPrivate: section === "my" ? true : undefined,
   });
 
   const data = cardData?.data ?? [];
@@ -45,24 +50,33 @@ export const CardsListPage = () => {
             Study smarter with interactive flashcard sets
           </p>
         </div>
-
-        <Button
-          type="primary"
-          size="large"
-          icon={
-            <span
-              className="material-symbols-outlined"
-              style={{ fontSize: "1.1rem", lineHeight: 1 }}
-            >
-              add
-            </span>
-          }
-          onClick={() => navigate("/cards/create")}
-          style={{ background: "#1152d4", borderColor: "#1152d4" }}
-          className="flex items-center gap-1 font-semibold"
-        >
-          Create Set
-        </Button>
+        <div className="flex gap-4">
+          <Segmented
+            options={[
+              { label: "All Sets", value: "all" },
+              { label: "My Sets", value: "my" },
+            ]}
+            value={section}
+            onChange={handleSectionChange}
+          />
+          <Button
+            type="primary"
+            size="large"
+            icon={
+              <span
+                className="material-symbols-outlined"
+                style={{ fontSize: "1.1rem", lineHeight: 1 }}
+              >
+                add
+              </span>
+            }
+            onClick={() => navigate("/cards/create")}
+            style={{ background: "#1152d4", borderColor: "#1152d4" }}
+            className="flex items-center gap-1 font-semibold"
+          >
+            Create Set
+          </Button>
+        </div>
       </div>
 
       {/* Search + filters */}
@@ -70,7 +84,6 @@ export const CardsListPage = () => {
         search={search}
         handleSearch={setSearch}
         section={section}
-        onSectionChange={handleSectionChange}
       />
 
       {/* Grid */}

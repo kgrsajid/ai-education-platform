@@ -16,7 +16,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
   const [input, setInput] = useState('');
   const [isBotThink, setIsBotThink] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isActiveMode, setIsActiveMode] = useState(false);
+  const [isSummaryMode, setIsSummaryMode] = useState(false);
 
   const { data: messages = { chat: [] }, refetch } = useGetSessionByIdQuery(id);
   const retryLastMessage = useRetryLastMessage();
@@ -38,7 +38,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
     if (!token) return;
 
     const ws = new WebSocket(
-      `ws://localhost:8082/message?token=${token}&session_id=${id}&summary=${Number(isActiveMode)}`,
+      `ws://localhost:8082/message?token=${token}&session_id=${id}&summary=${Number(isSummaryMode)}`,
     );
     wsRef.current = ws;
 
@@ -57,7 +57,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
     ws.onerror = (err) => console.error('WS error:', err);
 
     return () => ws.close();
-  }, [token, id, isActiveMode]);
+  }, [token, id, isSummaryMode]);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -112,8 +112,8 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
 
       {/* Input — shrink-0 уже задан внутри ChatInput */}
       <ChatInput
-        isActiveMode={isActiveMode}
-        handleChangeActiveMode={() => setIsActiveMode((p) => !p)}
+        isSummaryMode={isSummaryMode}
+        handleChangeSummaryMode={() => setIsSummaryMode((p) => !p)}
         input={input}
         setInput={setInput}
         handleSend={handleSend}

@@ -1,29 +1,17 @@
-import { Input, Segmented } from "antd";
+import { Input } from "antd";
 import { type FC } from "react";
-import { useSearchParams } from "react-router-dom";
-import { useGetQuizCategoryQuery } from "../../../features/query/quiz";
+import { useState } from "react";
+import { CardFilterModal } from "../../../features/card/filterModal";
 
 type Props = {
   search: string;
   handleSearch: (value: string) => void;
   section: "all" | "my";
-  onSectionChange: (value: "all" | "my") => void;
 };
 
-export const CardTop: FC<Props> = ({ search, handleSearch, section, onSectionChange }) => {
-  const { data: categories } = useGetQuizCategoryQuery();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const activeCategoryId = searchParams.get("categories");
+export const CardTop: FC<Props> = ({ search, handleSearch }) => {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const handleCategoryClick = (id: number | null) => {
-    const params = new URLSearchParams(searchParams);
-    if (id === null) {
-      params.delete("categories");
-    } else {
-      params.set("categories", String(id));
-    }
-    setSearchParams(params);
-  };
 
   return (
     <div className="flex flex-col gap-4 mb-8">
@@ -47,48 +35,18 @@ export const CardTop: FC<Props> = ({ search, handleSearch, section, onSectionCha
           />
         </div>
 
-        <Segmented
-          options={[
-            { label: "All Sets", value: "all" },
-            { label: "My Sets", value: "my" },
-          ]}
-          value={section}
-          onChange={onSectionChange}
-        />
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-semibold hover:border-[#1152d4] hover:text-[#1152d4] transition-colors"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "1.1rem" }}>tune</span>
+          Filters
+        </button>
+
+        <CardFilterModal open={isFilterOpen} handleClose={() => setIsFilterOpen(false)} />
       </div>
 
-      {/* Category chips */}
-      {categories && categories.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => handleCategoryClick(null)}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-              !activeCategoryId
-                ? "bg-[#1152d4] text-white"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-            }`}
-          >
-            All Categories
-          </button>
-
-          {categories.map((cat) => {
-            const isActive = activeCategoryId === String(cat.id);
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryClick(cat.id)}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                  isActive
-                    ? "bg-[#1152d4] text-white"
-                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                }`}
-              >
-                {cat.name}
-              </button>
-            );
-          })}
-        </div>
-      )}
+      
     </div>
   );
 };

@@ -9,6 +9,7 @@ import type {
   TQuizResultAddPayload,
   QuizCreatePayload,
   QuizUpdatePayload,
+  GenerateQuizPayload,
 } from './type';
 
 const quizApiSlice = baseApi.injectEndpoints({
@@ -66,6 +67,14 @@ const quizApiSlice = baseApi.injectEndpoints({
       transformResponse: (response: { data: TQuizDetails }) => response.data,
       invalidatesTags: ['Quiz'],
     }),
+    generateQuiz: builder.mutation<TQuizDetails, GenerateQuizPayload>({
+      query: (payload) => ({
+        url: '/test/generate',
+        method: "POST",
+        body: payload,
+      }),
+      transformResponse: (response: { data: TQuizDetails }) => response.data,
+    }),
   }),
 });
 
@@ -77,4 +86,5 @@ export const {
   useAddQuizViewMutation: useAddQuizViewApiMutation,
   useCreateQuizMutation: useCreateQuizApiMutation,
   useUpdateQuizMutation: useUpdateQuizApiMutation,
+  useGenerateQuizMutation: useGenerateQuizApiMutation,
 } = quizApiSlice;

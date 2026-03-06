@@ -2,8 +2,6 @@ import { Input } from "antd";
 import { type FC } from "react";
 import { useState } from "react";
 import { FilterModal } from "../filterModal";
-import { useGetQuizCategoryQuery } from "../../query/quiz";
-import { useSearchParams } from "react-router-dom";
 
 type Props = {
   search: string;
@@ -12,19 +10,7 @@ type Props = {
 
 export const QuizTop: FC<Props> = ({ search, handleSearch }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const { data: categories } = useGetQuizCategoryQuery();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const activeCategoryId = searchParams.get("categories");
-
-  const handleCategoryClick = (id: number | null) => {
-    const params = new URLSearchParams(searchParams);
-    if (id === null) {
-      params.delete("categories");
-    } else {
-      params.set("categories", String(id));
-    }
-    setSearchParams(params);
-  };
+  
 
   return (
     <div className="flex flex-col gap-4 mb-8">
@@ -56,40 +42,6 @@ export const QuizTop: FC<Props> = ({ search, handleSearch }) => {
 
         <FilterModal open={isFilterOpen} handleClose={() => setIsFilterOpen(false)} />
       </div>
-
-      {/* Category chips */}
-      {categories && categories.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {/* "All" chip */}
-          <button
-            onClick={() => handleCategoryClick(null)}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-              !activeCategoryId
-                ? "bg-[#1152d4] text-white"
-                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-            }`}
-          >
-            All Categories
-          </button>
-
-          {categories.map((cat) => {
-            const isActive = activeCategoryId === String(cat.id);
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryClick(cat.id)}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                  isActive
-                    ? "bg-[#1152d4] text-white"
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                }`}
-              >
-                {cat.name}
-              </button>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import type { QuizCategory } from "../quiz-category/type";
 import type { PaginationResponse, PaginationType } from "../type";
 
-export type CardPayload = PaginationType<{categories?: number[], search?: string}>;
+export type CardPayload = PaginationType<{categories?: number[], isPrivate?: boolean, search?: string, minQ?: number, maxQ?: number}>;
 
 export type TCard = {
   id: string;

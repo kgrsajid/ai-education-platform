@@ -87,3 +87,12 @@ export type QuizUpdatePayload = {
   quiz: QuizCreatePayload,
   quizId: string;
 }
+
+
+export type GenerateQuizPayload = {
+  context: string,
+  difficulty: string,
+  is_private: boolean,
+  num_questions: number,
+  categories: number[]
+}

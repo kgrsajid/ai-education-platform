@@ -1,12 +1,13 @@
-import { Breadcrumb, Form } from 'antd';
+import { Breadcrumb, Form, InputNumber, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   useCreateQuizMutation,
+  useGenerateQuizMutation,
   useGetQuizByIdQuery,
   useGetQuizCategoryQuery,
   useUpdateQuizMutation,
 } from '../../../features/query/quiz';
-import { useEffect, useMemo, type FC } from 'react';
+import { useEffect, useMemo, useState, type FC } from 'react';
 import type {
   QuizCreatePayload,
   TOption,
@@ -38,6 +39,8 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { t } = useTranslation();
+  const [generateModalOpen, setGenerateModalOpen] = useState(false);
+  const [numQuestions, setNumQuestions] = useState(5);
 
   const quizId = state?.quizId;
 
@@ -49,6 +52,37 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
 
   const createQuizMutation = useCreateQuizMutation();
   const updateQuizMutation = useUpdateQuizMutation();
+  const generateQuizMutation = useGenerateQuizMutation();
+
+  const titleValue = Form.useWatch('title', form);
+  const categoriesValue = Form.useWatch('categories', form);
+  const isGenerateEnabled = !!titleValue && categoriesValue?.length > 0;
+
+  const handleGenerate = async () => {
+    const values = form.getFieldsValue();
+    try {
+      console.log("start");
+      const result = await generateQuizMutation.mutateAsync({
+        context: [values.title, values.description].filter(Boolean).join('\n'),
+        difficulty: values.difficulty ?? 'easy',
+        is_private: values.isPrivate ?? false,
+        num_questions: numQuestions,
+        categories: (values.categories ?? []).map(Number),
+      });
+      console.log(result);
+      form.setFieldValue('questions', result.questions.map((q: TQuestion) => ({
+        question: q.question,
+        options: q.options.map((o: TOption) => ({
+          optionText: o.optionText,
+          isCorrect: o.isCorrect,
+        })),
+      })));
+      message.success(`Generated ${result.questions.length} questions!`);
+      setGenerateModalOpen(false);
+    } catch {
+      message.error('Failed to generate questions. Please try again.');
+    }
+  };
 
   const categoryOptions = useMemo(
     () => categoryData?.map((c) => ({ label: c.name, value: c.id })),
@@ -122,10 +156,12 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => form.submit()}
-            className="px-6 py-2.5 rounded-lg border border-slate-700 font-semibold text-slate-200 hover:bg-slate-800 transition-all"
+            disabled={!isGenerateEnabled}
+            onClick={() => setGenerateModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-lg border border-primary/50 font-semibold text-primary hover:bg-primary/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Save Draft
+            <span className="material-symbols-outlined text-base">auto_awesome</span>
+            Generate with AI
           </button>
           <button
             type="button"
@@ -135,6 +171,33 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
             {isEdit ? t('quiz.phrases.editPage.editText') : 'Publish Test'}
           </button>
         </div>
+
+        <Modal
+          title="Generate Questions with AI"
+          open={generateModalOpen}
+          onCancel={() => setGenerateModalOpen(false)}
+          onOk={handleGenerate}
+          okText="Generate"
+          confirmLoading={generateQuizMutation.isPending}
+          okButtonProps={{ disabled: generateQuizMutation.isPending }}
+        >
+          <div className="py-4 flex flex-col gap-4">
+            <p className="text-sm text-slate-500">
+              AI will generate questions based on your test title, description, and settings.
+            </p>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Number of questions</label>
+              <InputNumber
+                min={1}
+                max={30}
+                value={numQuestions}
+                onChange={(v) => setNumQuestions(v ?? 5)}
+                className="w-full"
+                size="large"
+              />
+            </div>
+          </div>
+        </Modal>
       </div>
 
       <Form<QuizCreatePayload>

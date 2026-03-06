@@ -6,8 +6,8 @@ type Props = {
   setInput: (value: string) => void;
   isPending: boolean;
   handleSend: () => void;
-  isActiveMode: boolean;
-  handleChangeActiveMode: () => void;
+  isSummaryMode: boolean;
+  handleChangeSummaryMode: () => void;
 };
 
 export const ChatInput: FC<Props> = ({
@@ -15,8 +15,8 @@ export const ChatInput: FC<Props> = ({
   setInput,
   isPending,
   handleSend,
-  isActiveMode,
-  handleChangeActiveMode,
+  isSummaryMode,
+  handleChangeSummaryMode,
 }) => {
   const { t } = useTranslation();
   const canSend = !isPending && input.trim().length > 0;
@@ -36,20 +36,20 @@ export const ChatInput: FC<Props> = ({
             }}
             placeholder={t('chat.phrases.input.placeholder')}
             rows={2}
-            className="w-full bg-transparent border-none focus:ring-0 text-sm py-2 px-3 resize-none text-slate-200 placeholder:text-slate-500 outline-none custom-scrollbar"
+            className="w-full bg-transparent border-none focus:ring-0 text-sm py-1 px-3 resize-none text-slate-200 placeholder:text-slate-500 outline-none custom-scrollbar"
           />
-          <div className="flex items-center justify-between border-t border-slate-700 pt-2 pb-1 px-1">
+          <div className="flex items-center justify-between border-t border-slate-700 pt-2 px-1">
             <div className="flex items-center gap-1">
               <button
-                onClick={handleChangeActiveMode}
-                title="Toggle active mode"
-                className={`p-2 rounded-lg transition-all ${
-                  isActiveMode
+                onClick={handleChangeSummaryMode}
+                title="Toggle summary mode"
+                className={`flex flex-col w-[35px] h-[35px] items-center justify-center rounded-lg transition-all ${
+                  isSummaryMode
                     ? 'text-primary bg-primary/10'
                     : 'text-slate-500 hover:text-primary hover:bg-primary/10'
                 }`}
               >
-                <span className="material-symbols-outlined text-lg">edit_note</span>
+                <span className="material-symbols-outlined text-lg">summarize</span>
               </button>
             </div>
             <button

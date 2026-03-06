@@ -28,7 +28,7 @@ export const ChatEmpty: FC<Props> = ({ setFirstMessage }) => {
     if (!firstMessage.trim()) return;
     setFirstMessage(firstMessage);
     setInput('');
-    const res = await createChat.mutateAsync();
+    const res = await createChat.mutateAsync({message: firstMessage});
     if (res) {
       navigate(`${ROUTES.Chat}/${res.data?.id}`, {
         replace: true,
@@ -38,7 +38,7 @@ export const ChatEmpty: FC<Props> = ({ setFirstMessage }) => {
   };
 
   return (
-    <div className="flex flex-col flex-1 h-full">
+    <div className="flex flex-col flex-1 h-full overflow-hidden">
       {/* Centered welcome area */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 gap-8">
         {/* Icon + heading */}
@@ -74,8 +74,8 @@ export const ChatEmpty: FC<Props> = ({ setFirstMessage }) => {
 
       {/* Input pinned at bottom */}
       <ChatInput
-        isActiveMode={isActiveMode}
-        handleChangeActiveMode={() => setIsActiveMode((p) => !p)}
+        isSummaryMode={isActiveMode}
+        handleChangeSummaryMode={() => setIsActiveMode((p) => !p)}
         input={input}
         setInput={setInput}
         handleSend={() => handleSend()}
