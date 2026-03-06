@@ -3,9 +3,13 @@ import {
   Input,
   Button,
   Select,
+  Modal,
+  InputNumber,
+  message,
+  Switch,
 } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { TagsInput } from "../../../features/quiz/tags-input";
@@ -14,6 +18,7 @@ import type { QuizCategory } from "../../../features/api/quiz-category/type";
 import type { CardsCreatePayload } from "../../../features/api/card/type";
 import {
   useCreateCardMutation,
+  useGenerateCardsMutation,
   useGetCardByIdQuery,
   useUpdateCardMutation,
 } from "../../../features/query/card";
@@ -26,12 +31,18 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
   const [form] = Form.useForm<CardsCreatePayload>();
   const navigate = useNavigate();
   const { state } = useLocation();
-
+  const [generateModalOpen, setGenerateModalOpen] = useState(false);
+  const [numCards, setNumCards] = useState(5);
   const cardsId = state?.cardId;
 
   const { data: cards, isLoading } = useGetCardByIdQuery(cardsId);
   const createMutation = useCreateCardMutation();
   const updateMutation = useUpdateCardMutation();
+  const generateMutation = useGenerateCardsMutation();
+
+  const titleValue = Form.useWatch('title', form);
+  const categoriesValue = Form.useWatch('categories', form);
+  const isGenerateEnabled = !!titleValue && categoriesValue?.length > 0;
 
   const { data: categoryData, isLoading: isCategoryLoading } = useGetQuizCategoryQuery();
 
@@ -58,6 +69,27 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
     });
   }, [isEdit, form, cards]);
 
+  const handleGenerate = async () => {
+    const values = form.getFieldsValue();
+    try {
+      const result = await generateMutation.mutateAsync({
+        title: values.title,
+        context: values.description || '',
+        categories: (values.categories ?? []).map(Number),
+        is_private: values.isPrivate ?? false,
+        num_cards: numCards,
+      });
+      form.setFieldValue('cards', result.cards.map((c) => ({
+        question: c.question,
+        answer: c.answer,
+      })));
+      message.success(`Generated ${result.cards.length} cards!`);
+      setGenerateModalOpen(false);
+    } catch {
+      message.error('Failed to generate cards. Please try again.');
+    }
+  };
+
   const onFinish = (values: CardsCreatePayload) => {
     const payload: CardsCreatePayload = {
       title: values.title,
@@ -65,6 +97,7 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
       tags: values.tags ?? [],
       categories: values.categories,
       cards: values.cards,
+      isPrivate: values.isPrivate
     };
 
     if (isEdit) {
@@ -94,15 +127,57 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
             Flashcards
           </span>
         </div>
-        <h1 className="text-2xl font-bold text-slate-100">
-          {isEdit ? "Edit Card Set" : "Create Card Set"}
-        </h1>
-        <p className="text-slate-400 text-sm mt-1">
-          {isEdit
-            ? "Update your flashcard set"
-            : "Build a new flashcard set to study smarter"}
-        </p>
+        <div className="flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-100">
+              {isEdit ? "Edit Card Set" : "Create Card Set"}
+            </h1>
+            <p className="text-slate-400 text-sm mt-1">
+              {isEdit
+                ? "Update your flashcard set"
+                : "Build a new flashcard set to study smarter"}
+            </p>
+          </div>
+          {!isEdit && (
+            <button
+              type="button"
+              disabled={!isGenerateEnabled}
+              onClick={() => setGenerateModalOpen(true)}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-lg border border-[#1152d4]/50 font-semibold text-[#1152d4] hover:bg-[#1152d4]/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <span className="material-symbols-outlined text-base">auto_awesome</span>
+              Generate with AI
+            </button>
+          )}
+        </div>
       </div>
+
+      <Modal
+        title="Generate Cards with AI"
+        open={generateModalOpen}
+        onCancel={() => setGenerateModalOpen(false)}
+        onOk={handleGenerate}
+        okText="Generate"
+        confirmLoading={generateMutation.isPending}
+        okButtonProps={{ disabled: generateMutation.isPending }}
+      >
+        <div className="py-4 flex flex-col gap-4">
+          <p className="text-sm text-slate-500">
+            AI will generate flashcards based on your title and description.
+          </p>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Number of cards</label>
+            <InputNumber
+              min={1}
+              max={50}
+              value={numCards}
+              onChange={(v) => setNumCards(v ?? 5)}
+              className="w-full"
+              size="large"
+            />
+          </div>
+        </div>
+      </Modal>
 
       <Form<CardsCreatePayload>
         form={form}
@@ -181,6 +256,19 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
             >
               <TagsInput />
             </Form.Item>
+          </div>
+          <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 mt-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <span className="text-white font-semibold">Private Mode</span>
+                <p className="text-xs text-slate-400">
+                  Only you access this flashcard.
+                </p>
+              </div>
+              <Form.Item name="isPrivate" valuePropName="checked" className="!mb-0">
+                <Switch />
+              </Form.Item>
+            </div>
           </div>
         </div>
 

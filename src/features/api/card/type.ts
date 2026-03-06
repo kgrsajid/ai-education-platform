@@ -40,7 +40,16 @@ export type CardsCreatePayload = {
   tags: string[];
   categories: number[];
   cards: CardRequest[];
+  isPrivate: boolean;
 };
+
+export type GenerateCardsPayload = {
+  title: string;
+  context: string;
+  categories: number[];
+  is_private: boolean;
+  num_cards: number
+}
 
 
 export type CardUpdatePayload = {

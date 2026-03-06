@@ -1,5 +1,5 @@
 import { baseApi } from '..';
-import type { CardPayload, CardResponse, CardsCreatePayload, CardUpdatePayload, TCardDetail } from './type';
+import { type GenerateCardsPayload, type CardPayload, type CardResponse, type CardsCreatePayload, type CardUpdatePayload, type TCardDetail } from './type';
 
 const cardApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -31,6 +31,14 @@ const cardApiSlice = baseApi.injectEndpoints({
       transformResponse: (response: { data: TCardDetail }) => response.data,
       invalidatesTags: ['Card'],
     }),
+    generateCards: builder.mutation<TCardDetail, GenerateCardsPayload>({
+      query: (payload) => ({
+        url: "/card/generate",
+        method: "POST",
+        body: payload
+      }),
+      transformResponse: (response: { data: TCardDetail }) => response.data,
+    }),
   }),
 });
 
@@ -39,4 +47,5 @@ export const {
   useGetCardByIdQuery: useGetCardByIdApiQuery,
   useCreateCardMutation: useCreateCardApiMutation,
   useUpdateCardMutation: useUpdateCardApiMutation,
+  useGenerateCardsMutation: useGenerateCardsApiMutation,
 } = cardApiSlice;

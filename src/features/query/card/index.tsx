@@ -4,8 +4,9 @@ import {
   useGetCardByIdApiQuery,
   useCreateCardApiMutation,
   useUpdateCardApiMutation,
+  useGenerateCardsApiMutation,
 } from '../../api/card';
-import type { CardPayload, CardsCreatePayload, CardUpdatePayload } from '../../api/card/type';
+import type { CardPayload, CardsCreatePayload, CardUpdatePayload, GenerateCardsPayload } from '../../api/card/type';
 
 export const useGetAllCardQuery = (params: CardPayload) => {
   return useGetAllCardsApiQuery(params);
@@ -22,6 +23,16 @@ export const useCreateCardMutation = () => {
     isPending: result.isLoading,
     mutate: (payload: CardsCreatePayload) => trigger(payload),
     mutateAsync: (payload: CardsCreatePayload) => trigger(payload),
+  };
+};
+
+export const useGenerateCardsMutation = () => {
+  const [trigger, result] = useGenerateCardsApiMutation();
+  return {
+    ...result,
+    isPending: result.isLoading,
+    mutate: (payload: GenerateCardsPayload) => trigger(payload),
+    mutateAsync: (payload: GenerateCardsPayload) => trigger(payload).unwrap(),
   };
 };
 
