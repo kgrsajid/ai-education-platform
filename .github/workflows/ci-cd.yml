@@ -31,3 +31,9 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t my-frontend:latest .
+
+      - name: Deploy
+        run: |
+          docker stop frontend || true
+          docker rm frontend || true
+          docker run -d --name frontend -p 80:80 my-frontend:latest
