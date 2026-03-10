@@ -38,7 +38,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
     if (!token) return;
 
     const ws = new WebSocket(
-      `ws://localhost:8082/message?token=${token}&session_id=${id}&summary=${Number(isSummaryMode)}`,
+      `ws://45.63.69.91:8082/message?token=${token}&session_id=${id}&summary=${Number(isSummaryMode)}`,
     );
     wsRef.current = ws;
 
