@@ -30,10 +30,12 @@ jobs:
         run: npm run build
 
       - name: Build Docker image
-        run: docker build -t my-frontend:latest .
+        run: docker build --no-cache -t my-frontend:latest .
 
       - name: Deploy
         run: |
           docker stop frontend || true
           docker rm frontend || true
+          docker stop frontend-dev || true
+          docker rm frontend-dev || true
           docker run -d --name frontend -p 80:80 my-frontend:latest
