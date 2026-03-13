@@ -61,12 +61,12 @@ export const ChatInput: FC<Props> = ({
                   : 'bg-slate-700 text-slate-500 cursor-not-allowed'
               }`}
             >
-              <span>Send Message</span>
+              <span>{t('chat.phrases.sendMessage')}</span>
               <span className="material-symbols-outlined text-lg">send</span>
             </button>
           </div>
         </div>
-      
+
       </div>
     </div>
   );

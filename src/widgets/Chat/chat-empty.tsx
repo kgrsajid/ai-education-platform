@@ -53,7 +53,7 @@ export const ChatEmpty: FC<Props> = ({ setFirstMessage }) => {
               {t('chat.phrases.empty-title')}
             </h1>
             <p className="text-slate-400 text-base max-w-md leading-relaxed">
-              Your AI-powered learning companion. Ask me anything about your studies.
+              {t('chat.phrases.companion')}
             </p>
           </div>
         </div>

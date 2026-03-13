@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Button } from "antd";
+import { useTranslation } from "react-i18next";
 
 type Card = {
   id: string;
@@ -23,6 +24,7 @@ export function FlashcardsSummary({
   onLearnUnknown,
   onBack,
 }: Props) {
+  const { t } = useTranslation();
   const total = knows.length + stillLearning.length;
   const percentage = total === 0 ? 0 : Math.round((knows.length / total) * 100);
   const successRate = total === 0 ? 0 : knows.length / total;
@@ -39,10 +41,10 @@ export function FlashcardsSummary({
   };
 
   const getMessage = () => {
-    if (successRate === 1) return "Perfect score! All cards mastered!";
-    if (successRate >= 0.75) return "Great job! Almost there!";
-    if (successRate >= 0.5) return "Good progress, keep going!";
-    return "Nice start, let's review again!";
+    if (successRate === 1) return t('card.phrases.flashcard.perfectScore');
+    if (successRate >= 0.75) return t('card.phrases.flashcard.greatJob');
+    if (successRate >= 0.5) return t('card.phrases.flashcard.goodProgress');
+    return t('card.phrases.flashcard.niceStart');
   };
 
   return (
@@ -95,11 +97,11 @@ export function FlashcardsSummary({
             {/* Know / Still learning */}
             <div className="flex-1 space-y-3">
               <div className="flex justify-between items-center px-4 py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <span className="text-emerald-400 text-sm font-medium">Mastered</span>
+                <span className="text-emerald-400 text-sm font-medium">{t('card.phrases.flashcard.mastered')}</span>
                 <span className="text-emerald-300 font-bold">{knows.length}</span>
               </div>
               <div className="flex justify-between items-center px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700">
-                <span className="text-slate-400 text-sm font-medium">Still learning</span>
+                <span className="text-slate-400 text-sm font-medium">{t('card.phrases.flashcard.stillLearning')}</span>
                 <span className="text-slate-300 font-bold">{stillLearning.length}</span>
               </div>
             </div>
@@ -110,7 +112,7 @@ export function FlashcardsSummary({
             className="text-sm text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1"
           >
             <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_back</span>
-            Back to last card
+            {t('card.phrases.flashcard.backToLastCard')}
           </button>
         </div>
 
@@ -125,7 +127,7 @@ export function FlashcardsSummary({
               style={{ background: "#1152d4", borderColor: "#1152d4" }}
               className="font-semibold"
             >
-              Study remaining ({stillLearning.length})
+              {t('card.phrases.flashcard.studyRemaining', { n: stillLearning.length })}
             </Button>
           )}
           <Button
@@ -135,7 +137,7 @@ export function FlashcardsSummary({
             className="font-semibold border-slate-700 text-slate-300 hover:text-slate-100"
             style={{ background: "transparent", borderColor: "rgb(51 65 85)" }}
           >
-            Restart all cards
+            {t('card.phrases.flashcard.restartAllCards')}
           </Button>
         </div>
       </div>

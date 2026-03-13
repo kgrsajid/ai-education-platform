@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useGetQuizCategoryQuery } from "../../query/quiz";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   open: boolean;
@@ -20,6 +21,7 @@ const defaultRange = {
 };
 
 export const CardFilterModal: FC<Props> = ({ open, handleClose }) => {
+  const { t } = useTranslation();
   const { data: categoryData, isLoading: isCategoryLoading } = useGetQuizCategoryQuery();
   const categoryOptions = useMemo(() => {
     return categoryData?.map((val) => ({ label: val.name, value: val.id }));
@@ -67,14 +69,14 @@ export const CardFilterModal: FC<Props> = ({ open, handleClose }) => {
   };
 
   return (
-    <Modal open={open} onCancel={handleClose} title="Filters" footer={null}>
+    <Modal open={open} onCancel={handleClose} title={t('card.phrases.filter.filters')} footer={null}>
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <div>
-          <div style={{ marginBottom: 8 }}>Categories</div>
+          <div style={{ marginBottom: 8 }}>{t('card.phrases.filter.categories')}</div>
           <Select
             mode="multiple"
             allowClear
-            placeholder="Select categories..."
+            placeholder={t('card.phrases.filter.selectCategories')}
             options={categoryOptions}
             loading={isCategoryLoading}
             value={filters.categories}
@@ -87,7 +89,7 @@ export const CardFilterModal: FC<Props> = ({ open, handleClose }) => {
 
         <div>
           <div style={{ marginBottom: 8 }}>
-            Number of cards: {filters.questionsRange[0]}–{filters.questionsRange[1]}
+            {t('card.phrases.filter.numberOfCards')} {filters.questionsRange[0]}–{filters.questionsRange[1]}
           </div>
           <Slider
             range
@@ -104,9 +106,9 @@ export const CardFilterModal: FC<Props> = ({ open, handleClose }) => {
         </div>
 
         <Space style={{ justifyContent: "flex-end", width: "100%" }}>
-          <Button onClick={handleReset}>Reset</Button>
+          <Button onClick={handleReset}>{t('card.phrases.filter.reset')}</Button>
           <Button type="primary" onClick={handleApply}>
-            Apply
+            {t('card.phrases.filter.apply')}
           </Button>
         </Space>
       </Space>
