@@ -7,6 +7,7 @@ import { FlashArrows } from "../../../features/card/flash-arrows";
 import { FlashModes } from "../../../features/card/flash-modes";
 import { FlashProgress } from "../../../features/card/flash-progress";
 import { FlashcardsSummary } from "../../../features/card/flash-summary";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   cards: TCardResponse[];
@@ -18,6 +19,7 @@ type Action = {
 };
 
 export const FlashcardsPreview = ({ cards }: Props) => {
+  const { t } = useTranslation();
   const [[index, direction], setState] = useState<[number, number]>([0, 0]);
   const [history, setHistory] = useState<Action[]>([]);
 
@@ -175,7 +177,7 @@ export const FlashcardsPreview = ({ cards }: Props) => {
             <div className="grid grid-cols-3 items-center mt-5">
               {/* Track progress toggle */}
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-slate-400">Track Progress</span>
+                <span className="text-xs font-semibold text-slate-400">{t('card.phrases.flashcard.trackProgress')}</span>
                 <Switch
                   size="small"
                   onChange={handleSwitch}
@@ -220,7 +222,7 @@ export const FlashcardsPreview = ({ cards }: Props) => {
             list
           </span>
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
-            All Cards ({originalCards.length})
+            {t('card.phrases.detailPage.allCards')} ({originalCards.length})
           </span>
         </div>
 
@@ -239,7 +241,7 @@ export const FlashcardsPreview = ({ cards }: Props) => {
               {/* Question */}
               <div className="w-[40%] pr-6 flex flex-col gap-1">
                 <span className="text-[10px] font-bold text-[#1152d4] uppercase tracking-widest">
-                  Question
+                  {t('card.phrases.createPage.question')}
                 </span>
                 <p className="text-slate-200 text-sm font-medium leading-snug">
                   {card.question}
@@ -252,7 +254,7 @@ export const FlashcardsPreview = ({ cards }: Props) => {
               {/* Answer */}
               <div className="flex-1 pl-6 flex flex-col gap-1">
                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">
-                  Answer
+                  {t('card.phrases.createPage.answer')}
                 </span>
                 <p className="text-slate-400 text-sm leading-relaxed">{card.answer}</p>
               </div>

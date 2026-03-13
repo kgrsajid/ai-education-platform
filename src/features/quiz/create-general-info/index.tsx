@@ -1,6 +1,7 @@
 import { Form, Input, Select, Switch } from 'antd';
 import type { FC } from 'react';
 import { TagsInput } from '../tags-input';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   categoryOptions?: { label: string; value: number }[];
@@ -11,12 +12,14 @@ export const CreateGeneralInfoSection: FC<Props> = ({
   categoryOptions,
   isCategoryLoading,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <section className="bg-[#1a2233] border border-slate-800 rounded-xl p-8 mb-8">
       <div className="flex items-center gap-3 mb-6">
         <span className="material-symbols-outlined text-primary">settings</span>
         <h2 className="text-white text-xl font-bold leading-tight">
-          General Information
+          {t('quizDetail.generalInfo')}
         </h2>
       </div>
 
@@ -25,19 +28,19 @@ export const CreateGeneralInfoSection: FC<Props> = ({
         <div className="flex flex-col">
           <Form.Item
             name="title"
-            label="Test Title"
-            rules={[{ required: true, message: 'Title is required' }]}
+            label={t('quizDetail.testTitle')}
+            rules={[{ required: true, message: t('quizDetail.titleRequired') }]}
           >
             <Input
               size="large"
-              placeholder="e.g. Advanced Quantum Physics Final"
+              placeholder={t('quizDetail.titlePlaceholder')}
             />
           </Form.Item>
 
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label={t('quizDetail.description')}>
             <Input.TextArea
               rows={6}
-              placeholder="Brief overview of what this test covers..."
+              placeholder={t('quizDetail.descriptionPlaceholder')}
               style={{ resize: 'none' }}
             />
           </Form.Item>
@@ -48,40 +51,40 @@ export const CreateGeneralInfoSection: FC<Props> = ({
           <div className="grid grid-cols-2 gap-4">
             <Form.Item
               name="categories"
-              label="Category"
-              rules={[{ required: true, message: 'Select at least one category' }]}
+              label={t('quizDetail.category')}
+              rules={[{ required: true, message: t('quizDetail.categoryRequired') }]}
             >
               <Select
                 mode="multiple"
                 options={categoryOptions}
                 loading={isCategoryLoading}
-                placeholder="Select..."
+                placeholder={t('quizDetail.selectCategory')}
                 size="large"
               />
             </Form.Item>
 
-            <Form.Item name="difficulty" label="Difficulty">
+            <Form.Item name="difficulty" label={t('quizDetail.difficulty')}>
               <Select
                 size="large"
                 options={[
-                  { label: 'Easy', value: 'easy' },
-                  { label: 'Medium', value: 'medium' },
-                  { label: 'Hard', value: 'hard' },
+                  { label: t('quiz.words.diff.easy'), value: 'easy' },
+                  { label: t('quiz.words.diff.medium'), value: 'medium' },
+                  { label: t('quiz.words.diff.hard'), value: 'hard' },
                 ]}
               />
             </Form.Item>
           </div>
 
-          <Form.Item name="tags" label="Tags" valuePropName="value">
+          <Form.Item name="tags" label={t('quizDetail.tags')} valuePropName="value">
             <TagsInput />
           </Form.Item>
 
           <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 mt-auto">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-1">
-                <span className="text-white font-semibold">Private Mode</span>
+                <span className="text-white font-semibold">{t('quizDetail.privateMode')}</span>
                 <p className="text-xs text-slate-400">
-                  Only you access this test.
+                  {t('quizDetail.privateModeDesc')}
                 </p>
               </div>
               <Form.Item name="isPrivate" valuePropName="checked" className="!mb-0">

@@ -77,10 +77,10 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
           isCorrect: o.isCorrect,
         })),
       })));
-      message.success(`Generated ${result.questions.length} questions!`);
+      message.success(t('quizDetail.generateModal.generatedSuccess', { n: result.questions.length }));
       setGenerateModalOpen(false);
     } catch {
-      message.error('Failed to generate questions. Please try again.');
+      message.error(t('quizDetail.generateModal.generateFailed'));
     }
   };
 
@@ -121,7 +121,7 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
   if (isEdit && isQuizLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-slate-400">Loading...</div>
+        <div className="text-slate-400">{t('common.loading')}</div>
       </div>
     );
   }
@@ -135,11 +135,11 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
           {
             title: (
               <Link to="/quiz" className="hover:text-primary transition-colors">
-                Tests
+                {t('quiz.phrases.breadcrumb.tests')}
               </Link>
             ),
           },
-          { title: isEdit ? 'Edit Test' : 'Create New' },
+          { title: isEdit ? t('quiz.phrases.breadcrumb.editTest') : t('quiz.phrases.breadcrumb.createNew') },
         ]}
       />
 
@@ -147,10 +147,10 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
       <div className="flex flex-wrap justify-between items-center gap-6 mb-8">
         <div className="flex flex-col gap-1">
           <h1 className="text-white text-4xl font-black leading-tight tracking-tight">
-            {isEdit ? t('quiz.phrases.editPage.title') : 'Create New Test'}
+            {isEdit ? t('quiz.phrases.editPage.title') : t('quiz.phrases.createPage.createNewTitle')}
           </h1>
           <p className="text-slate-400 text-base font-normal">
-            Design your assessment with AI-enhanced tools.
+            {t('quiz.phrases.createPage.designSubtitle')}
           </p>
         </div>
         <div className="flex gap-3">
@@ -161,32 +161,32 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
             className="flex items-center gap-2 px-6 py-2.5 rounded-lg border border-primary/50 font-semibold text-primary hover:bg-primary/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <span className="material-symbols-outlined text-base">auto_awesome</span>
-            Generate with AI
+            {t('common.generateWithAI')}
           </button>
           <button
             type="button"
             onClick={() => form.submit()}
             className="px-6 py-2.5 rounded-lg bg-primary text-white font-semibold hover:bg-blue-600 transition-all shadow-lg shadow-primary/20"
           >
-            {isEdit ? t('quiz.phrases.editPage.editText') : 'Publish Test'}
+            {isEdit ? t('quiz.phrases.editPage.editText') : t('quiz.phrases.createPage.form.publishTest')}
           </button>
         </div>
 
         <Modal
-          title="Generate Questions with AI"
+          title={t('quizDetail.generateModal.title')}
           open={generateModalOpen}
           onCancel={() => setGenerateModalOpen(false)}
           onOk={handleGenerate}
-          okText="Generate"
+          okText={t('quizDetail.generateModal.generate')}
           confirmLoading={generateQuizMutation.isPending}
           okButtonProps={{ disabled: generateQuizMutation.isPending }}
         >
           <div className="py-4 flex flex-col gap-4">
             <p className="text-sm text-slate-500">
-              AI will generate questions based on your test title, description, and settings.
+              {t('quizDetail.generateModal.description')}
             </p>
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Number of questions</label>
+              <label className="text-sm font-medium">{t('quizDetail.generateModal.numberOfQuestions')}</label>
               <InputNumber
                 min={1}
                 max={30}
@@ -234,11 +234,11 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
                     quiz
                   </span>
                   <h2 className="text-white text-xl font-bold leading-tight">
-                    Questions
+                    {t('quizDetail.questions')}
                   </h2>
                   <span className="bg-primary/20 text-primary text-xs font-bold px-2.5 py-1 rounded-full">
                     {fields.length}{' '}
-                    {fields.length === 1 ? 'Question' : 'Questions'} Added
+                    {fields.length === 1 ? t('quizDetail.questionAdded') : t('quizDetail.questionsAdded')}
                   </span>
                 </div>
                 <button
@@ -247,7 +247,7 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
                   className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-blue-600 transition-all"
                 >
                   <PlusOutlined />
-                  Add Question
+                  {t('quiz.phrases.createPage.form.addQuestion')}
                 </button>
               </div>
 
@@ -275,7 +275,7 @@ export const QuizCreatePage: FC<Props> = ({ isEdit = false }) => {
                     add_circle
                   </span>
                 </div>
-                <span className="font-bold">Add another question</span>
+                <span className="font-bold">{t('quiz.phrases.createPage.form.addAnother')}</span>
               </button>
             </>
           )}

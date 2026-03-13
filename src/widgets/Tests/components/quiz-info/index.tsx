@@ -10,10 +10,12 @@ import { QuizDetailMetrics } from "../../../../features/quiz/detail-metrics";
 import { PerformanceBarChart } from "../../../../features/quiz/detail-performance-chart";
 import { QuizDetailSideStats } from "../../../../features/quiz/detail-side-stats";
 import { QuizAttemptsTable } from "../../../../features/quiz/detail-attempts-table";
+import { useTranslation } from "react-i18next";
 
 export const QuizDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { data: quiz, isLoading } = useGetQuizByIdQuery(id);
   const { data: quizResultData, isLoading: quizResultLoading } =
@@ -34,7 +36,7 @@ export const QuizDetailsPage = () => {
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center text-slate-400">
-        Loading quiz details...
+        {t('quiz.phrases.detailPage.loadingDetails')}
       </div>
     );
   }
@@ -42,7 +44,7 @@ export const QuizDetailsPage = () => {
   if (!quiz) {
     return (
       <div className="flex h-screen items-center justify-center text-slate-400">
-        Quiz not found
+        {t('quiz.phrases.detailPage.notFound')}
       </div>
     );
   }
@@ -59,7 +61,7 @@ export const QuizDetailsPage = () => {
                 to="/quiz"
                 className="text-slate-400 hover:text-primary transition-colors"
               >
-                Tests
+                {t('quiz.phrases.detailPage.tests')}
               </Link>
             ),
           },

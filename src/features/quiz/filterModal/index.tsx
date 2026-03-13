@@ -81,7 +81,7 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
       footer={null}
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        {/* Категории */}
+        {/* Categories */}
         <div>
           <div style={{ marginBottom: 8 }}>{t("quiz.words.filter.categories")}</div>
           <Select
@@ -98,7 +98,7 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
           />
         </div>
 
-        {/* Сложность */}
+        {/* Difficulty */}
         <div>
           <div style={{ marginBottom: 8 }}>{t("quiz.words.difficulty")}</div>
           <Radio.Group
@@ -116,7 +116,7 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
           </Radio.Group>
         </div>
 
-        {/* Диапазон вопросов */}
+        {/* Questions range */}
         <div>
           <div style={{ marginBottom: 8 }}>
             {t("quiz.phrases.filter.numberOfQuestions")} {filters.questionsRange[0]}–{filters.questionsRange[1]}
@@ -135,9 +135,9 @@ export const FilterModal: FC<Props> = ({ open, handleClose }) => {
           />
         </div>
 
-        {/* Кнопки */}
+        {/* Buttons */}
         <Space style={{ justifyContent: "flex-end", width: "100%" }}>
-          <Button onClick={handleReset}>Сбросить</Button>
+          <Button onClick={handleReset}>{t("common.reset")}</Button>
           <Button type="primary" onClick={handleApply}>
             {t("quiz.words.filter.apply")}
           </Button>

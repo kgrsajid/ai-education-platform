@@ -7,10 +7,12 @@ import {
 import type { TQuizResultAddPayload } from "../../../../features/api/quiz/type";
 import { QuizQuestion } from "../../../../features/quiz/quiz-question";
 import { QuizResult, type AnswerResult } from "../../../../features/quiz/quiz-result";
+import { useTranslation } from "react-i18next";
 
 const QuizPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { data: quiz, isLoading } = useGetQuizByIdQuery(id);
   const addResultMutation = useAddQuizResultMutation();
@@ -24,7 +26,7 @@ const QuizPage = () => {
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center text-slate-400">
-        Loading quiz...
+        {t('quiz.phrases.startPage.loading')}
       </div>
     );
   }
@@ -32,7 +34,7 @@ const QuizPage = () => {
   if (!quiz) {
     return (
       <div className="flex h-screen items-center justify-center text-slate-400">
-        Quiz not found
+        {t('quiz.phrases.startPage.notFound')}
       </div>
     );
   }

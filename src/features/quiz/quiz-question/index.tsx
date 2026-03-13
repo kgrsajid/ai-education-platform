@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import type { TQuestion } from '../../api/quiz/type';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   quizTitle: string;
@@ -23,6 +24,7 @@ export const QuizQuestion: FC<Props> = ({
   onSelect,
   onNext,
 }) => {
+  const { t } = useTranslation();
   const progress = ((questionIndex + 1) / totalQuestions) * 100;
   const isLast = questionIndex + 1 === totalQuestions;
 
@@ -63,7 +65,7 @@ export const QuizQuestion: FC<Props> = ({
           {/* Question label + text */}
           <div className="mb-8">
             <div className="text-primary text-xs font-bold uppercase tracking-widest mb-3">
-              Question {String(questionIndex + 1).padStart(2, '0')}
+              {t('quizDetail.question.label', { n: String(questionIndex + 1).padStart(2, '0') })}
             </div>
             <h3 className="text-white text-2xl font-bold leading-snug">
               {question.question}
@@ -115,7 +117,7 @@ export const QuizQuestion: FC<Props> = ({
                   : 'bg-slate-800 text-slate-600 cursor-not-allowed'
               }`}
             >
-              {isLast ? 'Finish Test' : 'Next Question'}
+              {isLast ? t('quizDetail.result.finishTest') : t('quizDetail.result.nextQuestion')}
               <span className="material-symbols-outlined text-base">
                 {isLast ? 'check_circle' : 'arrow_forward'}
               </span>

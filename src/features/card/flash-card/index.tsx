@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   front: string;
@@ -8,6 +9,7 @@ type Props = {
 
 export const FlashCard = ({ front, back }: Props) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsFlipped(false);
@@ -32,7 +34,7 @@ export const FlashCard = ({ front, back }: Props) => {
             help_outline
           </span>
           <p className="text-slate-100 text-xl font-semibold leading-relaxed">{front}</p>
-          <p className="text-slate-600 text-xs mt-4">Click to reveal answer</p>
+          <p className="text-slate-600 text-xs mt-4">{t('card.phrases.flashcard.clickToReveal')}</p>
         </div>
 
         {/* BACK */}
@@ -45,7 +47,7 @@ export const FlashCard = ({ front, back }: Props) => {
             lightbulb
           </span>
           <p className="text-slate-100 text-xl font-semibold leading-relaxed">{back}</p>
-          <p className="text-[#1152d4]/60 text-xs mt-4">Click to flip back</p>
+          <p className="text-[#1152d4]/60 text-xs mt-4">{t('card.phrases.flashcard.clickToFlipBack')}</p>
         </div>
       </motion.div>
     </div>

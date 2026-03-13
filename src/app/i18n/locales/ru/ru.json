@@ -1,14 +1,36 @@
 {
+  "common": {
+    "loading": "Загрузка...",
+    "back": "Назад",
+    "cancel": "Отмена",
+    "save": "Сохранить изменения",
+    "create": "Создать",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "apply": "Применить",
+    "reset": "Сбросить",
+    "filters": "Фильтры",
+    "search": "Поиск",
+    "noResults": "Ничего не найдено",
+    "tryAdjusting": "Попробуйте изменить поиск или фильтры",
+    "profile": "Профиль",
+    "generateWithAI": "Сгенерировать с AI",
+    "publish": "Опубликовать",
+    "required": "Обязательно"
+  },
   "chat": {
     "words": {
       "label": "Чат"
     },
     "phrases": {
       "empty-title": "Над чем вы работаете?",
+      "companion": "Ваш AI-помощник для обучения. Спросите меня что угодно.",
       "input": {
         "placeholder": "Введите сообщение..."
       },
-      "new-chat": "Новый чат"
+      "new-chat": "Новый чат",
+      "sendMessage": "Отправить сообщение",
+      "errorMessage": "Что-то пошло не так. Попробуйте отправить сообщение снова."
     }
   },
   "quiz": {
@@ -33,15 +55,24 @@
     },
     "phrases": {
       "search": "Поиск викторины...",
+      "searchPlaceholder": "Поиск тестов по названию или ключевому слову...",
       "filter": {
         "categoryPlaceholder": "Выберите категории",
         "numberOfQuestions": "Количество вопросов:"
       },
+      "editPage": {
+        "title": "Редактирование викторины",
+        "editText": "Редактировать викторину"
+      },
       "createPage": {
         "title": "Создание викторины",
+        "createNewTitle": "Создать новый тест",
+        "designSubtitle": "Создайте свою оценку с помощью AI-инструментов.",
         "form": {
           "addAnother": "Добавить ещё один вопрос",
+          "addQuestion": "Добавить вопрос",
           "createText": "Создать викторину",
+          "publishTest": "Опубликовать тест",
           "name": {
             "label": "Название викторины",
             "placeholder": "Введите название викторины",
@@ -71,6 +102,162 @@
             "message": "Введите вариант"
           }
         }
+      },
+      "listPage": {
+        "title": "Доступные тесты",
+        "subtitle": "Совершенствуйте навыки с помощью тестов и AI-оценок.",
+        "allTests": "Все тесты",
+        "myTests": "Мои тесты",
+        "createTest": "Создать тест",
+        "noTestsFound": "Тесты не найдены"
+      },
+      "detailPage": {
+        "loadingDetails": "Загрузка деталей теста...",
+        "notFound": "Тест не найден",
+        "tests": "Тесты"
+      },
+      "startPage": {
+        "loading": "Загрузка теста...",
+        "notFound": "Тест не найден"
+      },
+      "breadcrumb": {
+        "tests": "Тесты",
+        "editTest": "Редактировать тест",
+        "createNew": "Создать новый"
+      }
+    }
+  },
+  "quizDetail": {
+    "difficultyLevel": "Уровень сложности",
+    "totalQuestions": "Всего вопросов",
+    "allocatedTime": "Отведённое время",
+    "recentAttempts": "Последние попытки",
+    "startTest": "Начать тест",
+    "questions": "Вопросы",
+    "questionsAdded": "Вопросов добавлено",
+    "questionAdded": "Вопрос добавлен",
+    "generalInfo": "Общая информация",
+    "testTitle": "Название теста",
+    "titleRequired": "Название обязательно",
+    "titlePlaceholder": "Например, Финальный экзамен по квантовой физике",
+    "description": "Описание",
+    "descriptionPlaceholder": "Краткий обзор того, что охватывает этот тест...",
+    "category": "Категория",
+    "categoryRequired": "Выберите хотя бы одну категорию",
+    "selectCategory": "Выбрать...",
+    "difficulty": "Сложность",
+    "tags": "Теги",
+    "privateMode": "Приватный режим",
+    "privateModeDesc": "Только вы имеете доступ к этому тесту.",
+    "table": {
+      "date": "Дата",
+      "score": "Результат",
+      "attempt": "Попытка",
+      "action": "Действие",
+      "reviewDetails": "Просмотр деталей"
+    },
+    "generateModal": {
+      "title": "Сгенерировать вопросы с AI",
+      "description": "AI создаст вопросы на основе названия, описания и настроек теста.",
+      "numberOfQuestions": "Количество вопросов",
+      "generate": "Сгенерировать",
+      "generatedSuccess": "Сгенерировано {{n}} вопросов!",
+      "generateFailed": "Не удалось сгенерировать вопросы. Попробуйте снова."
+    },
+    "question": {
+      "label": "Вопрос {{n}}",
+      "placeholder": "Введите текст вопроса...",
+      "required": "Вопрос обязателен",
+      "timeLimit": "Лимит времени",
+      "multipleChoices": "Несколько вариантов",
+      "optionRequired": "Вариант обязателен",
+      "duplicateTitle": "Дублировать вопрос",
+      "deleteTitle": "Удалить вопрос"
+    },
+    "result": {
+      "completed": "Завершено",
+      "completedTest": "Вы завершили тест",
+      "score": "Результат",
+      "correct": "Правильно",
+      "wrong": "Неправильно",
+      "answerReview": "Разбор ответов",
+      "yourAnswer": "Ваш ответ:",
+      "correctAnswer": "Правильный ответ:",
+      "backToTests": "Вернуться к тестам",
+      "excellent": "Отлично!",
+      "goodJob": "Хорошая работа!",
+      "keepPracticing": "Продолжайте практиковаться",
+      "finishTest": "Завершить тест",
+      "nextQuestion": "Следующий вопрос"
+    }
+  },
+  "card": {
+    "words": {},
+    "phrases": {
+      "search": "Поиск набора карточек...",
+      "listPage": {
+        "title": "Карточки",
+        "subtitle": "Учитесь умнее с интерактивными наборами карточек",
+        "allSets": "Все наборы",
+        "mySets": "Мои наборы",
+        "createSet": "Создать набор",
+        "noSetsFound": "Наборы карточек не найдены"
+      },
+      "detailPage": {
+        "backToFlashcards": "Вернуться к карточкам",
+        "flashcardSet": "Набор карточек",
+        "totalCards": "Всего карточек",
+        "allCards": "Все карточки"
+      },
+      "createPage": {
+        "flashcards": "Карточки",
+        "createTitle": "Создать набор карточек",
+        "editTitle": "Редактировать набор карточек",
+        "createSubtitle": "Создайте новый набор карточек для умной учёбы",
+        "editSubtitle": "Обновите ваш набор карточек",
+        "generalInfo": "Общая информация",
+        "title": "Название",
+        "titleRequired": "Название обязательно",
+        "titlePlaceholder": "Например, Основы JavaScript",
+        "description": "Описание",
+        "descriptionPlaceholder": "О чём этот набор карточек?",
+        "categories": "Категории",
+        "categoriesRequired": "Выберите хотя бы одну категорию",
+        "selectCategories": "Выберите категории",
+        "tags": "Теги",
+        "privateMode": "Приватный режим",
+        "privateModeDesc": "Только вы имеете доступ к этой карточке.",
+        "cardLabel": "Карточка {{n}}",
+        "question": "Вопрос",
+        "answer": "Ответ",
+        "enterQuestion": "Введите вопрос",
+        "enterAnswer": "Введите ответ",
+        "addAnotherCard": "Добавить ещё карточку",
+        "saveChanges": "Сохранить изменения",
+        "createSetBtn": "Создать набор"
+      },
+      "filter": {
+        "filters": "Фильтры",
+        "categories": "Категории",
+        "selectCategories": "Выберите категории...",
+        "numberOfCards": "Количество карточек:",
+        "reset": "Сбросить",
+        "apply": "Применить"
+      },
+      "flashcard": {
+        "clickToReveal": "Нажмите, чтобы показать ответ",
+        "clickToFlipBack": "Нажмите, чтобы перевернуть обратно",
+        "trackProgress": "Отслеживать прогресс",
+        "progress": "Прогресс",
+        "mastered": "Усвоено",
+        "stillLearning": "Ещё учу",
+        "backToLastCard": "Вернуться к последней карточке",
+        "studyRemaining": "Изучить оставшиеся ({{n}})",
+        "restartAllCards": "Начать заново",
+        "perfectScore": "Идеальный результат! Все карточки усвоены!",
+        "greatJob": "Отличная работа! Почти у цели!",
+        "goodProgress": "Хороший прогресс, продолжайте!",
+        "niceStart": "Хорошее начало, давайте повторим!"
       }
     }
   },
@@ -80,6 +267,87 @@
       "quiz": "Тест",
       "games": "Игры",
       "cards": "Карточки"
+    }
+  },
+  "header": {
+    "appName": "AI образование",
+    "profile": "Профиль",
+    "logout": "Выйти"
+  },
+  "quizInfo": {
+    "rules": {
+      "title": "Правила викторины",
+      "rule1": "Один правильный ответ на вопрос",
+      "rule2": "Нельзя изменить ответы после отправки",
+      "rule3": "Нет ограничения по времени, если не указано иное",
+      "rule4": "Ваш результат будет показан в конце"
+    },
+    "sampleQuestions": "Примерные вопросы",
+    "moreQuestions": "+ ещё {{n}} вопросов",
+    "startQuiz": "Начать тест",
+    "questions": "вопросов",
+    "min": "мин"
+  },
+  "auth": {
+    "login": {
+      "title": "Добро пожаловать!",
+      "subtitle": "Готовы повысить свои знания сегодня?",
+      "emailLabel": "Email",
+      "emailError": "Введите корректный email",
+      "passwordLabel": "Пароль",
+      "forgotPassword": "Забыли пароль?",
+      "passwordError": "Минимум 6 символов",
+      "submitBtn": "Войти в систему",
+      "noAccount": "Нет аккаунта?",
+      "createAccount": "Создать аккаунт"
+    },
+    "register": {
+      "title": "Создать аккаунт",
+      "subtitle": "Начни учиться умнее с AI Learn",
+      "nameLabel": "Имя",
+      "namePlaceholder": "Иван Иванов",
+      "nameError": "Введите имя",
+      "emailLabel": "Email",
+      "emailError": "Введите корректный email",
+      "passwordLabel": "Пароль",
+      "passwordError": "Минимум 6 символов",
+      "roleLabel": "Роль",
+      "roleError": "Выберите роль",
+      "rolePlaceholder": "Выберите роль",
+      "roleStudent": "Студент",
+      "roleTeacher": "Учитель",
+      "roleAdmin": "Админ",
+      "submitBtn": "Зарегистрироваться",
+      "alreadyHaveAccount": "Уже есть аккаунт?",
+      "signIn": "Войти"
+    },
+    "forgotPassword": {
+      "step0Title": "Восстановление пароля",
+      "step1Title": "Введите код",
+      "step2Title": "Новый пароль",
+      "step0Desc": "Введите email для получения кода",
+      "step1Desc": "Код отправлен на {{email}}",
+      "step2Desc": "Придумайте надёжный пароль",
+      "emailStepTitle": "Email",
+      "codeStepTitle": "Код",
+      "passwordStepTitle": "Пароль",
+      "emailLabel": "Email",
+      "emailError": "Введите корректный email",
+      "sendCode": "Отправить код",
+      "codeLabel": "Код подтверждения",
+      "codeRequired": "Введите код",
+      "codeLength": "Код должен содержать 6 цифр",
+      "confirmCode": "Подтвердить код",
+      "changeEmail": "Изменить email",
+      "resendCode": "Отправить код повторно",
+      "newPasswordLabel": "Новый пароль",
+      "newPasswordError": "Минимум 6 символов",
+      "confirmPasswordLabel": "Подтвердите пароль",
+      "confirmPasswordRequired": "Подтвердите пароль",
+      "passwordsMismatch": "Пароли не совпадают",
+      "saveNewPassword": "Сохранить новый пароль",
+      "rememberPassword": "Вспомнили пароль?",
+      "signIn": "Войти"
     }
   }
 }

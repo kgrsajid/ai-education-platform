@@ -11,6 +11,7 @@ import {
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { useEffect, useMemo, useState, type FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { TagsInput } from "../../../features/quiz/tags-input";
 import { useGetQuizCategoryQuery } from "../../../features/query/quiz";
@@ -31,6 +32,7 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
   const [form] = Form.useForm<CardsCreatePayload>();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { t } = useTranslation();
   const [generateModalOpen, setGenerateModalOpen] = useState(false);
   const [numCards, setNumCards] = useState(5);
   const cardsId = state?.cardId;
@@ -112,7 +114,7 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
   if (isEdit && isLoading) {
     return (
       <div className="flex items-center justify-center h-60">
-        <span className="text-slate-400">Loading...</span>
+        <span className="text-slate-400">{t('common.loading')}</span>
       </div>
     );
   }
@@ -124,18 +126,18 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
         <div className="flex items-center gap-2 mb-1">
           <span className="material-symbols-outlined text-[#1152d4]">style</span>
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
-            Flashcards
+            {t('card.phrases.createPage.flashcards')}
           </span>
         </div>
         <div className="flex flex-wrap justify-between items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-slate-100">
-              {isEdit ? "Edit Card Set" : "Create Card Set"}
+              {isEdit ? t('card.phrases.createPage.editTitle') : t('card.phrases.createPage.createTitle')}
             </h1>
             <p className="text-slate-400 text-sm mt-1">
               {isEdit
-                ? "Update your flashcard set"
-                : "Build a new flashcard set to study smarter"}
+                ? t('card.phrases.createPage.editSubtitle')
+                : t('card.phrases.createPage.createSubtitle')}
             </p>
           </div>
           {!isEdit && (
@@ -146,7 +148,7 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
               className="flex items-center gap-2 px-6 py-2.5 rounded-lg border border-[#1152d4]/50 font-semibold text-[#1152d4] hover:bg-[#1152d4]/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <span className="material-symbols-outlined text-base">auto_awesome</span>
-              Generate with AI
+              {t('common.generateWithAI')}
             </button>
           )}
         </div>
@@ -198,17 +200,17 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
         {/* General Info Card */}
         <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6">
           <h2 className="text-sm font-bold text-slate-300 uppercase tracking-widest mb-5">
-            General Information
+            {t('card.phrases.createPage.generalInfo')}
           </h2>
 
           <Form.Item
             name="title"
-            label={<span className="text-slate-300 text-sm font-medium">Title</span>}
-            rules={[{ required: true, message: "Title is required" }]}
+            label={<span className="text-slate-300 text-sm font-medium">{t('card.phrases.createPage.title')}</span>}
+            rules={[{ required: true, message: t('card.phrases.createPage.titleRequired') }]}
           >
             <Input
               size="large"
-              placeholder="e.g. JavaScript Fundamentals"
+              placeholder={t('card.phrases.createPage.titlePlaceholder')}
               style={{
                 background: "rgb(15 23 42 / 0.6)",
                 borderColor: "rgb(51 65 85)",
@@ -219,11 +221,11 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
 
           <Form.Item
             name="description"
-            label={<span className="text-slate-300 text-sm font-medium">Description</span>}
+            label={<span className="text-slate-300 text-sm font-medium">{t('card.phrases.createPage.description')}</span>}
           >
             <Input.TextArea
               rows={3}
-              placeholder="What is this card set about?"
+              placeholder={t('card.phrases.createPage.descriptionPlaceholder')}
               style={{
                 background: "rgb(15 23 42 / 0.6)",
                 borderColor: "rgb(51 65 85)",
@@ -236,22 +238,22 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
           <div className="grid grid-cols-2 gap-4">
             <Form.Item
               name="categories"
-              label={<span className="text-slate-300 text-sm font-medium">Categories</span>}
-              rules={[{ required: true, message: "Pick at least one category" }]}
+              label={<span className="text-slate-300 text-sm font-medium">{t('card.phrases.createPage.categories')}</span>}
+              rules={[{ required: true, message: t('card.phrases.createPage.categoriesRequired') }]}
             >
               <Select
                 mode="multiple"
                 size="large"
                 options={categoryOptions}
                 loading={isCategoryLoading}
-                placeholder="Select categories"
+                placeholder={t('card.phrases.createPage.selectCategories')}
                 style={{ background: "rgb(15 23 42 / 0.6)" }}
               />
             </Form.Item>
 
             <Form.Item
               name="tags"
-              label={<span className="text-slate-300 text-sm font-medium">Tags</span>}
+              label={<span className="text-slate-300 text-sm font-medium">{t('card.phrases.createPage.tags')}</span>}
               valuePropName="value"
             >
               <TagsInput />
@@ -260,9 +262,9 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
           <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 mt-auto">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-1">
-                <span className="text-white font-semibold">Private Mode</span>
+                <span className="text-white font-semibold">{t('card.phrases.createPage.privateMode')}</span>
                 <p className="text-xs text-slate-400">
-                  Only you access this flashcard.
+                  {t('card.phrases.createPage.privateModeDesc')}
                 </p>
               </div>
               <Form.Item name="isPrivate" valuePropName="checked" className="!mb-0">
@@ -286,7 +288,9 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
                       <div className="w-6 h-6 rounded bg-[#1152d4]/20 flex items-center justify-center">
                         <span className="text-[#1152d4] text-xs font-bold">{idx + 1}</span>
                       </div>
-                      <span className="text-slate-300 text-sm font-semibold">Card {idx + 1}</span>
+                      <span className="text-slate-300 text-sm font-semibold">
+                        {t('card.phrases.createPage.cardLabel', { n: idx + 1 })}
+                      </span>
                     </div>
                     {fields.length > 1 && (
                       <button
@@ -305,14 +309,14 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
                       name={[name, "question"]}
                       label={
                         <span className="text-[#1152d4] text-xs font-bold uppercase tracking-widest">
-                          Question
+                          {t('card.phrases.createPage.question')}
                         </span>
                       }
-                      rules={[{ required: true, message: "Required" }]}
+                      rules={[{ required: true, message: t('common.required') }]}
                     >
                       <Input
                         size="large"
-                        placeholder="Enter question"
+                        placeholder={t('card.phrases.createPage.enterQuestion')}
                         style={{
                           background: "rgb(15 23 42 / 0.6)",
                           borderColor: "rgb(51 65 85)",
@@ -326,14 +330,14 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
                       name={[name, "answer"]}
                       label={
                         <span className="text-emerald-500 text-xs font-bold uppercase tracking-widest">
-                          Answer
+                          {t('card.phrases.createPage.answer')}
                         </span>
                       }
-                      rules={[{ required: true, message: "Required" }]}
+                      rules={[{ required: true, message: t('common.required') }]}
                     >
                       <Input.TextArea
                         rows={2}
-                        placeholder="Enter answer"
+                        placeholder={t('card.phrases.createPage.enterAnswer')}
                         style={{
                           background: "rgb(15 23 42 / 0.6)",
                           borderColor: "rgb(51 65 85)",
@@ -354,7 +358,7 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
                            transition-all flex items-center justify-center gap-2 text-sm font-medium"
               >
                 <PlusOutlined />
-                Add another card
+                {t('card.phrases.createPage.addAnotherCard')}
               </button>
             </div>
           )}
@@ -371,7 +375,7 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
               color: "#94a3b8",
             }}
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             type="primary"
@@ -380,7 +384,7 @@ export const CardsCreatePage: FC<Props> = ({ isEdit = false }) => {
             style={{ background: "#1152d4", borderColor: "#1152d4" }}
             className="font-semibold px-8"
           >
-            {isEdit ? "Save Changes" : "Create Set"}
+            {isEdit ? t('card.phrases.createPage.saveChanges') : t('card.phrases.createPage.createSetBtn')}
           </Button>
         </div>
       </Form>

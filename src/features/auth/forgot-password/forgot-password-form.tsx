@@ -7,6 +7,7 @@ import {
   useResetPasswordMutation,
 } from '../../query/auth/forgot-password';
 import { ROUTES } from '../../../app/router/config';
+import { useTranslation } from 'react-i18next';
 
 const MailIcon = () => (
   <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '1.1rem', lineHeight: 1 }}>
@@ -21,21 +22,28 @@ const LockIcon = () => (
 );
 
 const stepIcons = ['lock_reset', 'mark_email_read', 'lock_open'];
-const stepTitles = ['Восстановление пароля', 'Введите код', 'Новый пароль'];
-const stepDescriptions = [
-  'Введите email для получения кода',
-  '',
-  'Придумайте надёжный пароль',
-];
 
 export const ForgotPasswordForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const [email, setEmail] = useState('');
   const [token, setToken] = useState("");
   const sendCode = useSendCodeMutation();
   const verifyCode = useVerifyCodeMutation();
   const resetPassword = useResetPasswordMutation();
+
+  const stepTitles = [
+    t('auth.forgotPassword.step0Title'),
+    t('auth.forgotPassword.step1Title'),
+    t('auth.forgotPassword.step2Title'),
+  ];
+
+  const stepDescriptions = [
+    t('auth.forgotPassword.step0Desc'),
+    '',
+    t('auth.forgotPassword.step2Desc'),
+  ];
 
   const onSendEmail = async (values: { email: string }) => {
     try {
@@ -67,7 +75,7 @@ export const ForgotPasswordForm = () => {
   };
 
   const description = step === 1
-    ? `Код отправлен на ${email}`
+    ? t('auth.forgotPassword.step1Desc', { email })
     : stepDescriptions[step];
 
   return (
@@ -93,9 +101,9 @@ export const ForgotPasswordForm = () => {
             size="small"
             className="mb-8"
             items={[
-              { title: 'Email' },
-              { title: 'Код' },
-              { title: 'Пароль' },
+              { title: t('auth.forgotPassword.emailStepTitle') },
+              { title: t('auth.forgotPassword.codeStepTitle') },
+              { title: t('auth.forgotPassword.passwordStepTitle') },
             ]}
           />
 
@@ -104,8 +112,8 @@ export const ForgotPasswordForm = () => {
             <Form layout="vertical" onFinish={onSendEmail} requiredMark={false}>
               <Form.Item
                 name="email"
-                label="Email"
-                rules={[{ required: true, type: 'email', message: 'Введите корректный email' }]}
+                label={t('auth.forgotPassword.emailLabel')}
+                rules={[{ required: true, type: 'email', message: t('auth.forgotPassword.emailError') }]}
               >
                 <Input
                   prefix={<MailIcon />}
@@ -123,7 +131,7 @@ export const ForgotPasswordForm = () => {
                   size="large"
                   loading={sendCode.isPending}
                 >
-                  Отправить код
+                  {t('auth.forgotPassword.sendCode')}
                 </Button>
               </Form.Item>
             </Form>
@@ -134,10 +142,10 @@ export const ForgotPasswordForm = () => {
             <Form layout="vertical" onFinish={onVerifyCode} requiredMark={false}>
               <Form.Item
                 name="code"
-                label="Код подтверждения"
+                label={t('auth.forgotPassword.codeLabel')}
                 rules={[
-                  { required: true, message: 'Введите код' },
-                  { len: 6, message: 'Код должен содержать 6 цифр' },
+                  { required: true, message: t('auth.forgotPassword.codeRequired') },
+                  { len: 6, message: t('auth.forgotPassword.codeLength') },
                 ]}
               >
                 <Input.OTP length={6} size="large" />
@@ -151,7 +159,7 @@ export const ForgotPasswordForm = () => {
                   size="large"
                   loading={verifyCode.isPending}
                 >
-                  Подтвердить код
+                  {t('auth.forgotPassword.confirmCode')}
                 </Button>
               </Form.Item>
 
@@ -162,7 +170,7 @@ export const ForgotPasswordForm = () => {
                 style={{ marginTop: 8, color: '#94a3b8' }}
                 onClick={() => setStep(0)}
               >
-                Изменить email
+                {t('auth.forgotPassword.changeEmail')}
               </Button>
 
               <div className="mt-4 text-center">
@@ -172,7 +180,7 @@ export const ForgotPasswordForm = () => {
                   onClick={() => sendCode.mutate(email)}
                   disabled={sendCode.isPending}
                 >
-                  Отправить код повторно
+                  {t('auth.forgotPassword.resendCode')}
                 </button>
               </div>
             </Form>
@@ -183,8 +191,8 @@ export const ForgotPasswordForm = () => {
             <Form layout="vertical" onFinish={onResetPassword} requiredMark={false}>
               <Form.Item
                 name="password"
-                label="Новый пароль"
-                rules={[{ required: true, min: 6, message: 'Минимум 6 символов' }]}
+                label={t('auth.forgotPassword.newPasswordLabel')}
+                rules={[{ required: true, min: 6, message: t('auth.forgotPassword.newPasswordError') }]}
               >
                 <Input.Password
                   prefix={<LockIcon />}
@@ -196,16 +204,16 @@ export const ForgotPasswordForm = () => {
 
               <Form.Item
                 name="confirm"
-                label="Подтвердите пароль"
+                label={t('auth.forgotPassword.confirmPasswordLabel')}
                 dependencies={['password']}
                 rules={[
-                  { required: true, message: 'Подтвердите пароль' },
+                  { required: true, message: t('auth.forgotPassword.confirmPasswordRequired') },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!value || getFieldValue('password') === value) {
                         return Promise.resolve();
                       }
-                      return Promise.reject(new Error('Пароли не совпадают'));
+                      return Promise.reject(new Error(t('auth.forgotPassword.passwordsMismatch')));
                     },
                   }),
                 ]}
@@ -226,7 +234,7 @@ export const ForgotPasswordForm = () => {
                   size="large"
                   loading={resetPassword.isPending}
                 >
-                  Сохранить новый пароль
+                  {t('auth.forgotPassword.saveNewPassword')}
                 </Button>
               </Form.Item>
             </Form>
@@ -235,9 +243,9 @@ export const ForgotPasswordForm = () => {
 
         <div className="bg-slate-800/40 p-6 text-center border-t border-slate-800">
           <p className="text-sm text-slate-400 font-medium m-0">
-            Вспомнили пароль?{' '}
+            {t('auth.forgotPassword.rememberPassword')}{' '}
             <Link to={ROUTES.Login} className="text-[#1152d4] font-bold hover:underline">
-              Войти
+              {t('auth.forgotPassword.signIn')}
             </Link>
           </p>
         </div>

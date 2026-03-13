@@ -1,6 +1,7 @@
 import { useState, type FC } from 'react';
 import type { TQuizResultResponse } from '../../api/quiz/type';
 import { AttemptDetailModal } from './attempt-detail-modal';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   results: TQuizResultResponse[];
@@ -26,6 +27,7 @@ const getScoreColor = (percentage: number) => {
 
 export const QuizAttemptsTable: FC<Props> = ({ results }) => {
   const [selected, setSelected] = useState<TQuizResultResponse | null>(null);
+  const { t } = useTranslation();
 
   if (results.length === 0) return null;
 
@@ -33,15 +35,15 @@ export const QuizAttemptsTable: FC<Props> = ({ results }) => {
 
   return (
     <div className="mt-10">
-      <h3 className="text-xl font-bold text-white mb-6">Recent Attempts</h3>
+      <h3 className="text-xl font-bold text-white mb-6">{t('quizDetail.recentAttempts')}</h3>
       <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/50">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="text-slate-400 text-sm border-b border-slate-800">
-              <th className="py-4 px-6 font-medium">Date</th>
-              <th className="py-4 px-6 font-medium">Score</th>
-              <th className="py-4 px-6 font-medium">Attempt</th>
-              <th className="py-4 px-6 font-medium text-right">Action</th>
+              <th className="py-4 px-6 font-medium">{t('quizDetail.table.date')}</th>
+              <th className="py-4 px-6 font-medium">{t('quizDetail.table.score')}</th>
+              <th className="py-4 px-6 font-medium">{t('quizDetail.table.attempt')}</th>
+              <th className="py-4 px-6 font-medium text-right">{t('quizDetail.table.action')}</th>
             </tr>
           </thead>
           <tbody className="text-sm">
@@ -62,7 +64,7 @@ export const QuizAttemptsTable: FC<Props> = ({ results }) => {
                     onClick={() => setSelected(r)}
                     className="text-primary font-bold hover:underline text-sm"
                   >
-                    Review Details
+                    {t('quizDetail.table.reviewDetails')}
                   </button>
                 </td>
               </tr>

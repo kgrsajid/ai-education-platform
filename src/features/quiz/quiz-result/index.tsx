@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type AnswerResult = {
   question: string;
@@ -17,14 +18,6 @@ type Props = {
   onBack: () => void;
 };
 
-const getStatus = (pct: number) => {
-  if (pct >= 80)
-    return { label: 'Excellent!', color: '#22c55e', textClass: 'text-emerald-400' };
-  if (pct >= 50)
-    return { label: 'Good Job!', color: '#f59e0b', textClass: 'text-amber-400' };
-  return { label: 'Keep Practicing', color: '#ef4444', textClass: 'text-red-400' };
-};
-
 export const QuizResult: FC<Props> = ({
   quizTitle,
   answers,
@@ -33,6 +26,16 @@ export const QuizResult: FC<Props> = ({
   percentage,
   onBack,
 }) => {
+  const { t } = useTranslation();
+
+  const getStatus = (pct: number) => {
+    if (pct >= 80)
+      return { label: t('quizDetail.result.excellent'), color: '#22c55e', textClass: 'text-emerald-400' };
+    if (pct >= 50)
+      return { label: t('quizDetail.result.goodJob'), color: '#f59e0b', textClass: 'text-amber-400' };
+    return { label: t('quizDetail.result.keepPracticing'), color: '#ef4444', textClass: 'text-red-400' };
+  };
+
   const status = getStatus(percentage);
   const circumference = 2 * Math.PI * 52;
   const offset = circumference - (percentage / 100) * circumference;
@@ -45,7 +48,7 @@ export const QuizResult: FC<Props> = ({
         <span className="material-symbols-outlined text-primary text-xl">quiz</span>
         <h2 className="text-white font-semibold text-sm">{quizTitle}</h2>
         <span className="ml-auto text-xs font-bold px-3 py-1 rounded-full bg-slate-800 text-slate-400">
-          Completed
+          {t('quizDetail.result.completed')}
         </span>
       </div>
 
@@ -58,7 +61,7 @@ export const QuizResult: FC<Props> = ({
         >
           <div className="text-center mb-6">
             <p className={`text-xl font-black ${status.textClass}`}>{status.label}</p>
-            <p className="text-slate-400 text-sm mt-1">You've completed the test</p>
+            <p className="text-slate-400 text-sm mt-1">{t('quizDetail.result.completedTest')}</p>
           </div>
 
           <div className="flex items-center justify-center gap-10">
@@ -90,7 +93,7 @@ export const QuizResult: FC<Props> = ({
             {/* Stats */}
             <div className="flex flex-col gap-4">
               <div>
-                <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">Score</p>
+                <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">{t('quizDetail.result.score')}</p>
                 <p className="text-white text-2xl font-black">
                   {score}
                   <span className="text-slate-500 text-lg font-medium"> / {totalQuestions}</span>
@@ -98,11 +101,11 @@ export const QuizResult: FC<Props> = ({
               </div>
               <div className="flex gap-6">
                 <div>
-                  <p className="text-slate-400 text-xs mb-1">Correct</p>
+                  <p className="text-slate-400 text-xs mb-1">{t('quizDetail.result.correct')}</p>
                   <p className="text-emerald-400 text-xl font-bold">{score}</p>
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs mb-1">Wrong</p>
+                  <p className="text-slate-400 text-xs mb-1">{t('quizDetail.result.wrong')}</p>
                   <p className="text-red-400 text-xl font-bold">{wrong}</p>
                 </div>
               </div>
@@ -122,15 +125,15 @@ export const QuizResult: FC<Props> = ({
             </div>
             <div className="flex justify-between mt-1.5">
               <span className="text-xs" style={{ color: status.color }}>
-                ✓ {score} correct
+                ✓ {score} {t('quizDetail.result.correct').toLowerCase()}
               </span>
-              <span className="text-xs text-red-400">✗ {wrong} wrong</span>
+              <span className="text-xs text-red-400">✗ {wrong} {t('quizDetail.result.wrong').toLowerCase()}</span>
             </div>
           </div>
         </motion.div>
 
         {/* Answer review */}
-        <h3 className="text-white font-bold text-lg mb-4">Answer Review</h3>
+        <h3 className="text-white font-bold text-lg mb-4">{t('quizDetail.result.answerReview')}</h3>
         <div className="space-y-3 mb-8">
           {answers.map((a, i) => (
             <motion.div
@@ -159,14 +162,14 @@ export const QuizResult: FC<Props> = ({
                     {i + 1}. {a.question}
                   </p>
                   <p className="text-slate-400 text-xs">
-                    Your answer:{' '}
+                    {t('quizDetail.result.yourAnswer')}{' '}
                     <span className={a.isCorrect ? 'text-emerald-400' : 'text-red-400'}>
                       {a.selected}
                     </span>
                   </p>
                   {!a.isCorrect && (
                     <p className="text-xs text-emerald-400 mt-0.5">
-                      Correct: {a.correct}
+                      {t('quizDetail.result.correctAnswer')} {a.correct}
                     </p>
                   )}
                 </div>
@@ -179,7 +182,7 @@ export const QuizResult: FC<Props> = ({
           onClick={onBack}
           className="w-full py-3.5 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/20"
         >
-          Back to Tests
+          {t('quizDetail.result.backToTests')}
         </button>
       </div>
     </div>

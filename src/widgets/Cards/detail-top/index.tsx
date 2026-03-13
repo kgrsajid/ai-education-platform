@@ -5,6 +5,7 @@ import { useAuth } from "../../../providers/context/const/const";
 import type { TCardDetail } from "../../../features/api/card/type";
 import { EditButton } from "../../../features/card/edit/edit-button";
 import { Tag, Tooltip } from "antd";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   card: TCardDetail;
@@ -13,6 +14,7 @@ type Props = {
 
 export const CardInfoTop: FC<Props> = ({ card, isLoading }) => {
   const { checkById } = useAuth();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
@@ -36,7 +38,7 @@ export const CardInfoTop: FC<Props> = ({ card, isLoading }) => {
           </div>
           <div>
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-0.5">
-              Flashcard Set
+              {t('card.phrases.detailPage.flashcardSet')}
             </p>
             <h1 className="text-2xl font-bold text-slate-100">{card.title}</h1>
           </div>
@@ -52,13 +54,13 @@ export const CardInfoTop: FC<Props> = ({ card, isLoading }) => {
 
       {/* Stats row */}
       <div className="flex flex-wrap gap-3 mb-5">
-        <Tooltip title="Total cards">
+        <Tooltip title={t('card.phrases.detailPage.totalCards')}>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-lg">
             <span className="material-symbols-outlined text-blue-400" style={{ fontSize: "0.9rem" }}>
               quiz
             </span>
             <span className="text-blue-300 text-xs font-semibold">
-              {card.cards.length} cards
+              {card.cards.length} {t('card.phrases.detailPage.totalCards').toLowerCase()}
             </span>
           </div>
         </Tooltip>

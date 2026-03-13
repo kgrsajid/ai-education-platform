@@ -1,6 +1,7 @@
 import { Checkbox, Form, Input, Slider, Switch } from 'antd';
 import { CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type OptionItemProps = {
   questionIndex: number;
@@ -9,6 +10,7 @@ type OptionItemProps = {
 };
 
 const OptionItem: FC<OptionItemProps> = ({ questionIndex, oName, oIdx }) => {
+  const { t } = useTranslation();
   const form = Form.useFormInstance();
   const isCorrect = Form.useWatch(
     ['questions', questionIndex, 'options', oIdx, 'isCorrect'],
@@ -32,11 +34,11 @@ const OptionItem: FC<OptionItemProps> = ({ questionIndex, oName, oIdx }) => {
       </Form.Item>
       <Form.Item
         name={[oName, 'optionText']}
-        rules={[{ required: true, message: 'Option is required' }]}
+        rules={[{ required: true, message: t('quizDetail.question.optionRequired') }]}
         className="flex-1 !mb-0"
       >
         <Input
-          placeholder={`Option ${oIdx + 1}`}
+          placeholder={`${t('quiz.words.createPage.variant')} ${oIdx + 1}`}
           variant="borderless"
           size="small"
           className="!p-0 !text-sm"
@@ -59,6 +61,7 @@ export const CreateQuestionCard: FC<Props> = ({
   onRemove,
   canRemove,
 }) => {
+  const { t } = useTranslation();
   const form = Form.useFormInstance();
   const timeValue = Form.useWatch(['questions', name, 'time'], form) ?? 30;
 
@@ -72,15 +75,15 @@ export const CreateQuestionCard: FC<Props> = ({
         <div className="flex justify-between items-start mb-6">
           <div className="flex-1 max-w-2xl">
             <div className="text-primary font-semibold text-xs uppercase tracking-wider mb-2">
-              Question {String(index + 1).padStart(2, '0')}
+              {t('quizDetail.question.label', { n: String(index + 1).padStart(2, '0') })}
             </div>
             <Form.Item
               name={[name, 'question']}
-              rules={[{ required: true, message: 'Question is required' }]}
+              rules={[{ required: true, message: t('quizDetail.question.required') }]}
               className="!mb-0"
             >
               <Input
-                placeholder="Type your question here..."
+                placeholder={t('quizDetail.question.placeholder')}
                 variant="borderless"
                 className="!text-xl !font-medium !px-0"
                 style={{
@@ -97,7 +100,7 @@ export const CreateQuestionCard: FC<Props> = ({
             <button
               type="button"
               className="p-2 text-slate-400 hover:text-slate-200 transition-colors rounded-lg hover:bg-slate-800"
-              title="Duplicate question"
+              title={t('quizDetail.question.duplicateTitle')}
             >
               <CopyOutlined />
             </button>
@@ -106,7 +109,7 @@ export const CreateQuestionCard: FC<Props> = ({
                 type="button"
                 onClick={() => onRemove(name)}
                 className="p-2 text-red-500 hover:text-red-400 transition-colors rounded-lg hover:bg-red-500/10"
-                title="Delete question"
+                title={t('quizDetail.question.deleteTitle')}
               >
                 <DeleteOutlined />
               </button>
@@ -136,9 +139,9 @@ export const CreateQuestionCard: FC<Props> = ({
           <div className="flex-1 min-w-[200px]">
             <div className="flex justify-between mb-2">
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Time Limit
+                {t('quizDetail.question.timeLimit')}
               </span>
-              <span className="text-xs font-bold text-primary">{timeValue} sec</span>
+              <span className="text-xs font-bold text-primary">{timeValue} {t('quiz.words.createPage.second')}</span>
             </div>
             <Form.Item name={[name, 'time']} noStyle>
               <Slider min={5} max={300} step={5} tooltip={{ open: false }} />
@@ -148,7 +151,7 @@ export const CreateQuestionCard: FC<Props> = ({
           {/* Multiple Choices toggle */}
           <div className="flex items-center gap-2 shrink-0">
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Multiple Choices
+              {t('quizDetail.question.multipleChoices')}
             </span>
             <Switch size="small" />
           </div>

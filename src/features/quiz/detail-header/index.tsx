@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import type { TQuizDetails } from '../../api/quiz/type';
 import { useAuth } from '../../../providers/context/const/const';
 import { EditButton } from '../edit/edit-button';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   quiz: TQuizDetails;
@@ -11,6 +12,7 @@ type Props = {
 
 export const QuizDetailHeader: FC<Props> = ({ quiz, onStart }) => {
   const { checkById } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-wrap justify-between items-start gap-6 mb-8">
@@ -58,7 +60,7 @@ export const QuizDetailHeader: FC<Props> = ({ quiz, onStart }) => {
         className="flex items-center gap-2 px-8 py-4 bg-primary hover:bg-blue-600 text-white rounded-xl font-bold shadow-xl shadow-primary/20 transition-colors shrink-0"
       >
         <span className="material-symbols-outlined">play_arrow</span>
-        Start Test
+        {t('quizDetail.startTest')}
       </motion.button>
     </div>
   );

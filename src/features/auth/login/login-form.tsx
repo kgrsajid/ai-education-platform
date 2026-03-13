@@ -2,6 +2,7 @@ import { Button, Form, Input } from "antd";
 import { Link } from "react-router-dom";
 import { useLoginMutation } from "../../query/auth/login";
 import type { LoginPayload } from "../../api/auth/type";
+import { useTranslation } from "react-i18next";
 
 const MailIcon = () => (
   <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '1.1rem', lineHeight: 1 }}>
@@ -17,6 +18,7 @@ const LockIcon = () => (
 
 export const LoginForm = () => {
   const login = useLoginMutation();
+  const { t } = useTranslation();
 
   return (
     <div className="w-full max-w-[480px] z-10">
@@ -26,8 +28,8 @@ export const LoginForm = () => {
             <div className="size-16 bg-[#1152d4]/10 rounded-2xl flex items-center justify-center text-[#1152d4] mb-2">
               <span className="material-symbols-outlined" style={{ fontSize: '2.5rem' }}>account_circle</span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white m-0">Добро пожаловать!</h1>
-            <p className="text-slate-400 text-sm m-0">Готовы повысить свои знания сегодня?</p>
+            <h1 className="text-2xl font-bold tracking-tight text-white m-0">{t('auth.login.title')}</h1>
+            <p className="text-slate-400 text-sm m-0">{t('auth.login.subtitle')}</p>
           </div>
           <Form<LoginPayload>
             layout="vertical"
@@ -36,8 +38,8 @@ export const LoginForm = () => {
           >
             <Form.Item
               name="email"
-              label="Email"
-              rules={[{ required: true, type: 'email', message: 'Введите корректный email' }]}
+              label={t('auth.login.emailLabel')}
+              rules={[{ required: true, type: 'email', message: t('auth.login.emailError') }]}
             >
               <Input
                 prefix={<MailIcon />}
@@ -49,20 +51,20 @@ export const LoginForm = () => {
 
             <Form.Item style={{ marginBottom: 0 }}>
               <div className="flex justify-between items-center mb-1.5">
-                <span className="text-sm font-semibold text-slate-300">Пароль</span>
+                <span className="text-sm font-semibold text-slate-300">{t('auth.login.passwordLabel')}</span>
                 <Link
                   to="/forgot-password"
                   className="text-xs font-semibold text-[#1152d4] hover:underline"
                   tabIndex={-1}
                 >
-                  Забыли пароль?
+                  {t('auth.login.forgotPassword')}
                 </Link>
               </div>
             </Form.Item>
 
             <Form.Item
               name="password"
-              rules={[{ required: true, min: 6, message: 'Минимум 6 символов' }]}
+              rules={[{ required: true, min: 6, message: t('auth.login.passwordError') }]}
             >
               <Input.Password
                 prefix={<LockIcon />}
@@ -80,7 +82,7 @@ export const LoginForm = () => {
                 size="large"
                 loading={login.isPending}
               >
-                Войти в систему
+                {t('auth.login.submitBtn')}
               </Button>
             </Form.Item>
           </Form>
@@ -88,9 +90,9 @@ export const LoginForm = () => {
 
         <div className="bg-slate-800/40 p-6 text-center border-t border-slate-800">
           <p className="text-sm text-slate-400 font-medium m-0">
-            Нет аккаунта?{' '}
+            {t('auth.login.noAccount')}{' '}
             <Link to="/register" className="text-[#1152d4] font-bold hover:underline">
-              Создать аккаунт
+              {t('auth.login.createAccount')}
             </Link>
           </p>
         </div>

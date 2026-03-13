@@ -4,9 +4,11 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useGetAllQuizQuery } from "../../../features/query/quiz";
 import { QuizCard } from "../../../features/quiz/card";
 import { QuizTop } from "../../../features/quiz/top/top-part";
+import { useTranslation } from "react-i18next";
 
 const QuizListPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [pagination, setPagination] = useState({ page: 1, limit: 12 });
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,18 +48,18 @@ const QuizListPage = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100 m-0">
-            Available Tests
+            {t("quiz.phrases.listPage.title")}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mt-1 mb-0">
-            Refine your skills with curated challenges and AI-generated assessments.
+            {t("quiz.phrases.listPage.subtitle")}
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Segmented
             options={[
-              { label: "All Tests", value: "all" },
-              { label: "My Tests", value: "my" },
+              { label: t("quiz.phrases.listPage.allTests"), value: "all" },
+              { label: t("quiz.phrases.listPage.myTests"), value: "my" },
             ]}
             value={section}
             onChange={handleSectionChange}
@@ -69,7 +71,7 @@ const QuizListPage = () => {
             onClick={() => navigate("/quiz/create")}
             className="flex items-center gap-1"
           >
-            Create Test
+            {t("quiz.phrases.listPage.createTest")}
           </Button>
         </div>
       </div>
@@ -97,8 +99,8 @@ const QuizListPage = () => {
           <div className="size-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
             <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '2rem' }}>search_off</span>
           </div>
-          <p className="text-slate-500 dark:text-slate-400 font-medium">No tests found</p>
-          <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Try adjusting your search or filters</p>
+          <p className="text-slate-500 dark:text-slate-400 font-medium">{t("quiz.phrases.listPage.noTestsFound")}</p>
+          <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">{t("common.tryAdjusting")}</p>
         </div>
       )}
 

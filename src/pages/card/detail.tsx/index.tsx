@@ -5,10 +5,12 @@ import { CardInfoTop } from "../../../widgets/Cards/detail-top";
 import { useGetCardByIdQuery } from "../../../features/query/card";
 import { FlashcardsPreview } from "../../../widgets/Cards/cards-preview";
 import { Skeleton } from "antd";
+import { useTranslation } from "react-i18next";
 
 export const CardDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { t } = useTranslation();
   const { data: cardData, isLoading } = useGetCardByIdQuery(id);
 
   return (
@@ -19,7 +21,7 @@ export const CardDetailPage = () => {
         className="flex items-center gap-1.5 text-slate-500 hover:text-slate-300 transition-colors mb-6 text-sm"
       >
         <ArrowLeft size={16} />
-        Back to Flashcards
+        {t("card.phrases.detailPage.backToFlashcards")}
       </button>
 
       {isLoading ? (

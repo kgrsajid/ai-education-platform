@@ -1,22 +1,43 @@
 {
+  "common": {
+    "loading": "Loading...",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "apply": "Apply",
+    "reset": "Reset",
+    "filters": "Filters",
+    "search": "Search",
+    "noResults": "No results found",
+    "tryAdjusting": "Try adjusting your search or filters",
+    "profile": "Profile",
+    "generateWithAI": "Generate with AI",
+    "publish": "Publish",
+    "required": "Required"
+  },
   "chat": {
-    "words": {
-    },
+    "words": {},
     "phrases": {
       "empty-title": "What are you working on?",
+      "companion": "Your AI-powered learning companion. Ask me anything about your studies.",
       "input": {
         "placeholder": "Enter a message..."
       },
-      "new-chat": "New chat"
+      "new-chat": "New chat",
+      "sendMessage": "Send Message",
+      "errorMessage": "Something went wrong. Try sending the message again."
     }
   },
   "quiz": {
     "words": {
       "create": "Create",
       "diff": {
-          "easy": "Easy",
-          "medium": "Medium",
-          "hard": "Hard"
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard"
       },
       "difficulty": "Difficulty",
       "filter": {
@@ -32,6 +53,7 @@
     },
     "phrases": {
       "search": "Search for a quiz...",
+      "searchPlaceholder": "Search for tests by title or keyword...",
       "filter": {
         "categoryPlaceholder": "Choose categories",
         "numberOfQuestions": "The number of questions:"
@@ -42,9 +64,13 @@
       },
       "createPage": {
         "title": "Creating a quiz",
+        "createNewTitle": "Create New Test",
+        "designSubtitle": "Design your assessment with AI-enhanced tools.",
         "form": {
           "addAnother": "Add another question",
+          "addQuestion": "Add Question",
           "createText": "Create a quiz",
+          "publishTest": "Publish Test",
           "name": {
             "label": "Name of the quiz",
             "placeholder": "Enter the name of the quiz",
@@ -74,6 +100,162 @@
             "message": "Enter the option"
           }
         }
+      },
+      "listPage": {
+        "title": "Available Tests",
+        "subtitle": "Refine your skills with curated challenges and AI-generated assessments.",
+        "allTests": "All Tests",
+        "myTests": "My Tests",
+        "createTest": "Create Test",
+        "noTestsFound": "No tests found"
+      },
+      "detailPage": {
+        "loadingDetails": "Loading quiz details...",
+        "notFound": "Quiz not found",
+        "tests": "Tests"
+      },
+      "startPage": {
+        "loading": "Loading quiz...",
+        "notFound": "Quiz not found"
+      },
+      "breadcrumb": {
+        "tests": "Tests",
+        "editTest": "Edit Test",
+        "createNew": "Create New"
+      }
+    }
+  },
+  "quizDetail": {
+    "difficultyLevel": "Difficulty Level",
+    "totalQuestions": "Total Questions",
+    "allocatedTime": "Allocated Time",
+    "recentAttempts": "Recent Attempts",
+    "startTest": "Start Test",
+    "questions": "Questions",
+    "questionsAdded": "Questions Added",
+    "questionAdded": "Question Added",
+    "generalInfo": "General Information",
+    "testTitle": "Test Title",
+    "titleRequired": "Title is required",
+    "titlePlaceholder": "e.g. Advanced Quantum Physics Final",
+    "description": "Description",
+    "descriptionPlaceholder": "Brief overview of what this test covers...",
+    "category": "Category",
+    "categoryRequired": "Select at least one category",
+    "selectCategory": "Select...",
+    "difficulty": "Difficulty",
+    "tags": "Tags",
+    "privateMode": "Private Mode",
+    "privateModeDesc": "Only you access this test.",
+    "table": {
+      "date": "Date",
+      "score": "Score",
+      "attempt": "Attempt",
+      "action": "Action",
+      "reviewDetails": "Review Details"
+    },
+    "generateModal": {
+      "title": "Generate Questions with AI",
+      "description": "AI will generate questions based on your test title, description, and settings.",
+      "numberOfQuestions": "Number of questions",
+      "generate": "Generate",
+      "generatedSuccess": "Generated {{n}} questions!",
+      "generateFailed": "Failed to generate questions. Please try again."
+    },
+    "question": {
+      "label": "Question {{n}}",
+      "placeholder": "Type your question here...",
+      "required": "Question is required",
+      "timeLimit": "Time Limit",
+      "multipleChoices": "Multiple Choices",
+      "optionRequired": "Option is required",
+      "duplicateTitle": "Duplicate question",
+      "deleteTitle": "Delete question"
+    },
+    "result": {
+      "completed": "Completed",
+      "completedTest": "You've completed the test",
+      "score": "Score",
+      "correct": "Correct",
+      "wrong": "Wrong",
+      "answerReview": "Answer Review",
+      "yourAnswer": "Your answer:",
+      "correctAnswer": "Correct:",
+      "backToTests": "Back to Tests",
+      "excellent": "Excellent!",
+      "goodJob": "Good Job!",
+      "keepPracticing": "Keep Practicing",
+      "finishTest": "Finish Test",
+      "nextQuestion": "Next Question"
+    }
+  },
+  "card": {
+    "words": {},
+    "phrases": {
+      "search": "Search for a card set...",
+      "listPage": {
+        "title": "Flashcards",
+        "subtitle": "Study smarter with interactive flashcard sets",
+        "allSets": "All Sets",
+        "mySets": "My Sets",
+        "createSet": "Create Set",
+        "noSetsFound": "No flashcard sets found"
+      },
+      "detailPage": {
+        "backToFlashcards": "Back to Flashcards",
+        "flashcardSet": "Flashcard Set",
+        "totalCards": "Total cards",
+        "allCards": "All Cards"
+      },
+      "createPage": {
+        "flashcards": "Flashcards",
+        "createTitle": "Create Card Set",
+        "editTitle": "Edit Card Set",
+        "createSubtitle": "Build a new flashcard set to study smarter",
+        "editSubtitle": "Update your flashcard set",
+        "generalInfo": "General Information",
+        "title": "Title",
+        "titleRequired": "Title is required",
+        "titlePlaceholder": "e.g. JavaScript Fundamentals",
+        "description": "Description",
+        "descriptionPlaceholder": "What is this card set about?",
+        "categories": "Categories",
+        "categoriesRequired": "Pick at least one category",
+        "selectCategories": "Select categories",
+        "tags": "Tags",
+        "privateMode": "Private Mode",
+        "privateModeDesc": "Only you access this flashcard.",
+        "cardLabel": "Card {{n}}",
+        "question": "Question",
+        "answer": "Answer",
+        "enterQuestion": "Enter question",
+        "enterAnswer": "Enter answer",
+        "addAnotherCard": "Add another card",
+        "saveChanges": "Save Changes",
+        "createSetBtn": "Create Set"
+      },
+      "filter": {
+        "filters": "Filters",
+        "categories": "Categories",
+        "selectCategories": "Select categories...",
+        "numberOfCards": "Number of cards:",
+        "reset": "Reset",
+        "apply": "Apply"
+      },
+      "flashcard": {
+        "clickToReveal": "Click to reveal answer",
+        "clickToFlipBack": "Click to flip back",
+        "trackProgress": "Track Progress",
+        "progress": "Progress",
+        "mastered": "Mastered",
+        "stillLearning": "Still learning",
+        "backToLastCard": "Back to last card",
+        "studyRemaining": "Study remaining ({{n}})",
+        "restartAllCards": "Restart all cards",
+        "perfectScore": "Perfect score! All cards mastered!",
+        "greatJob": "Great job! Almost there!",
+        "goodProgress": "Good progress, keep going!",
+        "niceStart": "Nice start, let's review again!"
       }
     }
   },
@@ -83,6 +265,87 @@
       "quiz": "Quiz",
       "games": "Games",
       "cards": "Cards"
+    }
+  },
+  "header": {
+    "appName": "AI education",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "quizInfo": {
+    "rules": {
+      "title": "Quiz rules",
+      "rule1": "One correct answer per question",
+      "rule2": "You can't change answers after submitting",
+      "rule3": "No time limit unless specified",
+      "rule4": "Your result will be shown at the end"
+    },
+    "sampleQuestions": "Sample questions",
+    "moreQuestions": "+ {{n}} more questions",
+    "startQuiz": "Start Quiz",
+    "questions": "questions",
+    "min": "min"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome!",
+      "subtitle": "Ready to boost your knowledge today?",
+      "emailLabel": "Email",
+      "emailError": "Enter a valid email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot your password?",
+      "passwordError": "Minimum 6 characters",
+      "submitBtn": "Sign In",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Start learning smarter with AI Learn",
+      "nameLabel": "Name",
+      "namePlaceholder": "John Doe",
+      "nameError": "Enter your name",
+      "emailLabel": "Email",
+      "emailError": "Enter a valid email",
+      "passwordLabel": "Password",
+      "passwordError": "Minimum 6 characters",
+      "roleLabel": "Role",
+      "roleError": "Select a role",
+      "rolePlaceholder": "Select a role",
+      "roleStudent": "Student",
+      "roleTeacher": "Teacher",
+      "roleAdmin": "Admin",
+      "submitBtn": "Register",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign In"
+    },
+    "forgotPassword": {
+      "step0Title": "Password Recovery",
+      "step1Title": "Enter Code",
+      "step2Title": "New Password",
+      "step0Desc": "Enter your email to receive a code",
+      "step1Desc": "Code sent to {{email}}",
+      "step2Desc": "Create a strong password",
+      "emailStepTitle": "Email",
+      "codeStepTitle": "Code",
+      "passwordStepTitle": "Password",
+      "emailLabel": "Email",
+      "emailError": "Enter a valid email",
+      "sendCode": "Send Code",
+      "codeLabel": "Verification Code",
+      "codeRequired": "Enter the code",
+      "codeLength": "Code must be 6 digits",
+      "confirmCode": "Confirm Code",
+      "changeEmail": "Change Email",
+      "resendCode": "Resend Code",
+      "newPasswordLabel": "New Password",
+      "newPasswordError": "Minimum 6 characters",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordRequired": "Confirm your password",
+      "passwordsMismatch": "Passwords do not match",
+      "saveNewPassword": "Save New Password",
+      "rememberPassword": "Remember your password?",
+      "signIn": "Sign In"
     }
   }
 }

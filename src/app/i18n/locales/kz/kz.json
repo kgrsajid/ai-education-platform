@@ -1,14 +1,36 @@
 {
+  "common": {
+    "loading": "Жүктелуде...",
+    "back": "Артқа",
+    "cancel": "Болдырмау",
+    "save": "Өзгерістерді сақтау",
+    "create": "Жасау",
+    "edit": "Өңдеу",
+    "delete": "Жою",
+    "apply": "Қолдану",
+    "reset": "Тазалау",
+    "filters": "Сүзгілер",
+    "search": "Іздеу",
+    "noResults": "Ештеңе табылмады",
+    "tryAdjusting": "Іздеуді немесе сүзгілерді өзгертіп көріңіз",
+    "profile": "Профиль",
+    "generateWithAI": "AI арқылы жасау",
+    "publish": "Жариялау",
+    "required": "Міндетті"
+  },
   "chat": {
     "words": {
       "label": "Чат"
     },
     "phrases": {
       "empty-title": "Сіз Не істеп жатырсыз?",
+      "companion": "Сіздің AI оқу көмекшіңіз. Маған кез келген нәрсені сұраңыз.",
       "input": {
         "placeholder": "Хабарламаны енгізіңіз..."
       },
-      "new-chat": "Жаңа чат"
+      "new-chat": "Жаңа чат",
+      "sendMessage": "Хабарлама жіберу",
+      "errorMessage": "Бір нәрсе дұрыс болмады. Хабарламаны қайтадан жіберіп көріңіз."
     }
   },
   "quiz": {
@@ -21,7 +43,7 @@
       },
       "difficulty": "Қиындық",
       "filter": {
-        "filters": "Фильтрлер",
+        "filters": "Сүзгілер",
         "categories": "Санаттар",
         "apply": "Қолдану"
       },
@@ -33,15 +55,24 @@
     },
     "phrases": {
       "search": "Викторинаны іздеу...",
+      "searchPlaceholder": "Тесттерді атауы немесе кілтсөз бойынша іздеу...",
       "filter": {
         "categoryPlaceholder": "Санатты таңдаңыз",
         "numberOfQuestions": "Сұрақтар саны:"
       },
+      "editPage": {
+        "title": "Викторинаны өңдеу",
+        "editText": "Викторинаны өңдеу"
+      },
       "createPage": {
         "title": "Викторина жасау",
+        "createNewTitle": "Жаңа тест жасау",
+        "designSubtitle": "AI құралдарымен бағалауыңызды жасаңыз.",
         "form": {
           "addAnother": "Тағы бір сұрақ қосу",
+          "addQuestion": "Сұрақ қосу",
           "createText": "Викторина жасау",
+          "publishTest": "Тестті жариялау",
           "name": {
             "label": "Викторинаның атауы",
             "placeholder": "Викторинаның атауын енгізіңіз",
@@ -71,6 +102,162 @@
             "message": "Нұсқаны енгізіңіз"
           }
         }
+      },
+      "listPage": {
+        "title": "Қолжетімді тесттер",
+        "subtitle": "Тесттер мен AI бағалаулар арқылы дағдыларыңызды жетілдіріңіз.",
+        "allTests": "Барлық тесттер",
+        "myTests": "Менің тесттерім",
+        "createTest": "Тест жасау",
+        "noTestsFound": "Тесттер табылмады"
+      },
+      "detailPage": {
+        "loadingDetails": "Тест мәліметтері жүктелуде...",
+        "notFound": "Тест табылмады",
+        "tests": "Тесттер"
+      },
+      "startPage": {
+        "loading": "Тест жүктелуде...",
+        "notFound": "Тест табылмады"
+      },
+      "breadcrumb": {
+        "tests": "Тесттер",
+        "editTest": "Тестті өңдеу",
+        "createNew": "Жаңа жасау"
+      }
+    }
+  },
+  "quizDetail": {
+    "difficultyLevel": "Қиындық деңгейі",
+    "totalQuestions": "Жалпы сұрақтар",
+    "allocatedTime": "Бөлінген уақыт",
+    "recentAttempts": "Соңғы әрекеттер",
+    "startTest": "Тестті бастау",
+    "questions": "Сұрақтар",
+    "questionsAdded": "Сұрақ қосылды",
+    "questionAdded": "Сұрақ қосылды",
+    "generalInfo": "Жалпы ақпарат",
+    "testTitle": "Тест атауы",
+    "titleRequired": "Атауы міндетті",
+    "titlePlaceholder": "Мысалы, Кванттық физика финалы",
+    "description": "Сипаттама",
+    "descriptionPlaceholder": "Бұл тест нені қамтитынының қысқаша шолуы...",
+    "category": "Санат",
+    "categoryRequired": "Кем дегенде бір санат таңдаңыз",
+    "selectCategory": "Таңдау...",
+    "difficulty": "Қиындық",
+    "tags": "Тегтер",
+    "privateMode": "Жеке режим",
+    "privateModeDesc": "Тек сіз ғана осы тестке кіре аласыз.",
+    "table": {
+      "date": "Күні",
+      "score": "Нәтиже",
+      "attempt": "Әрекет",
+      "action": "Іс-әрекет",
+      "reviewDetails": "Егжей-тегжейді қарау"
+    },
+    "generateModal": {
+      "title": "AI арқылы сұрақтар жасау",
+      "description": "AI тесттің атауы, сипаттамасы және параметрлері негізінде сұрақтар жасайды.",
+      "numberOfQuestions": "Сұрақтар саны",
+      "generate": "Жасау",
+      "generatedSuccess": "{{n}} сұрақ жасалды!",
+      "generateFailed": "Сұрақтарды жасау сәтсіз аяқталды. Қайтадан көріңіз."
+    },
+    "question": {
+      "label": "Сұрақ {{n}}",
+      "placeholder": "Сұрақ мәтінін осында енгізіңіз...",
+      "required": "Сұрақ міндетті",
+      "timeLimit": "Уақыт шегі",
+      "multipleChoices": "Бірнеше жауап",
+      "optionRequired": "Нұсқа міндетті",
+      "duplicateTitle": "Сұрақты көшіру",
+      "deleteTitle": "Сұрақты жою"
+    },
+    "result": {
+      "completed": "Аяқталды",
+      "completedTest": "Сіз тестті аяқтадыңыз",
+      "score": "Нәтиже",
+      "correct": "Дұрыс",
+      "wrong": "Қате",
+      "answerReview": "Жауаптарды талдау",
+      "yourAnswer": "Сіздің жауабыңыз:",
+      "correctAnswer": "Дұрыс жауап:",
+      "backToTests": "Тесттерге оралу",
+      "excellent": "Тамаша!",
+      "goodJob": "Жақсы жұмыс!",
+      "keepPracticing": "Жаттығуды жалғастырыңыз",
+      "finishTest": "Тестті аяқтау",
+      "nextQuestion": "Келесі сұрақ"
+    }
+  },
+  "card": {
+    "words": {},
+    "phrases": {
+      "search": "Карта жиынтығын іздеу...",
+      "listPage": {
+        "title": "Карталар",
+        "subtitle": "Интерактивті карта жиынтықтарымен ақылды оқыңыз",
+        "allSets": "Барлық жиынтықтар",
+        "mySets": "Менің жиынтықтарым",
+        "createSet": "Жиынтық жасау",
+        "noSetsFound": "Карта жиынтықтары табылмады"
+      },
+      "detailPage": {
+        "backToFlashcards": "Карталарға оралу",
+        "flashcardSet": "Карта жиынтығы",
+        "totalCards": "Жалпы карталар",
+        "allCards": "Барлық карталар"
+      },
+      "createPage": {
+        "flashcards": "Карталар",
+        "createTitle": "Карта жиынтығын жасау",
+        "editTitle": "Карта жиынтығын өңдеу",
+        "createSubtitle": "Ақылды оқу үшін жаңа карта жиынтығын жасаңыз",
+        "editSubtitle": "Карта жиынтығыңызды жаңартыңыз",
+        "generalInfo": "Жалпы ақпарат",
+        "title": "Атауы",
+        "titleRequired": "Атауы міндетті",
+        "titlePlaceholder": "Мысалы, JavaScript негіздері",
+        "description": "Сипаттама",
+        "descriptionPlaceholder": "Бұл карта жиынтығы не туралы?",
+        "categories": "Санаттар",
+        "categoriesRequired": "Кем дегенде бір санат таңдаңыз",
+        "selectCategories": "Санаттарды таңдаңыз",
+        "tags": "Тегтер",
+        "privateMode": "Жеке режим",
+        "privateModeDesc": "Тек сіз ғана осы картаға кіре аласыз.",
+        "cardLabel": "Карта {{n}}",
+        "question": "Сұрақ",
+        "answer": "Жауап",
+        "enterQuestion": "Сұрақты енгізіңіз",
+        "enterAnswer": "Жауапты енгізіңіз",
+        "addAnotherCard": "Тағы бір карта қосу",
+        "saveChanges": "Өзгерістерді сақтау",
+        "createSetBtn": "Жиынтық жасау"
+      },
+      "filter": {
+        "filters": "Сүзгілер",
+        "categories": "Санаттар",
+        "selectCategories": "Санаттарды таңдаңыз...",
+        "numberOfCards": "Карталар саны:",
+        "reset": "Тазалау",
+        "apply": "Қолдану"
+      },
+      "flashcard": {
+        "clickToReveal": "Жауапты көрсету үшін басыңыз",
+        "clickToFlipBack": "Артқа аудару үшін басыңыз",
+        "trackProgress": "Прогресті бақылау",
+        "progress": "Прогресс",
+        "mastered": "Меңгерілді",
+        "stillLearning": "Әлі үйренуде",
+        "backToLastCard": "Соңғы картаға оралу",
+        "studyRemaining": "Қалғандарын оқу ({{n}})",
+        "restartAllCards": "Барлығын қайтадан бастау",
+        "perfectScore": "Керемет нәтиже! Барлық карталар меңгерілді!",
+        "greatJob": "Тамаша жұмыс! Мақсатқа жақын!",
+        "goodProgress": "Жақсы прогресс, жалғастырыңыз!",
+        "niceStart": "Жақсы бастама, қайтадан қарап шығайық!"
       }
     }
   },
@@ -80,6 +267,87 @@
       "quiz": "Тест",
       "games": "Ойындар",
       "cards": "Карталар"
+    }
+  },
+  "header": {
+    "appName": "AI білім",
+    "profile": "Профиль",
+    "logout": "Шығу"
+  },
+  "quizInfo": {
+    "rules": {
+      "title": "Викторина ережелері",
+      "rule1": "Бір сұраққа бір дұрыс жауап",
+      "rule2": "Жіберілгеннен кейін жауаптарды өзгерту мүмкін емес",
+      "rule3": "Нақтыланбаса уақыт шегі жоқ",
+      "rule4": "Нәтиже соңында көрсетіледі"
+    },
+    "sampleQuestions": "Үлгі сұрақтар",
+    "moreQuestions": "+ тағы {{n}} сұрақ",
+    "startQuiz": "Тестті бастау",
+    "questions": "сұрақ",
+    "min": "мин"
+  },
+  "auth": {
+    "login": {
+      "title": "Қош келдіңіз!",
+      "subtitle": "Бүгін білімді жетілдіруге дайынсыз ба?",
+      "emailLabel": "Email",
+      "emailError": "Дұрыс email енгізіңіз",
+      "passwordLabel": "Құпия сөз",
+      "forgotPassword": "Құпия сөзді ұмыттыңыз ба?",
+      "passwordError": "Кемінде 6 таңба",
+      "submitBtn": "Жүйеге кіру",
+      "noAccount": "Тіркелгіңіз жоқ па?",
+      "createAccount": "Тіркелгі жасау"
+    },
+    "register": {
+      "title": "Тіркелгі жасау",
+      "subtitle": "AI Learn арқылы ақылды оқуды бастаңыз",
+      "nameLabel": "Аты",
+      "namePlaceholder": "Иван Иванов",
+      "nameError": "Атыңызды енгізіңіз",
+      "emailLabel": "Email",
+      "emailError": "Дұрыс email енгізіңіз",
+      "passwordLabel": "Құпия сөз",
+      "passwordError": "Кемінде 6 таңба",
+      "roleLabel": "Рөл",
+      "roleError": "Рөлді таңдаңыз",
+      "rolePlaceholder": "Рөлді таңдаңыз",
+      "roleStudent": "Студент",
+      "roleTeacher": "Мұғалім",
+      "roleAdmin": "Әкімші",
+      "submitBtn": "Тіркелу",
+      "alreadyHaveAccount": "Тіркелгіңіз бар ма?",
+      "signIn": "Кіру"
+    },
+    "forgotPassword": {
+      "step0Title": "Құпия сөзді қалпына келтіру",
+      "step1Title": "Кодты енгізіңіз",
+      "step2Title": "Жаңа құпия сөз",
+      "step0Desc": "Код алу үшін email енгізіңіз",
+      "step1Desc": "Код {{email}} адресіне жіберілді",
+      "step2Desc": "Сенімді құпия сөз ойлап табыңыз",
+      "emailStepTitle": "Email",
+      "codeStepTitle": "Код",
+      "passwordStepTitle": "Құпия сөз",
+      "emailLabel": "Email",
+      "emailError": "Дұрыс email енгізіңіз",
+      "sendCode": "Код жіберу",
+      "codeLabel": "Растау коды",
+      "codeRequired": "Кодты енгізіңіз",
+      "codeLength": "Код 6 саннан тұруы керек",
+      "confirmCode": "Кодты растау",
+      "changeEmail": "Email өзгерту",
+      "resendCode": "Кодты қайта жіберу",
+      "newPasswordLabel": "Жаңа құпия сөз",
+      "newPasswordError": "Кемінде 6 таңба",
+      "confirmPasswordLabel": "Құпия сөзді растаңыз",
+      "confirmPasswordRequired": "Құпия сөзді растаңыз",
+      "passwordsMismatch": "Құпия сөздер сәйкес келмейді",
+      "saveNewPassword": "Жаңа құпия сөзді сақтау",
+      "rememberPassword": "Құпия сөзді есіңізге түсірдіңіз бе?",
+      "signIn": "Кіру"
     }
   }
 }

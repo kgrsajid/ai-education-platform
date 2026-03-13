@@ -6,6 +6,7 @@ import { useGetSessionByIdQuery } from '../../features/query/session';
 import { useAddChatMutation, useRetryLastMessage } from '../../features/query/chat';
 import { useAuth } from '../../providers/context/const/const';
 import { StatusEnum } from '../../features/api/session/type';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   id?: string;
@@ -17,6 +18,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
   const [isBotThink, setIsBotThink] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isSummaryMode, setIsSummaryMode] = useState(false);
+  const { t } = useTranslation();
 
   const { data: messages = { chat: [] }, refetch } = useGetSessionByIdQuery(id);
   const retryLastMessage = useRetryLastMessage();
@@ -79,7 +81,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
   return (
     <div className="flex flex-col flex-1 h-full overflow-hidden">
 
-      {/* Messages area — flex-1 + min-h-0 позволяет overflow-y-auto работать в flex */}
+      {/* Messages area */}
       <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
         <div className="max-w-4xl mx-auto py-6 space-y-6">
           {messages.chat.map((msg, index) => (
@@ -92,7 +94,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-red-400">error</span>
                 <span className="text-red-400 text-sm">
-                  Something went wrong. Try sending the message again.
+                  {t('chat.phrases.errorMessage')}
                 </span>
               </div>
               <button
@@ -110,7 +112,7 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
         </div>
       </div>
 
-      {/* Input — shrink-0 уже задан внутри ChatInput */}
+      {/* Input */}
       <ChatInput
         isSummaryMode={isSummaryMode}
         handleChangeSummaryMode={() => setIsSummaryMode((p) => !p)}

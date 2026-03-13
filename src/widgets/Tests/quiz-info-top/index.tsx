@@ -5,6 +5,7 @@ import { difficultyColors } from "../const"
 import { motion } from "framer-motion";
 import { useAuth } from "../../../providers/context/const/const";
 import { EditButton } from "../../../features/quiz/edit/edit-button";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   quiz: TQuizDetails,
@@ -13,6 +14,7 @@ type Props = {
 export const QuizInfoTop:FC<Props> = ({quiz, handleStart}) => {
   const estimatedTime = Math.ceil(quiz.questions.length * 1.5);
   const {checkById} = useAuth();
+  const { t } = useTranslation();
   return (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -55,11 +57,11 @@ export const QuizInfoTop:FC<Props> = ({quiz, handleStart}) => {
           ))}
 
           <span className="px-4 py-1.5 rounded-full bg-purple-100 text-purple-700 text-sm">
-            {quiz.questions.length} questions
+            {quiz.questions.length} {t('quizInfo.questions')}
           </span>
 
           <span className="px-4 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm flex items-center gap-1">
-            <Clock size={14} />~{estimatedTime} min
+            <Clock size={14} />~{estimatedTime} {t('quizInfo.min')}
           </span>
         </div>
 
@@ -84,7 +86,7 @@ export const QuizInfoTop:FC<Props> = ({quiz, handleStart}) => {
           className="flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-2xl text-lg font-semibold transition shadow-md"
         >
           <PlayCircle size={22} />
-          Start Quiz
+          {t('quizInfo.startQuiz')}
         </button>
       </motion.div>
   )

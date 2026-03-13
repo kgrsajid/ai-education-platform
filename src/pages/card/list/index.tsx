@@ -4,9 +4,11 @@ import { CardItem } from "../../../features/card/card";
 import { useGetAllCardQuery } from "../../../features/query/card";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { CardTop } from "../../../widgets/Cards/top";
+import { useTranslation } from "react-i18next";
 
 export const CardsListPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [pagination, setPagination] = useState({ page: 1, limit: 9 });
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,17 +46,17 @@ export const CardsListPage = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-slate-100 m-0">
-            Flashcards
+            {t("card.phrases.listPage.title")}
           </h1>
           <p className="text-slate-400 mt-1 mb-0 text-sm">
-            Study smarter with interactive flashcard sets
+            {t("card.phrases.listPage.subtitle")}
           </p>
         </div>
         <div className="flex gap-4">
           <Segmented
             options={[
-              { label: "All Sets", value: "all" },
-              { label: "My Sets", value: "my" },
+              { label: t("card.phrases.listPage.allSets"), value: "all" },
+              { label: t("card.phrases.listPage.mySets"), value: "my" },
             ]}
             value={section}
             onChange={handleSectionChange}
@@ -74,7 +76,7 @@ export const CardsListPage = () => {
             style={{ background: "#1152d4", borderColor: "#1152d4" }}
             className="flex items-center gap-1 font-semibold"
           >
-            Create Set
+            {t("card.phrases.listPage.createSet")}
           </Button>
         </div>
       </div>
@@ -114,9 +116,9 @@ export const CardsListPage = () => {
               style
             </span>
           </div>
-          <p className="text-slate-400 font-medium">No flashcard sets found</p>
+          <p className="text-slate-400 font-medium">{t("card.phrases.listPage.noSetsFound")}</p>
           <p className="text-slate-500 text-sm mt-1">
-            Try adjusting your search or filters
+            {t("common.tryAdjusting")}
           </p>
         </div>
       )}

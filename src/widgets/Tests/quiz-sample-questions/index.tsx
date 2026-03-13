@@ -1,14 +1,16 @@
 import type { FC } from "react";
 import type { TQuizDetails } from "../../../features/api/quiz/type";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   quiz: TQuizDetails
 }
 export const QuizSampleQuestions:FC<Props> = ({quiz}) => {
+  const { t } = useTranslation();
   return (
     <div className="bg-white rounded-3xl p-8 border shadow-sm mb-14">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Sample questions
+          {t('quizInfo.sampleQuestions')}
         </h2>
 
         <ul className="space-y-4">
@@ -24,7 +26,7 @@ export const QuizSampleQuestions:FC<Props> = ({quiz}) => {
 
         {quiz.questions.length > 3 && (
           <p className="mt-4 text-sm text-gray-500">
-            + {quiz.questions.length - 3} more questions
+            {t('quizInfo.moreQuestions', { n: quiz.questions.length - 3 })}
           </p>
         )}
       </div>

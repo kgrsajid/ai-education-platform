@@ -2,6 +2,7 @@ import { Input } from "antd";
 import { type FC } from "react";
 import { useState } from "react";
 import { FilterModal } from "../filterModal";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   search: string;
@@ -10,7 +11,7 @@ type Props = {
 
 export const QuizTop: FC<Props> = ({ search, handleSearch }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-4 mb-8">
@@ -23,7 +24,7 @@ export const QuizTop: FC<Props> = ({ search, handleSearch }) => {
           <Input
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search for tests by title or keyword..."
+            placeholder={t("quiz.phrases.searchPlaceholder")}
             size="large"
             allowClear
             style={{ paddingLeft: 44 }}
@@ -37,7 +38,7 @@ export const QuizTop: FC<Props> = ({ search, handleSearch }) => {
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-semibold hover:border-[#1152d4] hover:text-[#1152d4] transition-colors"
         >
           <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>tune</span>
-          Filters
+          {t("common.filters")}
         </button>
 
         <FilterModal open={isFilterOpen} handleClose={() => setIsFilterOpen(false)} />
