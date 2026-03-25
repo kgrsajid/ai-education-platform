@@ -1,75 +1,157 @@
-# React + TypeScript + Vite
+# 🎓 SDU AI Education Platform - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript + Vite frontend for an AI-powered education platform for Kazakhstan school students (Grades 1-11).
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Grade-Based Adaptive UI
+- 🌱 **Sprouts** (Grades 0-4): Cute, colorful, beginner-friendly
+- 🚀 **Explorers** (Grades 5-9): Adventure-themed, discovery-focused
+- 🎯 **Champions** (Grades 10-11): Professional, UNT exam prep
 
-## React Compiler
+### AI Chat
+- Real-time WebSocket chat with AI tutor
+- Chat history and session management
+- Summary mode for quick topic overviews
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Quiz System
+- Browse and take quizzes
+- Timed quiz sessions
+- Results with scoring
 
-Note: This will impact Vite dev & build performances.
+### Flashcards
+- Study flashcards by subject
+- Card browsing and management
 
-## Expanding the ESLint configuration
+### Gamification (Phase 0)
+- Points & XP tracking
+- Level progression system
+- Daily streak bonuses
+- Reward redemption
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### AI Trainer (Phase 1)
+- Personal robot companion
+- 5 evolution stages (Beginner → AI Master)
+- Robot customization (name, color)
+- Evolution roadmap
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Leaderboard (Phase 1)
+- Rankings by Level, Points, or Streak
+- Podium display for top 3
+- Per-grade filtering
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Quick Start
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📁 Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── context/          # GradeBand theme context
+│   │   └── router/           # React Router config
+│   ├── features/
+│   │   ├── api/             # RTK Query API slices
+│   │   ├── auth/            # Login, register
+│   │   ├── chat/            # Chat components
+│   │   └── query/           # Query hooks
+│   ├── pages/               # Page components
+│   │   ├── home/           # Dashboard
+│   │   ├── quiz/            # Quiz pages
+│   │   ├── cards/          # Flashcard pages
+│   │   ├── trainer/        # AI Trainer (Phase 1)
+│   │   ├── leaderboard/    # Rankings (Phase 1)
+│   │   └── rewards/        # Reward shop (Phase 0)
+│   ├── widgets/            # Reusable components
+│   │   ├── sidebar/        # Navigation sidebar
+│   │   └── Chat/           # Chat window, input
+│   ├── assets/
+│   │   └── robots/         # Robot SVG avatars (Phase 1)
+│   └── providers/          # App providers
+├── public/
+└── docker-compose.yml
+```
+
+## 🎨 Theme System
+
+The app adapts its UI based on student's grade:
+
+| Grade | Theme | Primary Color |
+|-------|-------|--------------|
+| 0-4 | 🌱 Sprouts | Indigo (#6366f1) |
+| 5-9 | 🚀 Explorers | Orange (#f97316) |
+| 10-11 | 🎯 Champions | Emerald (#10b981) |
+
+## 🤖 Robot Evolution (Phase 1)
+
+Students earn XP by completing activities:
+
+| Activity | XP Earned |
+|----------|-----------|
+| Take Quiz | +5-15 XP |
+| Study Flashcards | +3-10 XP |
+| Chat with AI | +2 XP |
+| Daily Login | +10 XP |
+
+Robot evolves through stages as students level up:
+
+```
+Beginner (Lv 1) → Thinker (Lv 5) → Problem Solver (Lv 10) 
+→ Scientist (Lv 15) → AI Master (Lv 20)
+```
+
+## 🔌 API Integration
+
+The frontend connects to the Go backend at `VITE_API_URL`:
+
+```bash
+# .env
+VITE_API_URL=http://localhost:8082/
+```
+
+## 🐳 Docker
+
+```bash
+# Build and run
+docker compose up -d
+
+# Access at http://localhost
+```
+
+## 📝 Pages
+
+| Route | Description |
+|-------|-------------|
+| `/home` | Dashboard with progress stats |
+| `/quiz` | Browse available quizzes |
+| `/quiz/:id/start` | Take a quiz |
+| `/cards` | Study flashcards |
+| `/chat` | AI tutor chat |
+| `/chat/:id` | Continue chat session |
+| `/trainer` | Robot trainer profile (Phase 1) |
+| `/leaderboard` | Rankings (Phase 1) |
+| `/rewards` | Reward shop (Phase 0) |
+| `/rewards/my` | My redeemed coupons (Phase 0) |
+
+## 📦 Dependencies
+
+- React 18
+- React Router 6
+- Ant Design 5
+- RTK Query
+- Lucide Icons
+
+## 📄 License
+
+MIT
