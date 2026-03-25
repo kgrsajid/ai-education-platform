@@ -39,8 +39,9 @@ export const ChatWindow: FC<Props> = ({ id, firstMesssage }) => {
   useEffect(() => {
     if (!token) return;
 
+    const wsUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8082/').replace(/^http/, 'ws').replace(/\/$/, '');
     const ws = new WebSocket(
-      `ws://45.63.69.91:8082/message?token=${token}&session_id=${id}&summary=${Number(isSummaryMode)}`,
+      `${wsUrl}/message?token=${token}&session_id=${id}&summary=${Number(isSummaryMode)}`,
     );
     wsRef.current = ws;
 

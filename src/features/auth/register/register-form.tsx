@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useRegisterMutation } from "../../query/auth/register";
 import type { RegisterPayload } from "../../api/auth/type";
 import { useTranslation } from "react-i18next";
+import "./register-form.css";
 
 const PersonIcon = () => (
   <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '1.1rem', lineHeight: 1 }}>
@@ -22,12 +23,25 @@ const LockIcon = () => (
   </span>
 );
 
+const GRADE_GROUPS = [
+  { label: 'Primary (0-4)', grades: [0, 1, 2, 3, 4], color: '#68D391' },
+  { label: 'Basic (5-9)', grades: [5, 6, 7, 8, 9], color: '#60A5FA' },
+  { label: 'Senior (10-11)', grades: [10, 11], color: '#F472B6' },
+];
+
+const LANGUAGES = [
+  { code: 'kz', label: 'KZ', flag: '🇰🇿' },
+  { code: 'ru', label: 'RU', flag: '🇷🇺' },
+  { code: 'en', label: 'EN', flag: '🇬🇧' },
+];
+
 export const RegisterForm = () => {
   const register = useRegisterMutation();
   const { t } = useTranslation();
+  const [form] = Form.useForm();
 
   return (
-    <div className="w-full max-w-[480px] z-10">
+    <div className="w-full max-w-[520px] z-10">
       <div className="bg-slate-900/80 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
         <div className="p-8 pb-6">
           <div className="flex flex-col items-center text-center gap-2 mb-8">
@@ -40,9 +54,31 @@ export const RegisterForm = () => {
 
           <Form<RegisterPayload>
             layout="vertical"
+            form={form}
             onFinish={register.mutate}
             requiredMark={false}
+            initialValues={{ language: 'en', grade: undefined }}
           >
+            {/* Language Selector */}
+            <Form.Item
+              name="language"
+              label="Language / Тіл / Язык"
+            >
+              <div className="language-selector">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    className="language-btn"
+                    onClick={() => form.setFieldValue('language', lang.code)}
+                  >
+                    <span className="language-flag">{lang.flag}</span>
+                    <span className="language-label">{lang.label}</span>
+                  </button>
+                ))}
+              </div>
+            </Form.Item>
+
             <Form.Item
               name="name"
               label={t('auth.register.nameLabel')}
@@ -95,6 +131,56 @@ export const RegisterForm = () => {
                   { value: 'teacher', label: t('auth.register.roleTeacher') },
                   { value: 'admin', label: t('auth.register.roleAdmin') },
                 ]}
+              />
+            </Form.Item>
+
+            {/* Grade Picker - Only show for students */}
+            <Form.Item
+              noStyle
+              shouldUpdate={(prev, curr) => prev.role !== curr.role}
+            >
+              {({ getFieldValue }) =>
+                getFieldValue('role') === 'student' && (
+                  <Form.Item
+                    name="grade"
+                    label="Your Grade / Сынып / Класс"
+                    rules={[{ required: true, message: 'Please select your grade' }]}
+                  >
+                    <div className="grade-picker">
+                      {GRADE_GROUPS.map((group) => (
+                        <div key={group.label} className="grade-group">
+                          <div className="grade-group-label" style={{ color: group.color }}>
+                            {group.label}
+                          </div>
+                          <div className="grade-buttons">
+                            {group.grades.map((grade) => (
+                              <button
+                                key={grade}
+                                type="button"
+                                className="grade-btn"
+                                style={getFieldValue('grade') === grade ? { background: group.color, color: 'white', borderColor: group.color } : {}}
+                                onClick={() => form.setFieldValue('grade', grade)}
+                              >
+                                {grade}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Form.Item>
+                )
+              }
+            </Form.Item>
+
+            {/* School (optional) */}
+            <Form.Item
+              name="school"
+              label="School (optional)"
+            >
+              <Input
+                placeholder="Your school name"
+                size="large"
               />
             </Form.Item>
 

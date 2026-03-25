@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = import.meta.env.VITE_API_URL ?? 'http://45.63.69.91:8082/';
+const baseUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:8082/';
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl,
@@ -24,7 +24,7 @@ const baseQueryWithAuth: typeof rawBaseQuery = async (args, api, extraOptions) =
 
 export const baseApi = createApi({
   reducerPath: 'api',
-  tagTypes: ['Quiz', 'Card', 'Session', 'QuizCategory'],
+  tagTypes: ['Quiz', 'Card', 'Session', 'QuizCategory', 'Progression', 'Streak', 'Rewards'],
   baseQuery: baseQueryWithAuth,
   endpoints: () => ({}),
 });

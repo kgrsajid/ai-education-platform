@@ -347,5 +347,34 @@
       "rememberPassword": "Remember your password?",
       "signIn": "Sign In"
     }
+  },
+  "gamification": {
+    "progress": {
+      "level": "Level",
+      "streak": "Day Streak",
+      "points": "Points",
+      "xpProgress": "XP Progress",
+      "totalXP": "Total XP",
+      "nextLevelIn": "Next level in"
+    },
+    "rewards": {
+      "title": "Reward Shop",
+      "myCoupons": "My Coupons",
+      "redeem": "Redeem",
+      "needMore": "Need more",
+      "remaining": "remaining",
+      "active": "Active",
+      "used": "Used",
+      "couponCode": "Coupon Code",
+      "noRewards": "No rewards available for your grade yet.",
+      "noRedemptions": "You haven't redeemed any rewards yet.",
+      "browseRewards": "Browse Rewards"
+    },
+    "streak": {
+      "claimBonus": "Claim Daily Bonus",
+      "bonusClaimed": "Bonus claimed! +{{points}} points, +{{xp}} XP",
+      "alreadyClaimed": "Already claimed today",
+      "streakLost": "Streak lost. Start fresh today!"
+    }
   }
 }

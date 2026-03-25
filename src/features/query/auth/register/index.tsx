@@ -13,8 +13,9 @@ export const useRegisterMutation = () => {
       await registerTrigger(payload).unwrap();
       message.success('Вы успешно зарегистрировались, теперь войдите в аккаунт');
       navigate(ROUTES.Login);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      const msg = err?.data?.error || 'Registration failed. Please try again.';
+      message.error(msg);
     }
   };
 

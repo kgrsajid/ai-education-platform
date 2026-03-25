@@ -1,4 +1,5 @@
 export const ROUTES = {
+  Home: "/home",
   All: "/",
   Chat: "/chat",
   ChatDetail: "/chat/:id",
@@ -11,8 +12,12 @@ export const ROUTES = {
   Register: "/register",
   ForgotPassword: "/forgot-password",
   Games: "/games",
+  Rewards: "/rewards",
+  RewardsMy: "/rewards/my",
+  Leaderboard: "/leaderboard",
+  Profile: "/profile",
   Cards: "/cards",
   CardsCreate: "/cards/create",
   CardDetail: "/cards/:id",
   CardEdit: "/cards/:id/edit",
-}
+};

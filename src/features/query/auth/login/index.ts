@@ -16,8 +16,9 @@ export const useLoginMutation = () => {
       navigate(`${ROUTES.Chat}/new`);
       message.success('Вы упешно вошли в свой аккаунт');
       auth.login(data.token, data.user);
-    } catch {
-      // error is available in result.error
+    } catch (err: any) {
+      const msg = err?.data?.error || 'Login failed. Please try again.';
+      message.error(msg);
     }
   };
 

@@ -1,0 +1,102 @@
+/* Language Selector */
+.language-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.language-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  background: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-btn:hover {
+  background: #334155;
+  border-color: #475569;
+}
+
+.language-btn.selected {
+  background: #1152d4;
+  border-color: #1152d4;
+}
+
+.language-flag {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.language-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94A3B8;
+}
+
+.language-btn.selected .language-label {
+  color: white;
+}
+
+/* Grade Picker */
+.grade-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: #1E293B;
+  border-radius: 10px;
+  border: 1px solid #334155;
+}
+
+.grade-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.grade-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-left: 4px;
+}
+
+.grade-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.grade-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  background: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: #94A3B8;
+}
+
+.grade-btn:hover {
+  background: #1E293B;
+  border-color: #475569;
+  color: white;
+}
+
+.grade-btn.selected {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}

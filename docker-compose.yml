@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        VITE_API_URL: http://45.63.69.91:8082/
+        VITE_API_URL: http://localhost:8082/
     ports:
       - "80:80"
     container_name: frontend
