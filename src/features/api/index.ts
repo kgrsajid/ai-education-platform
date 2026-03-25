@@ -24,7 +24,7 @@ const baseQueryWithAuth: typeof rawBaseQuery = async (args, api, extraOptions) =
 
 export const baseApi = createApi({
   reducerPath: 'api',
-  tagTypes: ['Quiz', 'Card', 'Session', 'QuizCategory', 'Progression', 'Streak', 'Rewards'],
+  tagTypes: ['Quiz', 'Card', 'Session', 'QuizCategory', 'Progression', 'Streak', 'Rewards', 'Trainer', 'Leaderboard'],
   baseQuery: baseQueryWithAuth,
   endpoints: () => ({}),
 });

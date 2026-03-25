@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
+  <!-- Body -->
+  <rect x="25" y="65" width="70" height="55" rx="10" fill="FILL_COLOR" opacity="0.9"/>
+  <!-- Chest panel -->
+  <rect x="40" y="75" width="40" height="25" rx="5" fill="white" opacity="0.15"/>
+  <!-- Head -->
+  <rect x="20" y="12" width="80" height="55" rx="12" fill="FILL_COLOR"/>
+  <!-- Visor -->
+  <rect x="30" y="25" width="60" height="20" rx="8" fill="white" opacity="0.2"/>
+  <!-- Eyes -->
+  <rect x="38" y="30" width="14" height="10" rx="3" fill="white"/>
+  <rect x="68" y="30" width="14" height="10" rx="3" fill="white"/>
+  <circle cx="45" cy="35" r="3" fill="#1e293b"/>
+  <circle cx="75" cy="35" r="3" fill="#1e293b"/>
+  <!-- Antenna array -->
+  <line x1="45" y1="12" x2="45" y2="2" stroke="FILL_COLOR" stroke-width="2"/>
+  <circle cx="45" cy="1" r="3" fill="#60a5fa"/>
+  <line x1="60" y1="12" x2="60" y2="0" stroke="FILL_COLOR" stroke-width="2"/>
+  <circle cx="60" cy="-1" r="3" fill="#34d399"/>
+  <line x1="75" y1="12" x2="75" y2="2" stroke="FILL_COLOR" stroke-width="2"/>
+  <circle cx="75" cy="1" r="3" fill="#f472b6"/>
+  <!-- Arms with tools -->
+  <rect x="5" y="70" width="20" height="12" rx="5" fill="FILL_COLOR" opacity="0.8"/>
+  <circle cx="5" cy="76" r="6" fill="#fbbf24" opacity="0.6"/>
+  <rect x="95" y="70" width="20" height="12" rx="5" fill="FILL_COLOR" opacity="0.8"/>
+  <circle cx="115" cy="76" r="6" fill="#60a5fa" opacity="0.6"/>
+  <!-- Legs -->
+  <rect x="35" y="120" width="18" height="28" rx="7" fill="FILL_COLOR" opacity="0.7"/>
+  <rect x="67" y="120" width="18" height="28" rx="7" fill="FILL_COLOR" opacity="0.7"/>
+  <!-- Chest indicators -->
+  <circle cx="50" cy="85" r="3" fill="#34d399"/>
+  <circle cx="60" cy="85" r="3" fill="#60a5fa"/>
+  <circle cx="70" cy="85" r="3" fill="#f472b6"/>
+</svg>

@@ -16,6 +16,8 @@ import { CardsCreatePage } from "../../pages/card/create/index.tsx";
 import HomePage from "../../pages/home/index";
 import RewardsPage from "../../pages/rewards/index";
 import RewardsMyPage from "../../pages/rewards/my";
+import TrainerPage from "../../pages/trainer/index";
+import LeaderboardPage from "../../pages/leaderboard/index";
 
 
 const AppRoutes = () => {
@@ -46,6 +48,10 @@ const AppRoutes = () => {
             {/* Phase 0: Rewards */}
             <Route path={ROUTES.Rewards} element={<RewardsPage />} />
             <Route path={ROUTES.RewardsMy} element={<RewardsMyPage />} />
+
+            {/* Phase 1: AI Trainer & Leaderboard */}
+            <Route path={ROUTES.Trainer} element={<TrainerPage />} />
+            <Route path={ROUTES.Leaderboard} element={<LeaderboardPage />} />
           </Route>
         </Route>
       </Routes>

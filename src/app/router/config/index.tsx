@@ -14,6 +14,7 @@ export const ROUTES = {
   Games: "/games",
   Rewards: "/rewards",
   RewardsMy: "/rewards/my",
+  Trainer: "/trainer",
   Leaderboard: "/leaderboard",
   Profile: "/profile",
   Cards: "/cards",
