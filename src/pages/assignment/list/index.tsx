@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { Card, Button, Tag, Empty, Spin, message, Input, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
-  PlusOutlined,
-  SearchOutlined,
+  Plus,
+  Search,
   ClipboardCheck,
   CheckCircle,
-  ClockCircle,
+  Clock,
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import {
   useGetAssignmentsQuery,
   useGetMySubmissionsQuery,
@@ -19,7 +18,6 @@ const { TextArea } = Input;
 
 export default function AssignmentsPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [submitModal, setSubmitModal] = useState<{ open: boolean; assignmentId: string; question: string }>({
     open: false,
@@ -104,7 +102,7 @@ export default function AssignmentsPage() {
           )}
           <Button
             type="primary"
-            icon={<PlusOutlined />}
+            icon={<Plus size={16} />}
             onClick={() => navigate('/assignments/create')}
             style={{ background: '#1152d4', borderColor: '#1152d4', fontWeight: 600 }}
           >
@@ -116,7 +114,7 @@ export default function AssignmentsPage() {
       {/* Search */}
       <Input
         placeholder="Search assignments..."
-        prefix={<SearchOutlined style={{ color: '#64748b' }} />}
+        prefix={<Search size={16} style={{ color: '#64748b' }} />}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         style={{
@@ -224,7 +222,7 @@ export default function AssignmentsPage() {
                         display: 'flex', alignItems: 'center', gap: 6,
                         fontSize: 12, color: '#eab308',
                       }}>
-                        <ClockCircle size={12} />
+                        <Clock size={12} />
                         Evaluating...
                       </div>
                     ) : (

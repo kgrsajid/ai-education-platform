@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Avatar, Spin, Empty } from 'antd';
 import { Trophy, Star, Flame, TrendingUp } from 'lucide-react';
 import { useGetLeaderboardQuery } from '../../features/api/trainer';
-import { useGradeBand } from '../../app/context/grade-band';
 
 const SORT_OPTIONS = [
   { key: 'level', label: 'Level', icon: <Trophy size={16} /> },
@@ -13,7 +12,6 @@ const SORT_OPTIONS = [
 export default function LeaderboardPage() {
   const [sort, setSort] = useState('level');
   const [page, setPage] = useState(1);
-  const { theme } = useGradeBand();
 
   const { data, isLoading } = useGetLeaderboardQuery({ sort, page, limit: 20 });
 

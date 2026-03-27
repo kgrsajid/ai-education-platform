@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Tag, Button, Spin, message, Input, Modal } from 'antd';
-import { ArrowLeft, CheckCircle, ClockCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock } from 'lucide-react';
 import { useGetAssignmentByIdQuery, useGetMySubmissionsQuery } from '../../../features/api/assignment';
 
 const { TextArea } = Input;
@@ -156,7 +156,7 @@ export default function AssignmentDetailPage() {
             {submission.is_evaluated ? (
               <CheckCircle size={20} style={{ color: '#22c55e' }} />
             ) : (
-              <ClockCircle size={20} style={{ color: '#eab308' }} />
+              <Clock size={20} style={{ color: '#eab308' }} />
             )}
             <span style={{ fontWeight: 600, color: '#f1f5f9', fontSize: 16 }}>
               {submission.is_evaluated ? 'Your Evaluation' : 'Submitted — Awaiting Evaluation'}
