@@ -21,8 +21,18 @@ export const useCreateCardMutation = () => {
   return {
     ...result,
     isPending: result.isLoading,
-    mutate: (payload: CardsCreatePayload) => trigger(payload),
-    mutateAsync: (payload: CardsCreatePayload) => trigger(payload),
+    mutate: (payload: CardsCreatePayload) => {
+      trigger(payload)
+        .unwrap()
+        .then(() => {
+          message.success('Card set created successfully!');
+        })
+        .catch((err: any) => {
+          const msg = err?.data?.message || err?.data?.error || 'Failed to create card set';
+          message.error(msg);
+        });
+    },
+    mutateAsync: (payload: CardsCreatePayload) => trigger(payload).unwrap(),
   };
 };
 

@@ -11,7 +11,6 @@ export const ROUTES = {
   Login: "/login",
   Register: "/register",
   ForgotPassword: "/forgot-password",
-  Games: "/games",
   Rewards: "/rewards",
   RewardsMy: "/rewards/my",
   Trainer: "/trainer",
@@ -21,4 +20,8 @@ export const ROUTES = {
   CardsCreate: "/cards/create",
   CardDetail: "/cards/:id",
   CardEdit: "/cards/:id/edit",
+  Assignments: "/assignments",
+  AssignmentCreate: "/assignments/create",
+  AssignmentDetail: "/assignments/:id",
+  AssignmentEdit: "/assignments/:id/edit",
 };

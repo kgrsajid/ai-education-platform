@@ -18,6 +18,9 @@ import RewardsPage from "../../pages/rewards/index";
 import RewardsMyPage from "../../pages/rewards/my";
 import TrainerPage from "../../pages/trainer/index";
 import LeaderboardPage from "../../pages/leaderboard/index";
+import AssignmentsPage from "../../pages/assignment/list/index";
+import AssignmentDetailPage from "../../pages/assignment/detail/index";
+import AssignmentCreatePage from "../../pages/assignment/create/index";
 
 
 const AppRoutes = () => {
@@ -32,26 +35,34 @@ const AppRoutes = () => {
             <Route path={ROUTES.Home} element={<HomePage />} />
             <Route index element={<HomePage />} />
 
-            {/* Existing routes */}
+            {/* Chat */}
             <Route path={ROUTES.ChatDetail} element={<ChatPage/>} />
+
+            {/* Quiz */}
             <Route path={ROUTES.Quiz} element={<QuizListPage />} />
             <Route path={ROUTES.QuizDetail} element={<QuizDetailsPage />} />
             <Route path={ROUTES.QuizDetailStart} element={<QuizPage />} />
             <Route path={ROUTES.QuizCreate} element={<QuizCreatePage/>}/>
             <Route path={ROUTES.QuizEdit} element={<QuizCreatePage isEdit={true}/>} />
-            <Route path={ROUTES.Games} element={<div>Игра</div>} />
+
+            {/* Cards */}
             <Route path={ROUTES.Cards} element={<CardsListPage/>} />
             <Route path={ROUTES.CardDetail} element={<CardDetailPage/>}/>
             <Route path={ROUTES.CardsCreate} element={<CardsCreatePage/>}/>
             <Route path={ROUTES.CardEdit} element={<CardsCreatePage isEdit/>}/>
 
-            {/* Phase 0: Rewards */}
+            {/* Rewards */}
             <Route path={ROUTES.Rewards} element={<RewardsPage />} />
             <Route path={ROUTES.RewardsMy} element={<RewardsMyPage />} />
 
-            {/* Phase 1: AI Trainer & Leaderboard */}
+            {/* AI Trainer & Leaderboard */}
             <Route path={ROUTES.Trainer} element={<TrainerPage />} />
             <Route path={ROUTES.Leaderboard} element={<LeaderboardPage />} />
+
+            {/* Assignments (replacing Games) */}
+            <Route path={ROUTES.Assignments} element={<AssignmentsPage />} />
+            <Route path={ROUTES.AssignmentCreate} element={<AssignmentCreatePage />} />
+            <Route path={ROUTES.AssignmentDetail} element={<AssignmentDetailPage />} />
           </Route>
         </Route>
       </Routes>

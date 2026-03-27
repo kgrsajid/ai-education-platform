@@ -1,4 +1,4 @@
-import { Gamepad, MessageCircle, TestTube, WalletCards, Bot, Trophy } from "lucide-react";
+import { MessageCircle, TestTube, WalletCards, ClipboardCheck, Bot, Trophy } from "lucide-react";
 import { ROUTES } from "../../../app/router/config";
 import type { SidebarItem } from "../type/type";
 
@@ -24,9 +24,9 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     type: "item",
-    label: "sidebar.labels.games",
-    path: ROUTES.Games,
-    icon: <Gamepad size={23} />,
+    label: "Assignment",
+    path: ROUTES.Assignments,
+    icon: <ClipboardCheck size={23} />,
   },
   {
     type: "item",
