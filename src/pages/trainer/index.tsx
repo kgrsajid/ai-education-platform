@@ -234,7 +234,7 @@ export default function TrainerPage() {
           { icon: '⭐', label: 'Total XP', value: stats.total_xp?.toLocaleString() || 0 },
           { icon: '📝', label: 'Quizzes', value: stats.quizzes_completed || 0 },
           { icon: '🃏', label: 'Cards', value: stats.flashcards_studied || 0 },
-          { icon: '⚔️', label: 'Battles', value: stats.battles_won || 0 },
+          { icon: '📋', label: 'Assignments', value: stats.assignments_completed || 0 },
           { icon: '🔥', label: 'Streak', value: `${stats.current_streak || 0}d` },
           { icon: '🏆', label: 'Best', value: `${stats.longest_streak || 0}d` },
         ].map((stat) => (
