@@ -20,7 +20,7 @@ interface TrainerProfile {
     progress_percent: number;
     quizzes_completed: number;
     flashcards_studied: number;
-    battles_won: number;
+    assignments_completed: number;
     current_streak: number;
     longest_streak: number;
     joined_at: string;
