@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        VITE_API_URL: http://localhost:8082/
+        VITE_API_URL: http://localhost:8082
         CACHE_BUST: ${CACHE_BUST:-0}
     ports:
       - "80:80"
